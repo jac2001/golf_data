@@ -80,7 +80,7 @@ export default function LiveMatchCard({ fallback }: { fallback: React.ReactNode 
 
       <div style={{ display: "flex", gap: 16, alignItems: "center", marginTop: 12, flexWrap: "wrap" }}>
         <Link href="/match" style={{
-          background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+          background: "var(--bc-yellow-fill)", color: "#081f14", fontWeight: 900,
           textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.85em)", letterSpacing: "0.06em",
           padding: "12px 20px", borderRadius: 4, whiteSpace: "nowrap" }}>
           Open Match Center

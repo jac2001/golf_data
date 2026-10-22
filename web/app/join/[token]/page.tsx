@@ -24,7 +24,7 @@ const card: React.CSSProperties = {
 };
 const button: React.CSSProperties = {
   display: "block", width: "100%", minHeight: 52, marginTop: 22, borderRadius: 12, border: "none",
-  background: "var(--bc-yellow)", color: "#0c2a1c", fontWeight: 800, fontSize: "1.05rem", cursor: "pointer",
+  background: "var(--bc-yellow-fill)", color: "#0c2a1c", fontWeight: 800, fontSize: "1.05rem", cursor: "pointer",
 };
 
 export default function JoinPage() {

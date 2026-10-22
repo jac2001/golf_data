@@ -58,7 +58,7 @@ export default function LeagueRetro() {
             {w.season} League Season
           </span>
           {champion && <span style={{ fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 800, letterSpacing: "0.1em",
-            color: "#081f14", background: "var(--bc-yellow)", borderRadius: 3, padding: "2px 8px",
+            color: "#081f14", background: "var(--bc-yellow-fill)", borderRadius: 3, padding: "2px 8px",
             textTransform: "uppercase" }}>Champions</span>}
         </div>
         <div style={{ display: "flex", alignItems: "baseline", gap: 16, marginTop: 8, flexWrap: "wrap" }}>
@@ -161,7 +161,7 @@ export default function LeagueRetro() {
                 </div>
                 <div style={{ background: "var(--bc-panel)", borderRadius: 3, height: 7, marginTop: 3 }}>
                   <div style={{ width: `${(r.v / s.ladder.hindsight_ceiling) * 100}%`, height: "100%",
-                    borderRadius: 3, background: "var(--bc-yellow)" }} />
+                    borderRadius: 3, background: "var(--bc-yellow-fill)" }} />
                 </div>
               </div>
             ))}

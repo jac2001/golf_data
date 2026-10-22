@@ -38,13 +38,24 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,   // allow pinch-zoom but don't lock it
   viewportFit: "cover",  // lets the phone tab bar pad for the iPhone home indicator
-  themeColor: "#081f14",  // colors the browser/status bar to match the nav
+  // Colors the browser/status bar to match the nav, per the phone's theme.
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#081f14" },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
-      <html lang="en" className={archivo.variable}>
+      {/* data-theme is set by the script before React loads, so React's markup
+          and the live <html> differ on purpose: suppressHydrationWarning. */}
+      <html lang="en" className={archivo.variable} suppressHydrationWarning>
+        <head>
+          {/* A theme chosen in Settings, applied before first paint (no flash). */}
+          <script dangerouslySetInnerHTML={{ __html:
+            `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}` }} />
+        </head>
         <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
           <NavBar />
           <main style={{ flex: 1, padding: "24px 24px 48px" }}>

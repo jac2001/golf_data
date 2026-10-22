@@ -10,7 +10,7 @@ function diffColor(diff: number | null): string {
   if (diff >  0.5)  return "var(--bc-red)";
   if (diff >  0.2)  return "var(--warning)";
   if (diff > -0.1)  return "var(--bc-muted)";
-  if (diff > -0.3)  return "#27ae60";
+  if (diff > -0.3)  return "var(--bc-green)";
   return "var(--bc-green)";
 }
 
@@ -307,7 +307,7 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {winning_scores.map(w => (
               <div key={w.year} style={{
-                background: "#081220", border: "1px solid var(--bc-line)", borderRadius: 6,
+                background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 6,
                 padding: "6px 10px", minWidth: 86, textAlign: "center",
               }}>
                 <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)" }}>{w.year}</div>

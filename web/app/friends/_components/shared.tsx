@@ -177,7 +177,7 @@ export async function shareReceipt(tid: string, uid: string, game: "rounds" | "f
 }
 
 export const btn: React.CSSProperties = {
-  background: "var(--bc-yellow)", color: "#081f14", border: "none",
+  background: "var(--bc-yellow-fill)", color: "#081f14", border: "none",
   borderRadius: 6, padding: "9px 16px", fontWeight: 800, fontSize: "max(var(--fs-min), 0.8em)",
   textTransform: "uppercase", letterSpacing: "0.05em", cursor: "pointer",
 };

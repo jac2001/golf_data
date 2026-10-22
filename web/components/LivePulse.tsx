@@ -9,8 +9,8 @@ const MUTED  = "var(--bc-muted)";
 const LABEL  = "var(--bc-muted)";
 const GREEN  = "var(--bc-green)";
 const GOLD   = "var(--bc-yellow)";
-const RED    = "#e05555";
-const PURPLE = "#c070f0";
+const RED    = "var(--bc-red)";
+const PURPLE = "var(--bc-purple)";
 
 type Props = {
   pulse:       LivePulseData | null;
@@ -39,7 +39,7 @@ export default function LivePulse({ pulse, loading, error, onGenerate, onRefresh
           </div>
         </div>
         <button onClick={onGenerate} style={{
-          background: GREEN + "22", border: `1px solid ${GREEN}55`,
+          background: `color-mix(in srgb, ${GREEN} 13%, transparent)`, border: `1px solid color-mix(in srgb, ${GREEN} 33%, transparent)`,
           color: GREEN, borderRadius: 8, padding: "8px 18px",
           fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, cursor: "pointer", flexShrink: 0,
           whiteSpace: "nowrap",
@@ -69,7 +69,7 @@ export default function LivePulse({ pulse, loading, error, onGenerate, onRefresh
   if (error) {
     return (
       <div style={{
-        background: "#1a0808", border: `1px solid ${RED}44`, borderRadius: 10,
+        background: "var(--bc-bad-bg)", border: `1px solid color-mix(in srgb, ${RED} 27%, transparent)`, borderRadius: 10,
         padding: "14px 20px", marginBottom: 20,
       }}>
         <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: RED }}>{error}</span>
@@ -105,7 +105,7 @@ export default function LivePulse({ pulse, loading, error, onGenerate, onRefresh
           <span style={{
             fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 800, color: GREEN,
             textTransform: "uppercase", letterSpacing: "0.12em",
-            background: GREEN + "18", border: `1px solid ${GREEN}33`,
+            background: `color-mix(in srgb, ${GREEN} 9%, transparent)`, border: `1px solid color-mix(in srgb, ${GREEN} 20%, transparent)`,
             borderRadius: 4, padding: "2px 8px",
           }}>
             Live Pulse

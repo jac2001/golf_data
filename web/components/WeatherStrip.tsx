@@ -10,7 +10,7 @@ type Props = { days: WeatherDay[]; savedAt?: string; credit?: { label: string; h
 // Condition code → short label + color
 function conditionMeta(code: string): { label: string; color: string; icon: string } {
   if (code.includes("SUNNY"))          return { label: "Sunny",         color: "var(--bc-yellow)", icon: "◎" };
-  if (code.includes("PARTLY_CLOUDY")) return { label: "Partly Cloudy", color: "#7fb8d4", icon: "◑" };
+  if (code.includes("PARTLY_CLOUDY")) return { label: "Partly Cloudy", color: "var(--bc-blue)", icon: "◑" };
   if (code.includes("CLOUDY"))         return { label: "Cloudy",        color: "var(--bc-muted)", icon: "●" };
   if (code.includes("RAIN") || code.includes("SHOWER")) return { label: "Rain", color: "var(--bc-yellow)", icon: "↓" };
   if (code.includes("THUNDER") || code.includes("STORM")) return { label: "Storms", color: "var(--bc-red)", icon: "!" };
@@ -34,7 +34,7 @@ function precipColor(pct: string): string {
   const n = parseInt(pct);
   if (isNaN(n)) return "var(--bc-muted)";
   if (n >= 50) return "var(--bc-yellow)";
-  if (n >= 25) return "#7fb8d4";
+  if (n >= 25) return "var(--bc-blue)";
   return "var(--bc-muted)";
 }
 

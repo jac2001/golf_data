@@ -36,8 +36,8 @@ function relColor(rel: number | null): string {
   if (rel <= -2) return "var(--bc-yellow)";
   if (rel === -1) return "var(--bc-red-text)";
   if (rel === 0)  return "var(--bc-muted)";
-  if (rel === 1)  return "#4cb8ff";
-  return "#9b59b6";
+  if (rel === 1)  return "var(--bc-blue)";
+  return "var(--bc-purple)";
 }
 
 function runningColor(s: string | null | undefined): string {
@@ -61,11 +61,11 @@ function ScoreCell({ h }: { h: HoleData }) {
     if (rel <= -2) {
       boxStyle = { ...boxStyle, border: "2px solid var(--bc-yellow)", borderRadius: "50%", background: "rgba(255,210,74,0.08)" };
     } else if (rel === -1) {
-      boxStyle = { ...boxStyle, border: "2px solid var(--bc-red-text)", borderRadius: "50%", background: "#180808" };
+      boxStyle = { ...boxStyle, border: "2px solid var(--bc-red-text)", borderRadius: "50%", background: "var(--bc-bad-bg)" };
     } else if (rel === 1) {
-      boxStyle = { ...boxStyle, border: "1px solid #1a3a52", background: "var(--bc-panel)" };
+      boxStyle = { ...boxStyle, border: "1px solid color-mix(in srgb, var(--bc-blue) 45%, var(--bc-panel))", background: "var(--bc-panel)" };
     } else if (rel >= 2) {
-      boxStyle = { ...boxStyle, border: "2px solid #6a3080", background: "#100818" };
+      boxStyle = { ...boxStyle, border: "2px solid var(--bc-purple)", background: "color-mix(in srgb, var(--bc-purple) 14%, var(--bc-panel))" };
     }
   }
 
@@ -250,7 +250,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
           <tbody>
             {players.map((p, i) => {
               const isPick = myPicksNorm.has(normName(p.player_name));
-              const bg = isPick ? "#091a0f" : i % 2 === 0 ? "var(--bc-card)" : "var(--bc-panel)";
+              const bg = isPick ? "var(--bc-pick-bg)" : i % 2 === 0 ? "var(--bc-card)" : "var(--bc-panel)";
               const isCut = p.made_cut === false;
               const isExpanded = expandedPlayer === p.player_name;
               const card = cards[p.player_name];
@@ -311,7 +311,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
                         </span>
                       )}
                       {isCut && (
-                        <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: "#5a2020", marginLeft: 6, background: "#2a0f0f", padding: "1px 4px", borderRadius: 3 }}>CUT</span>
+                        <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: "var(--bc-red-dim)", marginLeft: 6, background: "var(--bc-bad-bg)", padding: "1px 4px", borderRadius: 3 }}>CUT</span>
                       )}
                     </td>
                     <td style={{ ...td, color: totalColor, fontWeight: 700 }}>{p.total ?? "E"}</td>
@@ -362,7 +362,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
                       <td colSpan={totalCols} style={{
                         padding: "4px 10px", background: "rgba(224,85,85,0.10)",
                         borderBottom: "1px solid rgba(224,85,85,0.35)", textAlign: "center",
-                        fontSize: "max(var(--fs-min-xs), 0.65em)", color: "#7f3030",
+                        fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-red-dim)",
                         letterSpacing: "0.1em", fontWeight: 700, textTransform: "uppercase",
                       }}>
                         — Cut Line —

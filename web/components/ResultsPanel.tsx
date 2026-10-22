@@ -85,7 +85,7 @@ function TournamentLeaderboard({
     color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em",
     borderBottom: "1px solid var(--bc-line)", whiteSpace: "nowrap", textAlign: "center",
   };
-  const tdBase: React.CSSProperties = { padding: "5px 10px", borderBottom: "1px solid #0d1e2e", textAlign: "center", fontSize: "max(var(--fs-min), 0.83em)" };
+  const tdBase: React.CSSProperties = { padding: "5px 10px", borderBottom: "1px solid var(--bc-line)", textAlign: "center", fontSize: "max(var(--fs-min), 0.83em)" };
 
   return (
     <div style={{ overflowX: "auto", borderRadius: 8, border: "1px solid var(--bc-line)" }}>
@@ -118,7 +118,7 @@ function TournamentLeaderboard({
         <tbody>
           {rows.map((r, i) => {
             const isPick = myPicksNorm.has(normName(r.player_name));
-            const rowBg = isPick ? "#060e09" : i % 2 === 0 ? "var(--bc-panel)" : "#091422";
+            const rowBg = isPick ? "var(--bc-pick-bg)" : i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-card)";
             return (
               <tr key={i} style={{ background: rowBg }}>
                 <td style={{ ...tdBase, textAlign: "left", fontWeight: 700, color: posColor(r.position), borderLeft: isPick ? "2px solid var(--bc-green)" : undefined }}>
@@ -237,7 +237,7 @@ function ResultsTab() {
                     {/* Recap narrative */}
                     {t.recap && (
                       <p style={{
-                        color: "#b0c8e0", fontSize: "max(var(--fs-min), 0.85em)", lineHeight: 1.6,
+                        color: "var(--bc-text)", fontSize: "max(var(--fs-min), 0.85em)", lineHeight: 1.6,
                         margin: "0 0 16px", borderLeft: "2px solid var(--bc-green)",
                         paddingLeft: 12, fontStyle: "italic",
                       }}>

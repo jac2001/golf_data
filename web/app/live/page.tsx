@@ -291,7 +291,7 @@ export default function LivePage() {
             {wds && wds.count > 0 && (
               <div style={{
                 marginBottom: 12, padding: "6px 12px",
-                background: "#1a0a00", border: "1px solid #7a3a00",
+                background: "var(--bc-card)", border: "1px solid var(--bc-orange)",
                 borderRadius: 6, fontSize: "max(var(--fs-min), 0.8em)", color: "var(--bc-orange)",
               }}>
                 <span style={{ fontWeight: 700 }}>WD this week: </span>
@@ -513,8 +513,8 @@ function EuroLiveView() {
             <div style={{ display: "flex", gap: 8, marginLeft: "auto" }}>
               {["event_avg", "1", "2", "3", "4"].map(r => (
                 <button key={r} onClick={() => setHoleRound(r)} style={{
-                  background: holeRound === r ? "#0a1f3a" : "var(--bc-panel)",
-                  border: `1px solid ${holeRound === r ? "#1e5a3f" : "var(--bc-line)"}`,
+                  background: holeRound === r ? "var(--bc-raised)" : "var(--bc-panel)",
+                  border: `1px solid ${holeRound === r ? "var(--bc-good-line)" : "var(--bc-line)"}`,
                   borderRadius: 5, color: holeRound === r ? "var(--bc-green)" : "var(--bc-muted)",
                   padding: "4px 12px", fontSize: "max(var(--fs-min), 0.76em)", fontWeight: 700, cursor: "pointer",
                 }}>{r === "event_avg" ? "Current" : `R${r}`}</button>
@@ -558,8 +558,8 @@ function EuroLiveView() {
                     const vs = r != null && par != null ? Math.round(r) - par : null;
                     return (
                       <div key={ri} style={{ flex: 1, textAlign: "center", borderRadius: 5, padding: "6px 0",
-                        background: vs == null ? "var(--bc-panel)" : vs < 0 ? "#0a1e12" : vs > 0 ? "#1e0d0d" : "var(--bc-panel)",
-                        border: `1px solid ${vs == null ? "var(--bc-line)" : vs < 0 ? "#1e5a3f" : vs > 0 ? "#5a2a2a" : "var(--bc-line)"}` }}>
+                        background: vs == null ? "var(--bc-panel)" : vs < 0 ? "var(--bc-good-bg)" : vs > 0 ? "var(--bc-bad-bg)" : "var(--bc-panel)",
+                        border: `1px solid ${vs == null ? "var(--bc-line)" : vs < 0 ? "var(--bc-good-line)" : vs > 0 ? "var(--bc-bad-line)" : "var(--bc-line)"}` }}>
                         <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase" }}>R{ri + 1}</div>
                         <div style={{ fontWeight: 800, fontSize: "0.92em", fontVariantNumeric: "tabular-nums",
                           color: vs == null ? "var(--bc-muted)" : vs < 0 ? "var(--bc-green)" : vs > 0 ? "var(--bc-red-text)" : "var(--bc-text)" }}>

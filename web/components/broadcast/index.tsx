@@ -83,7 +83,7 @@ export function choice(on: boolean): React.CSSProperties {
 
 /* ── Primary button: the screen's ONE yellow action ─────────────────────── */
 export const primaryBtn: React.CSSProperties = {
-  background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+  background: "var(--bc-yellow-fill)", color: "#081f14", fontWeight: 900,
   textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.85em)", letterSpacing: "0.06em",
   padding: "12px 20px", borderRadius: 4, whiteSpace: "nowrap", border: "none",
   cursor: "pointer", fontFamily: "inherit", display: "inline-block",

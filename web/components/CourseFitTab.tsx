@@ -60,7 +60,7 @@ function CourseProfile({ profile, players }: { profile: CourseFitResponse["cours
               <span style={{ fontSize: 14, color: "var(--bc-text)" }}><Term term={term}>{label}</Term></span>
               <span style={{ height: 8, background: "var(--bc-card)", borderRadius: 4, overflow: "hidden" }}>
                 <span style={{ display: "block", width: `${v * 100}%`, height: "100%", borderRadius: 4,
-                  background: key === top.key ? "var(--bc-yellow)" : "var(--bc-green)" }} />
+                  background: key === top.key ? "var(--bc-yellow-fill)" : "var(--bc-green)" }} />
               </span>
               <span style={{ fontSize: 13, color: "var(--bc-muted)", textAlign: "right" }}>{Math.round(v * 100)}%</span>
             </div>

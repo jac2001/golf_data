@@ -178,7 +178,7 @@ export default function InstallCard() {
       <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
         <button onClick={act} disabled={busy} style={{
           flex: 1, cursor: "pointer", fontFamily: "inherit", fontWeight: 800,
-          background: "var(--bc-yellow)", color: "#081f14", border: "none",
+          background: "var(--bc-yellow-fill)", color: "#081f14", border: "none",
           borderRadius: 6, padding: "11px 14px", fontSize: "max(var(--fs-min), 0.9em)",
         }}>{busy ? "…" : copy.action}</button>
         <button onClick={() => dismiss()} style={{

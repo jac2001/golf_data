@@ -98,7 +98,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
 
   return (
     <div style={{
-      background: isPick ? "#060e09" : "var(--bc-panel)",
+      background: isPick ? "var(--bc-pick-bg)" : "var(--bc-panel)",
       borderTop: isPick ? "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)" : "1px solid var(--bc-line)",
       borderRight: isPick ? "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)" : "1px solid var(--bc-line)",
       borderBottom: isPick ? "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)" : "1px solid var(--bc-line)",
@@ -239,7 +239,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
           <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)", width: 52, flexShrink: 0 }}>Market</span>
           <div style={{ flex: 1, background: "var(--bc-card)", borderRadius: 3, height: 5 }}>
-            <div style={{ width: `${marketBar}%`, background: "var(--bc-yellow)", borderRadius: 3, height: 5 }} />
+            <div style={{ width: `${marketBar}%`, background: "var(--bc-yellow-fill)", borderRadius: 3, height: 5 }} />
           </div>
           <span style={{ color: "var(--bc-yellow)", fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, width: 46, textAlign: "right", flexShrink: 0 }}>
             {marketPct.toFixed(1)}%

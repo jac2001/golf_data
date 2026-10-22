@@ -256,7 +256,7 @@ export default function HowToPlayPage() {
           {mode === "history" && picks.length === 3 && !revealed && (
             <button onClick={() => setRevealed(true)} style={{
               marginTop: 12, cursor: "pointer", fontFamily: "inherit",
-              background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+              background: "var(--bc-yellow-fill)", color: "#081f14", fontWeight: 900,
               textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.78em)", letterSpacing: "0.06em",
               padding: "10px 18px", borderRadius: 4, border: "none" }}>
               Lock picks · reveal Sunday&apos;s results
@@ -340,7 +340,7 @@ export default function HowToPlayPage() {
         {/* Signed in: the next step is your group, not an account you already have. */}
         <Show when="signed-out">
           <Link href="/sign-up" style={{
-            background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+            background: "var(--bc-yellow-fill)", color: "#081f14", fontWeight: 900,
             textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)", letterSpacing: "0.06em",
             padding: "13px 24px", borderRadius: 4 }}>
             Create a free account
@@ -351,7 +351,7 @@ export default function HowToPlayPage() {
         </Show>
         <Show when="signed-in">
           <Link href="/friends" style={{
-            background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+            background: "var(--bc-yellow-fill)", color: "#081f14", fontWeight: 900,
             textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)", letterSpacing: "0.06em",
             padding: "13px 24px", borderRadius: 4 }}>
             Go to your group

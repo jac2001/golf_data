@@ -416,7 +416,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
                 <React.Fragment key={p.player_name ?? `row-${i}`}>
                 <tr onClick={hasMore ? () => setOpenRow(isOpen ? null : p.player_name) : undefined}
                   style={{ cursor: hasMore ? "pointer" : undefined,
-                    ...(isPick ? { background: "#0a1e12", borderLeft: "2px solid var(--bc-green)" } : {}) }}>
+                    ...(isPick ? { background: "var(--bc-good-bg)", borderLeft: "2px solid var(--bc-green)" } : {}) }}>
                   <td style={{ ...td, color: "var(--bc-muted)", textAlign: "center", fontSize: "max(var(--fs-min), 0.78em)" }}>{i + 1}</td>
 
                   {/* Player name + intel */}
@@ -465,7 +465,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
                           {(p.win_prob_sim * 100).toFixed(1)}%
                         </span>
                         {p.win_prob != null && (
-                          <div style={{ color: "#2a5040", fontSize: "max(var(--fs-min-xs), 0.68em)", marginTop: 1 }}>
+                          <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min-xs), 0.68em)", marginTop: 1 }}>
                             base model {(p.win_prob * 100).toFixed(1)}%
                           </div>
                         )}

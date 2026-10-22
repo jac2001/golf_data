@@ -58,7 +58,7 @@ export default function Home() {
       </div>
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         <Link href="/match" style={{
-          background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+          background: "var(--bc-yellow-fill)", color: "#081f14", fontWeight: 900,
           textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.78em)", letterSpacing: "0.06em",
           padding: "11px 18px", borderRadius: 4, whiteSpace: "nowrap" }}>
           View your matchup
@@ -99,7 +99,7 @@ export default function Home() {
           </div>
           <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
             <Link href="/sign-up?redirect_url=%2Ffriends" style={{
-              background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+              background: "var(--bc-yellow-fill)", color: "#081f14", fontWeight: 900,
               textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)", letterSpacing: "0.06em",
               padding: "13px 22px", borderRadius: 4, whiteSpace: "nowrap" }}>
               Start a group

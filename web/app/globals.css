@@ -22,6 +22,18 @@
   --bc-raised:    #1d5038;   /* selected toggle / segment surface */
   --bc-line-hi:   #3f7358;   /* selected toggle border, stronger dividers */
   --bc-focus:     var(--bc-yellow);
+  --bc-yellow-fill: var(--bc-yellow);  /* yellow as a SURFACE (buttons, badges); --bc-yellow is yellow as text */
+  --bc-purple:    #a060d0;   /* double bogey and worse (scorecards) */
+  --bc-blue:      #4cb8ff;   /* bogey (scorecards) */
+
+  /* Tinted surfaces, built from the hues so they work in both themes. */
+  --bc-pick-bg:   color-mix(in srgb, var(--bc-green) 10%, var(--bc-panel));   /* my pick's row */
+  --bc-good-bg:   color-mix(in srgb, var(--bc-green) 12%, var(--bc-panel));
+  --bc-good-line: color-mix(in srgb, var(--bc-green) 40%, var(--bc-panel));
+  --bc-bad-bg:    color-mix(in srgb, var(--bc-red) 12%, var(--bc-panel));
+  --bc-bad-line:  color-mix(in srgb, var(--bc-red) 40%, var(--bc-panel));
+  --bc-red-dim:   color-mix(in srgb, var(--bc-red-text) 55%, var(--bc-panel));   /* quiet "CUT" labels */
+  color-scheme: dark;
 
   /* Yellow budget: the nav rule, the active nav item, and ONE solid
      primary button per screen. Selection uses --bc-raised; labels and
@@ -72,6 +84,54 @@ html, body {
 }
 
 
+/* Light theme: the phone's setting decides unless the person chose one in
+   Settings (data-theme on <html>, set before paint in app/layout.tsx).
+   Same token names, so every component follows without changes. */
+:root[data-theme="light"] {
+  --bc-bg:        #f3f5f1;
+  --bc-panel:     #ffffff;
+  --bc-card:      #ffffff;
+  --bc-card-hi:   #edf4ee;
+  --bc-line:      #dbe3dc;
+  --bc-text:      #0f2219;
+  --bc-muted:     #556a5e;   /* 5.6:1 on panel */
+  --bc-yellow:    #8a6200;   /* gold as TEXT: 5.3:1 on panel; #ffd24a is unreadable on white */
+  --bc-yellow-fill: #f5be1a; /* gold as a surface, with dark text */
+  --bc-green:     #15804a;   /* 4.9:1 */
+  --bc-orange:    #b4530c;   /* 4.9:1 */
+  --bc-red:       #d64545;
+  --bc-red-text:  #c02626;   /* 5.9:1 */
+  --bc-purple:    #7a3fae;
+  --bc-blue:      #1b6fb0;
+  --bc-hover:     #eef3ee;
+  --bc-raised:    #e1ede4;
+  --bc-line-hi:   #9ab9a6;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bc-bg:        #f3f5f1;
+    --bc-panel:     #ffffff;
+    --bc-card:      #ffffff;
+    --bc-card-hi:   #edf4ee;
+    --bc-line:      #dbe3dc;
+    --bc-text:      #0f2219;
+    --bc-muted:     #556a5e;   /* 5.6:1 on panel */
+    --bc-yellow:    #8a6200;   /* gold as TEXT: 5.3:1 on panel; #ffd24a is unreadable on white */
+    --bc-yellow-fill: #f5be1a; /* gold as a surface, with dark text */
+    --bc-green:     #15804a;   /* 4.9:1 */
+    --bc-orange:    #b4530c;   /* 4.9:1 */
+    --bc-red:       #d64545;
+    --bc-red-text:  #c02626;   /* 5.9:1 */
+    --bc-purple:    #7a3fae;
+    --bc-blue:      #1b6fb0;
+    --bc-hover:     #eef3ee;
+    --bc-raised:    #e1ede4;
+    --bc-line-hi:   #9ab9a6;
+    color-scheme: light;
+  }
+}
+
 /* Remove default link styling */
 a {
   color: inherit;
@@ -90,8 +150,8 @@ a {
 
 /* Thin scrollbar on webkit browsers */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-base); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-track { background: var(--bc-bg); }
+::-webkit-scrollbar-thumb { background: var(--bc-line); border-radius: 3px; }
 
 /* ── Responsive layout helpers ────────────────────────────────────────────── */
 

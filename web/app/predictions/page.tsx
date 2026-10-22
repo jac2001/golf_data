@@ -348,7 +348,7 @@ export default function PredictionsPage() {
                       live tracking, player profiles, and the Friends Game.
                     </p>
                     <Link href="/sign-up" style={{
-                      display: "inline-block", background: "var(--bc-yellow)", color: "#081f14",
+                      display: "inline-block", background: "var(--bc-yellow-fill)", color: "#081f14",
                       fontWeight: 900, textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.8em)",
                       letterSpacing: "0.06em", padding: "12px 22px", borderRadius: 5,
                     }}>
@@ -615,8 +615,8 @@ function EuroTeeTimesView({ data }: { data: EuroTeeTimes }) {
       <div style={{ display: "flex", gap: 8, padding: "14px 18px", alignItems: "center" }}>
         {roundNums.map(rn => (
           <button key={rn} onClick={() => setRound(rn)} style={{
-            background: round === rn ? "#0a1f3a" : "var(--bc-panel)",
-            border: `1px solid ${round === rn ? "#1e5a3f" : "var(--bc-line)"}`,
+            background: round === rn ? "var(--bc-raised)" : "var(--bc-panel)",
+            border: `1px solid ${round === rn ? "var(--bc-good-line)" : "var(--bc-line)"}`,
             borderRadius: 5, color: round === rn ? "var(--bc-green)" : "var(--bc-muted)",
             padding: "5px 14px", fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 700, cursor: "pointer",
           }}>R{rn}</button>

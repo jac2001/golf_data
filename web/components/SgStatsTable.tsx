@@ -31,8 +31,8 @@ const MUTED  = "var(--bc-muted)";
 const GREEN  = "var(--bc-green)";
 const RED    = "var(--bc-red-text)";
 const GOLD   = "var(--bc-yellow)";
-const BLUE   = "#4cb8ff";
-const PURPLE = "#a070d0";
+const BLUE   = "var(--bc-blue)";
+const PURPLE = "var(--bc-purple)";
 
 function normName(n: string) {
   return n.toLowerCase().replace(",", "").split(/\s+/).sort().join(" ");
@@ -41,10 +41,10 @@ function normName(n: string) {
 function sgColor(n: number | null): string {
   if (n == null) return "var(--bc-muted)";
   if (n >  2)    return GREEN;
-  if (n >  0.5)  return "#4cb856";
+  if (n >  0.5)  return "var(--bc-green)";
   if (n >  0)    return "var(--bc-muted)";
   if (n > -0.5)  return "var(--bc-muted)";
-  if (n > -2)    return "#e06050";
+  if (n > -2)    return "var(--bc-red-text)";
   return RED;
 }
 
@@ -98,9 +98,9 @@ function ScoreCell({ h }: { h: HoleData }) {
   };
   if (played && h.rel != null) {
     if (h.rel <= -2) boxStyle = { ...boxStyle, border: `2px solid ${GOLD}`, borderRadius: "50%", background: "rgba(255,210,74,0.08)" };
-    else if (h.rel === -1) boxStyle = { ...boxStyle, border: `2px solid ${RED}`, borderRadius: "50%", background: "#180808" };
-    else if (h.rel === 1)  boxStyle = { ...boxStyle, border: "1px solid #1a3a52", background: "#060d18" };
-    else if (h.rel >= 2)   boxStyle = { ...boxStyle, border: `2px solid ${PURPLE}`, background: "#100818" };
+    else if (h.rel === -1) boxStyle = { ...boxStyle, border: `2px solid ${RED}`, borderRadius: "50%", background: "var(--bc-bad-bg)" };
+    else if (h.rel === 1)  boxStyle = { ...boxStyle, border: "1px solid color-mix(in srgb, var(--bc-blue) 45%, var(--bc-panel))", background: "color-mix(in srgb, var(--bc-blue) 12%, var(--bc-panel))" };
+    else if (h.rel >= 2)   boxStyle = { ...boxStyle, border: `2px solid ${PURPLE}`, background: "color-mix(in srgb, var(--bc-purple) 14%, var(--bc-panel))" };
   }
   return (
     <td style={{ padding: "2px 1px", textAlign: "center", minWidth: 30 }}>
@@ -311,7 +311,7 @@ export default function SgStatsTable({ players, roundParam, updated, onRoundChan
             <tbody>
               {sorted.map((p, i) => {
                 const isPick     = myPicksNorm.has(normName(p.player));
-                const bg         = isPick ? "#060e09" : i % 2 === 0 ? BG : BG_ALT;
+                const bg         = isPick ? "var(--bc-pick-bg)" : i % 2 === 0 ? BG : BG_ALT;
                 const isExpanded = expanded === p.player;
                 const playerHoles = holeScores ? holeScores[p.player] ?? null : null;
                 const clickable  = !!holeScores;
