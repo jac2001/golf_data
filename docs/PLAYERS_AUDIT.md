@@ -97,7 +97,7 @@ misleading or broken · **P3** clarity, design, code health.
     mode), each a different number.
 22. **Colors:** palette mostly tokens (3 hex), but `BLUE` is defined as yellow
     ("H2H player B"), `GOLD` is also yellow, `LABEL` = `MUTED`. Rename to intent.
-23. **Duplicate helpers:** `posColor`/`posColor2`, `sgColor`/`sgColor2`,
+23. **[fixed Oct 22, Jack's format.ts] Duplicate helpers:** `posColor`/`posColor2`, `sgColor`/`sgColor2`,
     `toParColor2`. One each, in `lib/`.
 24. **2,304-line file** with 20+ components; split by tab
     (`app/players/_components/…`) so each can be tested and reviewed.

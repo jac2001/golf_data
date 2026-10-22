@@ -8,7 +8,7 @@ import Link from "next/link";
 import { PlayerApproachSkill, PlayerCareer, PlayerDecompositions, PlayerProfile, PlayerSkillRatings, PlayerSynopsis, RoundStat, getOpenEvents, getPlayerCareer, getPlayerProfile, getPlayerSynopsis, getTournamentLeaderboard } from "@/lib/api";
 import { hasAny, presentFields, type FieldSpec } from "@/lib/presentFields";
 import { profileSections, type Section } from "@/lib/profileSections";
-import { AdjBar, BG, GOLD, BORDER, Chip, GREEN, MUTED, RED, TEXT, card, fmt, fmtMoney, fmtOdds, fmtPct, fmtSg, isMajor, normName, parseCourseHistory, parseRecentResults, posColor, posColor2, sectionLabel, sgColor, sgColor2, toParColor2, tint, Notice } from "./shared";
+import { AdjBar, BG, GOLD, BORDER, Chip, GREEN, MUTED, RED, TEXT, card, fmt, fmtMoney, fmtOdds, fmtPct, fmtSg, isMajor, normName, parseCourseHistory, parseRecentResults, posColor, sectionLabel, sgColor, toParColor, tint, Notice } from "./shared";
 import { FieldBrowser, PlayerSelect } from "./PlayerPicker";
 import styles from "./players.module.css";
 
@@ -384,7 +384,7 @@ function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlig
             const isPick = normName(r.player_name) === highlightKey;
             return (
               <tr key={i}>
-                <td style={{ ...tdS(isPick, i), fontWeight: 700, color: posColor2(r.position), borderLeft: isPick ? "2px solid var(--bc-green)" : undefined }}>
+                <td style={{ ...tdS(isPick, i), fontWeight: 700, color: posColor(r.position, TEXT), borderLeft: isPick ? "2px solid var(--bc-green)" : undefined }}>
                   {r.position}
                 </td>
                 <td style={{ ...tdS(isPick, i), whiteSpace: "nowrap" }}>
@@ -398,7 +398,7 @@ function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlig
                 <td style={{ ...tdS(isPick, i), textAlign: "center", color: MUTED }}>{r.r2 ?? "—"}</td>
                 <td style={{ ...tdS(isPick, i), textAlign: "center", color: MUTED }}>{r.r3 ?? "—"}</td>
                 <td style={{ ...tdS(isPick, i), textAlign: "center", color: MUTED }}>{r.r4 ?? "—"}</td>
-                <td style={{ ...tdS(isPick, i), textAlign: "center", fontWeight: 600, color: toParColor2(r.to_par) }}>
+                <td style={{ ...tdS(isPick, i), textAlign: "center", fontWeight: 600, color: toParColor(r.to_par) }}>
                   {r.to_par || "—"}
                 </td>
                 {hasSg && (
@@ -532,13 +532,13 @@ function CareerCard({ playerName }: { playerName: string }) {
                   <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>
                     {y.avg_scoring != null ? y.avg_scoring.toFixed(1) : "—"}
                   </td>
-                  <td style={{ ...tdBase(i), textAlign: "center", fontWeight: 600, color: sgColor2(y.avg_sg_total) }}>
+                  <td style={{ ...tdBase(i), textAlign: "center", fontWeight: 600, color: sgColor(y.avg_sg_total) }}>
                     {fmtSg(y.avg_sg_total)}
                   </td>
-                  <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(y.avg_sg_ott) }}>{fmtSg(y.avg_sg_ott)}</td>
-                  <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(y.avg_sg_app) }}>{fmtSg(y.avg_sg_app)}</td>
-                  <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(y.avg_sg_arg) }}>{fmtSg(y.avg_sg_arg)}</td>
-                  <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(y.avg_sg_putt) }}>{fmtSg(y.avg_sg_putt)}</td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: sgColor(y.avg_sg_ott) }}>{fmtSg(y.avg_sg_ott)}</td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: sgColor(y.avg_sg_app) }}>{fmtSg(y.avg_sg_app)}</td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: sgColor(y.avg_sg_arg) }}>{fmtSg(y.avg_sg_arg)}</td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: sgColor(y.avg_sg_putt) }}>{fmtSg(y.avg_sg_putt)}</td>
                   <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>
                     {y.avg_driving_dist != null ? y.avg_driving_dist.toFixed(0) : "—"}
                   </td>
@@ -608,23 +608,23 @@ function CareerCard({ playerName }: { playerName: string }) {
                         </span>
                       </td>
                       <td style={{ ...tdBase(i), color: MUTED }}>{r.year}</td>
-                      <td style={{ ...tdBase(i), textAlign: "center", fontWeight: 700, color: posColor2(r.position) }}>
+                      <td style={{ ...tdBase(i), textAlign: "center", fontWeight: 700, color: posColor(r.position, TEXT) }}>
                         {r.position}
                       </td>
-                      <td style={{ ...tdBase(i), textAlign: "center", fontWeight: 600, color: toParColor2(r.to_par) }}>
+                      <td style={{ ...tdBase(i), textAlign: "center", fontWeight: 600, color: toParColor(r.to_par) }}>
                         {r.to_par ?? "—"}
                       </td>
                       <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>{r.r1 ?? "—"}</td>
                       <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>{r.r2 ?? "—"}</td>
                       <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>{r.r3 ?? "—"}</td>
                       <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>{r.r4 ?? "—"}</td>
-                      <td style={{ ...tdBase(i), textAlign: "center", fontWeight: 600, color: sgColor2(r.sg_total) }}>
+                      <td style={{ ...tdBase(i), textAlign: "center", fontWeight: 600, color: sgColor(r.sg_total) }}>
                         {fmtSg(r.sg_total)}
                       </td>
-                      <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(r.sg_ott) }}>{fmtSg(r.sg_ott)}</td>
-                      <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(r.sg_app) }}>{fmtSg(r.sg_app)}</td>
-                      <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(r.sg_arg) }}>{fmtSg(r.sg_arg)}</td>
-                      <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(r.sg_putt) }}>{fmtSg(r.sg_putt)}</td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: sgColor(r.sg_ott) }}>{fmtSg(r.sg_ott)}</td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: sgColor(r.sg_app) }}>{fmtSg(r.sg_app)}</td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: sgColor(r.sg_arg) }}>{fmtSg(r.sg_arg)}</td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: sgColor(r.sg_putt) }}>{fmtSg(r.sg_putt)}</td>
                       <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>
                         {r.driving_dist != null ? r.driving_dist.toFixed(0) : "—"}
                       </td>

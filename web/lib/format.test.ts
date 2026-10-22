@@ -6,12 +6,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { MISSING, finishNumber, fmtMoney, fmtOdds, fmtPct, fmtSigned } from "./format.ts";
 
-// TODO(Jack): delete this flag once all five pass.
-const TODO = { todo: "Jack: implement format.ts" };
-
 const BAD = [null, undefined, Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY];
 
-test("fmtSigned: sign, decimals, and no sign on zero", TODO, () => {
+test("fmtSigned: sign, decimals, and no sign on zero", () => {
   assert.equal(fmtSigned(0.3443), "+0.34");
   assert.equal(fmtSigned(-1.2), "-1.20");
   assert.equal(fmtSigned(1.277, 3), "+1.277");
@@ -20,7 +17,7 @@ test("fmtSigned: sign, decimals, and no sign on zero", TODO, () => {
   for (const b of BAD) assert.equal(fmtSigned(b), MISSING);
 });
 
-test("fmtPct: a fraction as a percent", TODO, () => {
+test("fmtPct: a fraction as a percent", () => {
   assert.equal(fmtPct(0.0605), "6.0%");        // 6.05 isn't exact in binary: toFixed gives 6.0, as This Week shows
   assert.equal(fmtPct(0.3377, 0), "34%");
   assert.equal(fmtPct(1), "100.0%");
@@ -28,7 +25,7 @@ test("fmtPct: a fraction as a percent", TODO, () => {
   for (const b of BAD) assert.equal(fmtPct(b), MISSING);
 });
 
-test("fmtOdds: American odds", TODO, () => {
+test("fmtOdds: American odds", () => {
   assert.equal(fmtOdds(1215), "+1215");
   assert.equal(fmtOdds(1214.6), "+1215");
   assert.equal(fmtOdds(-150), "-150");
@@ -36,7 +33,7 @@ test("fmtOdds: American odds", TODO, () => {
   for (const b of BAD) assert.equal(fmtOdds(b), MISSING);
 });
 
-test("fmtMoney: whole dollars from a number or text", TODO, () => {
+test("fmtMoney: whole dollars from a number or text", () => {
   assert.equal(fmtMoney(1440000), "$1,440,000");
   assert.equal(fmtMoney(534000.4), "$534,000");
   assert.equal(fmtMoney("$1,440,000"), "$1,440,000");
@@ -47,7 +44,7 @@ test("fmtMoney: whole dollars from a number or text", TODO, () => {
   for (const b of BAD) assert.equal(fmtMoney(b), MISSING);
 });
 
-test("finishNumber: ties included, everything else null", TODO, () => {
+test("finishNumber: ties included, everything else null", () => {
   assert.equal(finishNumber("1"), 1);
   assert.equal(finishNumber("T5"), 5);
   assert.equal(finishNumber("t12"), 12);

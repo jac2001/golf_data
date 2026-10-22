@@ -8,6 +8,7 @@ import Link from "next/link";
 import { PlayerProfile, getPlayerProfile } from "@/lib/api";
 import { GOLD, BORDER, CARD_BG, GREEN, MUTED, TEXT, card, fmt, sectionLabel, tint, Notice } from "./shared";
 import { PlayerSelect } from "./PlayerPicker";
+import { MISSING, fmtSigned } from "@/lib/format";
 
 
 // ── Head-to-Head tab ─────────────────────────────────────────────────────────
@@ -187,13 +188,10 @@ function H2HSection({ label }: { label: string }) {
 
 
 function fmtH2H(v: number, fmt: string, prefix: string, suffix: string): string {
-  if (fmt.startsWith("+")) {
-    const dec = parseInt(fmt.slice(1).replace("f", "").replace(".", "")) || 2;
-    const decimals = fmt.includes(".") ? parseInt(fmt.split(".")[1]) : 0;
-    return `${prefix}${v >= 0 ? "+" : ""}${v.toFixed(decimals)}${suffix}`;
-  }
-  const decimals = fmt.includes(".") ? parseInt(fmt.split(".f")[0].split(".")[1]) : 0;
-  return `${prefix}${v.toFixed(decimals)}${suffix}`;
+  // fmt is "+.2f" (signed) or ".1f" (plain); the digit is the decimals.
+  const dp = Number(fmt.match(/\.(\d)/)?.[1] ?? 0);
+  const body = fmt.startsWith("+") ? fmtSigned(v, dp) : Number.isFinite(v) ? v.toFixed(dp) : MISSING;
+  return body === MISSING ? MISSING : `${prefix}${body}${suffix}`;
 }
 
 
@@ -221,8 +219,8 @@ function H2HRow({
     }
   }
 
-  const aStr = a != null ? fmtH2H(a, fmt, prefix, suffix) : "—";
-  const bStr = b != null ? fmtH2H(b, fmt, prefix, suffix) : "—";
+  const aStr = a != null ? fmtH2H(a, fmt, prefix, suffix) : MISSING;
+  const bStr = b != null ? fmtH2H(b, fmt, prefix, suffix) : MISSING;
 
   const aColor = aWins ? GREEN : bWins ? "var(--bc-muted)" : TEXT;
   const bColor = bWins ? GOLD  : aWins ? "var(--bc-muted)" : TEXT;

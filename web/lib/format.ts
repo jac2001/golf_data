@@ -35,27 +35,70 @@ export const MISSING = "—";
 //
 // Hint: write one isNum(v): v is number (typeof + Number.isFinite) and reuse it.
 
+function isNum(v: unknown): v is number {
+  return typeof v === "number" && Number.isFinite(v);
+
+}
+
+
 export function fmtSigned(v: number | null | undefined, dp = 2): string {
-  void v; void dp;
-  throw new Error("TODO(Jack): fmtSigned");
+  if (!isNum(v)) return MISSING;
+  const text = v.toFixed(dp);
+  const rounded = Number(text);
+  if (rounded === 0) return (0).toFixed(dp);
+  return rounded > 0 ? `+${text}` : text;
 }
 
 export function fmtPct(v: number | null | undefined, dp = 1): string {
-  void v; void dp;
-  throw new Error("TODO(Jack): fmtPct");
+  if (!isNum(v)) return MISSING;
+
+return `${(v * 100).toFixed(dp)}%`;
 }
 
 export function fmtOdds(v: number | null | undefined): string {
-  void v;
-  throw new Error("TODO(Jack): fmtOdds");
+  if (!isNum(v)) return MISSING;
+  const rounded = Math.round(v);
+  if (rounded === 0) return MISSING;
+  return rounded > 0 ? `+${rounded}` : String(rounded);
 }
 
 export function fmtMoney(v: number | string | null | undefined): string {
-  void v;
-  throw new Error("TODO(Jack): fmtMoney");
+  if (v == null) return MISSING;
+
+  let amount: number;
+
+  if (typeof v === "string") {
+    const text = v.trim();
+
+    if (!/^\$?-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(text)) {
+      return MISSING;
+    }
+
+    amount = Number(text.replace(/[$,]/g, ""));
+  } else {
+    amount = v;
+  }
+
+  if (!isNum(amount)) return MISSING;
+
+  return amount.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
 }
 
 export function finishNumber(pos: string | null | undefined): number | null {
-  void pos;
-  throw new Error("TODO(Jack): finishNumber");
+  const text = pos?.trim();
+
+if (!text) return null;
+
+const match = /^T?([1-9]\d*)$/i.exec(text);
+
+if (!match) return null;
+
+const finish = Number(match[1]);
+
+return Number.isSafeInteger(finish) ? finish : null;
 }

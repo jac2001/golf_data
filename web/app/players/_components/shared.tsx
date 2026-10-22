@@ -4,6 +4,7 @@
  *  Split out of app/players/page.tsx (Players audit #24, Oct 22). */
 
 import React from "react";
+import { MISSING, finishNumber, fmtSigned } from "@/lib/format";
 
 
 export const BG       = "var(--bc-bg)";
@@ -25,33 +26,22 @@ export const GOLD      = "var(--bc-yellow)";  // also H2H player B (it had a sec
 export const RED       = "var(--negative)";
 
 
+// Formatters are Jack's lib/format.ts (audit #23): one set, NaN-safe, no "-0.00".
+export { MISSING, fmtMoney, fmtOdds, fmtPct } from "@/lib/format";
+
+/** An unsigned number to `decimals` places; MISSING when not a number. */
 export function fmt(n: number | null | undefined, decimals = 1): string {
-  if (n == null) return "—";
-  return n.toFixed(decimals);
+  return typeof n === "number" && Number.isFinite(n) ? n.toFixed(decimals) : MISSING;
+}
+
+/** Strokes gained: "+0.34", "-1.20", "0.00". */
+export function fmtSg(v: number | null | undefined): string {
+  return fmtSigned(v, 2);
 }
 
 
-export function fmtPct(n: number | null | undefined, decimals = 1): string {
-  if (n == null) return "—";
-  return `${(n * 100).toFixed(decimals)}%`;
-}
-
-
-/** Real prize money from results: "$1,440,000"; "—" when missing. */
-export function fmtMoney(v: number | string | null | undefined): string {
-  const n = typeof v === "string" ? Number(v.replace(/[$,]/g, "")) : v;
-  return n != null && Number.isFinite(n) ? `$${Math.round(n).toLocaleString()}` : "—";
-}
-
-
-export function fmtOdds(n: number | null | undefined): string {
-  if (n == null) return "—";
-  return n >= 0 ? `+${Math.round(n)}` : String(Math.round(n));
-}
-
-
-export function sgColor(v: number | null): string {
-  if (v == null) return MUTED;
+export function sgColor(v: number | null | undefined): string {
+  if (typeof v !== "number" || !Number.isFinite(v)) return MUTED;
   return v >= 0 ? GREEN : RED;
 }
 
@@ -179,13 +169,15 @@ export function parseCourseHistory(raw: string | null): CourseHistory[] {
 }
 
 
-export function posColor(pos: string): string {
-  const n = parseInt(pos, 10);
-  if (isNaN(n)) return MUTED;
+/** Color for a finish: gold for a win, green top 5, gold top 10, `rest` after.
+ *  Ties count ("T5" colors like 5th); parseInt("T5") was NaN, so they never did. */
+export function posColor(pos: string | null | undefined, rest: string = MUTED): string {
+  const n = finishNumber(pos);
+  if (n == null) return MUTED;
   if (n === 1) return GOLD;
   if (n <= 5) return GREEN;
   if (n <= 10) return GOLD;
-  return MUTED;
+  return rest;
 }
 
 
@@ -205,29 +197,13 @@ export function rankColor(rank: number | null): string {
 
 // ── Career card ───────────────────────────────────────────────────────────────
 
-export function posColor2(pos: string): string {
-  const n = parseInt(pos, 10);
-  if (isNaN(n)) return MUTED;
-  if (n === 1) return GOLD;
-  if (n <= 5)  return GREEN;
-  if (n <= 10) return GOLD;
-  return TEXT;
-}
 
 
-export function sgColor2(v: number | null): string {
-  if (v == null) return MUTED;
-  return v >= 0 ? GREEN : RED;
-}
 
 
-export function fmtSg(v: number | null): string {
-  if (v == null) return "—";
-  return `${v >= 0 ? "+" : ""}${v.toFixed(2)}`;
-}
 
 
-export function toParColor2(v: string | null): string {
+export function toParColor(v: string | null): string {
   if (!v) return MUTED;
   if (v.startsWith("-")) return GREEN;
   if (v === "0" || v === "E") return MUTED;
