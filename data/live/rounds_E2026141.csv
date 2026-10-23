@@ -1,127 +1,127 @@
 player_name,current_pos,current_score,R1,R2,R3,R4,thru,today
-"Jarvis, Casey",1,-10,65,67.0,,,18,-4
-"Rozner, Antoine",T2,-7,67,,,,10,-3
-"Kim, Si Woo",T5,-6,67,69.0,,,18,-2
-"Couvra, Martin",T2,-7,69,66.0,,,18,-5
-"Chacarra, Eugenio",T12,-3,72,,,,9,-4
-"Shin, Sanghun",T2,-7,66,69.0,,,18,-2
-"Fox, Ryan",T9,-4,68,,,,9,-1
-"Kinhult, Marcus",T7,-5,68,,,,6,-2
-"LaCroix, Frederic",T5,-6,67,69.0,,,18,-2
-"Hillier, Daniel",T19,-2,72,,,,9,-3
-"Celli, Filippo",T9,-4,69,,,,9,-2
-"Lindberg, Mikael",T12,-3,67,,,,8,1
-"Del Rey, Alejandro",T12,-3,71,,,,7,-3
-"Im, Sungjae",T39,0,71,,,,9,0
-"Hoshino, Rikuya",T7,-5,70,67.0,,,18,-4
-"Katsuragawa, Yuto",T19,-2,69,,,,5,0
-"Mun, Doyeob",T12,-3,71,,,,10,-3
-"Olesen, Jacob Skov",T39,0,73,,,,9,-2
-"Otaegui, Adrian",T32,-1,70,,,,7,0
-"Campillo, Jorge",T9,-4,73,65.0,,,18,-6
-"Lee, Sang-hee",T12,-3,72,67.0,,,18,-4
-"Bradbury, Dan",T12,-3,68,71.0,,,18,0
-"Lee, Daihan",T12,-3,69,,,,8,-1
-"Hidalgo, Angel",T19,-2,71,69.0,,,18,-2
-"Laporta, Francesco",T39,0,70,,,,7,1
-"Bairstow, Sam",T39,0,69,,,,7,2
-"Veerman, Johannes",T32,-1,70,,,,10,0
-"Bae, Yongjun",T19,-2,72,,,,12,-3
-"Halvorsen, Andreas",T39,0,71,,,,5,0
-"Detry, Thomas",T32,-1,70,71.0,,,18,0
-"Elvira Mijares, Ignacio",T39,0,71,,,,8,0
-"Vidal, Quim",T32,-1,70,,,,5,0
-"Coussaud, Ugo",T19,-2,71,69.0,,,18,-2
-"Lemke, Niklas",T19,-2,67,73.0,,,18,2
-"Kaneko, Kota",T39,0,72,,,,10,-1
-"Guillamoundeguy, Oihan",T32,-1,70,71.0,,,18,0
-"Robinson Thompson, Brandon",T19,-2,71,69.0,,,18,-2
-"Rodrigues, Daniel",T19,-2,73,67.0,,,18,-4
-"Bergstrom, Albin",T32,-1,70,,,,12,0
-"Senior, Jack",T19,-2,69,71.0,,,18,0
-"Lee, Sangyeop",T19,-2,69,,,,5,0
-"Van Driel, Darius",T39,0,74,,,,9,-3
-"Johnston, Ryggs",T19,-2,68,,,,8,1
-"Eom, Jaewoong",T19,-2,70,,,,5,-1
-"De Leo, Gregorio",T39,0,71,71.0,,,18,0
-"Manassero, Matteo",T39,0,72,,,,12,-1
-"Jung, Jaehyun",T39,0,71,,,,7,0
-"Crocker, Sean",T58,1,72,,,,7,0
-"Ding, Wenyi",T58,1,74,,,,6,-2
-"Kruyswijk, Jacques",T58,1,70,,,,8,2
-"Morrison, James",T19,-2,72,68.0,,,18,-3
-"Cantero Gutierrez, Ivan",T58,1,73,,,,8,-1
-"Cho, Wooyoung",T32,-1,71,70.0,,,18,-1
-"Kobori, Kazuma",T39,0,72,70.0,,,18,-1
-"Park, Ilhwan",T39,0,72,,,,11,-1
-"Wu, Ashun",T39,0,71,71.0,,,18,0
-"Townsend, Hugo",T39,0,71,,,,11,0
-"Sterne, Richard",T39,0,70,72.0,,,18,1
-"Kimsey, Nathan",T58,1,75,68.0,,,18,-3
-"Jang, Yubin",T72,2,72,,,,10,1
-"Premlall, Yurav",T39,0,71,71.0,,,18,0
-"Girrbach, Joel",T58,1,71,72.0,,,18,1
-"Steinlechner, Maximilian",T58,1,70,73.0,,,18,2
-"Jamieson, Scott",T58,1,72,,,,10,0
-"Kim, Woohyun",T58,1,73,,,,5,-1
-"Sharma, Shubhankar",T58,1,72,,,,5,0
-"Walker, Euan",T72,2,74,,,,11,-1
-"Paratore, Renato",T39,0,71,71.0,,,18,0
-"Scrivener, Jason",T90,4,76,,,,6,-1
-"Choi, Seungbin",T72,2,71,73.0,,,18,2
-"Park, Eunshin",T72,2,73,,,,7,0
-"Moon, Donghyun",T80,3,75,,,,12,-1
-"Law, David",T80,3,75,,,,7,-1
-"Williams, Robin",T39,0,69,73.0,,,18,2
-"Jung, Chanmin",T80,3,75,,,,9,-1
-"Jung, Hanmil",T90,4,76,,,,5,-1
-"Park, Junghun",T58,1,72,,,,7,0
-"Kim, Chanwoo",T80,3,72,73.0,,,18,2
-"Ayora, Angel",T72,2,73,71.0,,,18,0
-"Song, Minhyuk",T117,9,72,79.0,,,18,8
-"Dantorp, Jens",T119,10,73,79.0,,,18,8
-"Norris, Shaun",T119,10,78,,,,10,3
-"Larrazabal, Pablo",T90,4,73,73.0,,,18,2
-"Park, Sungkug",T119,10,77,75.0,,,18,4
-"Kim, Hongtaek",T90,4,74,72.0,,,18,1
-"Zhou, Yanhan",T72,2,73,71.0,,,18,0
-"Lee, K.H.",T58,1,74,69.0,,,18,-2
-"Repetto Taylor, Rocco",T58,1,71,72.0,,,18,1
-"Kewalramani, Brandon",T72,2,73,71.0,,,18,0
-"Aphibarnrat, Kiradech",WD,9,75,,,,0,0
-"Wang, Jeunghun",T72,2,74,70.0,,,18,-1
-"Choi, Chan",T80,3,77,,,,8,-3
-"Mazzoli, Stefano",T80,3,72,73.0,,,18,2
-"Gouveia, Ricardo",T80,3,73,,,,9,1
-"Jonsson, Tobias",T90,4,74,,,,5,1
-"Fisher, Ross",T90,4,71,75.0,,,18,4
-"Von Dellingshausen, Nicolai",T80,3,73,72.0,,,18,1
-"Lee, Soomin",T80,3,71,,,,9,3
-"Lee, Junghwan",T80,3,72,73.0,,,18,2
-"Ko, Jeong Weon",T117,9,74,77.0,,,18,6
-"Mory, Felix",WD,8,79,,,,0,0
-"Lagergren, Joakim",T90,4,72,74.0,,,18,3
-"Gumberg, Jordan",T106,6,74,74.0,,,18,3
-"Micheluzzi, David",T90,4,74,,,,6,1
-"Ok, Taehoon",T90,4,76,70.0,,,18,-1
-"Adam, Cameron",T99,5,76,71.0,,,18,0
-"Cho, Min-gyu",T99,5,75,,,,6,1
-"Choi, Jinho",T99,5,75,,,,7,1
-"Naidoo, Dylan",T99,5,74,,,,8,2
-"Schmidt, Ben",T99,5,70,77.0,,,18,6
-"Soderberg, Sebastian",T99,5,76,,,,10,0
-"Young, Daniel",T99,5,74,73.0,,,18,2
-"Garcia Rodriguez, Sebastian",T106,6,77,71.0,,,18,0
-"Jung, Teayang",T106,6,76,,,,7,1
-"Kim, Minjun",WD,8,79,,,,0,0
-"Lombard, Zander",T109,7,75,,,,5,3
-"Smylie, Elvis",T109,7,78,,,,5,0
-"Choi, Minchel",122,11,77,76.0,,,18,5
-"Yang, Jiho",T109,7,73,76.0,,,18,5
-"Hur, In-hoi",T58,1,73,,,,5,-1
-"Cabrera Bello, Rafa",T112,8,75,,,,10,4
-"Elvira, Manuel",T112,8,78,,,,6,1
-"Lee, Hyungjoon",T112,8,74,76.0,,,18,5
-"Oh, Seungtaek",T112,8,79,,,,7,0
-"Ravetto, David",T112,8,76,74.0,,,18,3
+"Jarvis, Casey",T1,-10,65,67.0,,,18,-4
+"Rozner, Antoine",T1,-10,67,65.0,,,18,-6
+"Kim, Si Woo",T7,-6,67,69.0,,,18,-2
+"Fox, Ryan",T3,-7,68,67.0,,,18,-4
+"Couvra, Martin",T3,-7,69,66.0,,,18,-5
+"Shin, Sanghun",T3,-7,66,69.0,,,18,-2
+"Celli, Filippo",T3,-7,69,66.0,,,18,-5
+"Chacarra, Eugenio",T14,-4,72,66.0,,,18,-5
+"LaCroix, Frederic",T7,-6,67,69.0,,,18,-2
+"Katsuragawa, Yuto",T10,-5,69,68.0,,,18,-3
+"Kinhult, Marcus",T10,-5,68,69.0,,,18,-2
+"Lee, Daihan",T7,-6,69,67.0,,,18,-4
+"Bae, Yongjun",T10,-5,72,65.0,,,18,-6
+"Otaegui, Adrian",T14,-4,70,68.0,,,18,-3
+"Laporta, Francesco",T20,-3,70,69.0,,,18,-2
+"Veerman, Johannes",T14,-4,70,68.0,,,18,-3
+"Hoshino, Rikuya",T10,-5,70,67.0,,,18,-4
+"Hillier, Daniel",T26,-2,72,68.0,,,18,-3
+"Park, Eunshin",T14,-4,73,65.0,,,18,-6
+"Del Rey, Alejandro",T20,-3,71,68.0,,,18,-3
+"Mun, Doyeob",T14,-4,71,67.0,,,18,-4
+"Lee, Sang-hee",T20,-3,72,67.0,,,18,-4
+"Campillo, Jorge",T14,-4,73,65.0,,,18,-6
+"Bradbury, Dan",T20,-3,68,71.0,,,18,0
+"Hidalgo, Angel",T26,-2,71,69.0,,,18,-2
+"Olesen, Jacob Skov",T39,-1,73,68.0,,,18,-3
+"Bairstow, Sam",T26,-2,69,71.0,,,18,0
+"Coussaud, Ugo",T26,-2,71,69.0,,,18,-2
+"Detry, Thomas",T39,-1,70,71.0,,,18,0
+"Robinson Thompson, Brandon",T26,-2,71,69.0,,,18,-2
+"Lemke, Niklas",T26,-2,67,73.0,,,18,2
+"Im, Sungjae",T57,1,71,72.0,,,18,1
+"Rodrigues, Daniel",T26,-2,73,67.0,,,18,-4
+"Jang, Yubin",T26,-2,72,68.0,,,18,-3
+"Guillamoundeguy, Oihan",T39,-1,70,71.0,,,18,0
+"Lee, Sangyeop",T20,-3,69,70.0,,,18,-1
+"Vidal, Quim",T26,-2,70,70.0,,,18,-1
+"Eom, Jaewoong",T20,-3,70,69.0,,,18,-2
+"Jamieson, Scott",T39,-1,72,69.0,,,18,-2
+"De Leo, Gregorio",T47,0,71,71.0,,,18,0
+"Ding, Wenyi",T39,-1,74,67.0,,,18,-4
+"Senior, Jack",T26,-2,69,71.0,,,18,0
+"Morrison, James",T26,-2,72,68.0,,,18,-3
+"Sharma, Shubhankar",T26,-2,72,68.0,,,18,-3
+"Elvira Mijares, Ignacio",T47,0,71,71.0,,,18,0
+"Kobori, Kazuma",T47,0,72,70.0,,,18,-1
+"Park, Ilhwan",T26,-2,72,68.0,,,18,-3
+"Cho, Wooyoung",T39,-1,71,70.0,,,18,-1
+"Girrbach, Joel",T57,1,71,72.0,,,18,1
+"Kimsey, Nathan",T57,1,75,68.0,,,18,-3
+"Van Driel, Darius",T47,0,74,68.0,,,18,-3
+"Wu, Ashun",T47,0,71,71.0,,,18,0
+"Crocker, Sean",T57,1,72,71.0,,,18,0
+"Jung, Jaehyun",T47,0,71,71.0,,,18,0
+"Cantero Gutierrez, Ivan",T57,1,73,70.0,,,18,-1
+"Halvorsen, Andreas",T57,1,71,72.0,,,18,1
+"Sterne, Richard",T47,0,70,72.0,,,18,1
+"Kaneko, Kota",T57,1,72,71.0,,,18,0
+"Lee, Soomin",T39,-1,71,70.0,,,18,-1
+"Johnston, Ryggs",T39,-1,68,73.0,,,18,2
+"Repetto Taylor, Rocco",T57,1,71,72.0,,,18,1
+"Steinlechner, Maximilian",T57,1,70,73.0,,,18,2
+"Premlall, Yurav",T47,0,71,71.0,,,18,0
+"Paratore, Renato",T47,0,71,71.0,,,18,0
+"Williams, Robin",T47,0,69,73.0,,,18,2
+"Lee, K.H.",T57,1,74,69.0,,,18,-2
+"Manassero, Matteo",T57,1,72,71.0,,,18,0
 "Siem, Marcel",WD,11,82,,,,0,0
+"Gouveia, Ricardo",T80,3,73,72.0,,,18,1
+"Naidoo, Dylan",T80,3,74,71.0,,,18,0
+"Choi, Minchel",T120,11,77,76.0,,,18,5
+"Oh, Seungtaek",T120,11,79,74.0,,,18,3
+"Kim, Hongtaek",T88,4,74,72.0,,,18,1
+"Jung, Chanmin",T71,2,75,69.0,,,18,-2
+"Bergstrom, Albin",T57,1,70,73.0,,,18,2
+"Townsend, Hugo",T57,1,71,72.0,,,18,1
+"Park, Junghun",T57,1,72,71.0,,,18,0
+"Law, David",T71,2,75,69.0,,,18,-2
+"Wang, Jeunghun",T71,2,74,70.0,,,18,-1
+"Walker, Euan",T71,2,74,70.0,,,18,-1
+"Ayora, Angel",T71,2,73,71.0,,,18,0
+"Kewalramani, Brandon",T71,2,73,71.0,,,18,0
+"Zhou, Yanhan",T71,2,73,71.0,,,18,0
+"Choi, Seungbin",T71,2,71,73.0,,,18,2
+"Kim, Woohyun",T71,2,73,71.0,,,18,0
+"Hur, In-hoi",T80,3,73,72.0,,,18,1
+"Kim, Chanwoo",T80,3,72,73.0,,,18,2
+"Lee, Junghwan",T80,3,72,73.0,,,18,2
+"Micheluzzi, David",T88,4,74,72.0,,,18,1
+"Soderberg, Sebastian",T88,4,76,70.0,,,18,-1
+"Lagergren, Joakim",T88,4,72,74.0,,,18,3
+"Fisher, Ross",T88,4,71,75.0,,,18,4
+"Larrazabal, Pablo",T88,4,73,73.0,,,18,2
+"Von Dellingshausen, Nicolai",T80,3,73,72.0,,,18,1
+"Lindberg, Mikael",T80,3,67,78.0,,,18,7
+"Mazzoli, Stefano",T80,3,72,73.0,,,18,2
+"Jung, Hanmil",T88,4,76,70.0,,,18,-1
+"Jung, Teayang",T116,10,76,76.0,,,18,5
+"Ok, Taehoon",T88,4,76,70.0,,,18,-1
+"Elvira, Manuel",T116,10,78,74.0,,,18,3
+"Moon, Donghyun",T88,4,75,71.0,,,18,0
+"Choi, Jinho",T97,5,75,72.0,,,18,1
+"Young, Daniel",T97,5,74,73.0,,,18,2
+"Schmidt, Ben",T97,5,70,77.0,,,18,6
+"Smylie, Elvis",T97,5,78,69.0,,,18,-2
+"Adam, Cameron",T97,5,76,71.0,,,18,0
+"Choi, Chan",T97,5,77,70.0,,,18,-1
+"Cabrera Bello, Rafa",T103,6,75,73.0,,,18,2
+"Garcia Rodriguez, Sebastian",T103,6,77,71.0,,,18,0
+"Scrivener, Jason",T103,6,76,72.0,,,18,1
+"Gumberg, Jordan",T103,6,74,74.0,,,18,3
+"Yang, Jiho",T107,7,73,76.0,,,18,5
+"Lombard, Zander",T107,7,75,74.0,,,18,3
+"Cho, Min-gyu",T109,8,75,75.0,,,18,4
+"Lee, Hyungjoon",T109,8,74,76.0,,,18,5
+"Ravetto, David",T109,8,76,74.0,,,18,3
+"Jonsson, Tobias",T109,8,74,76.0,,,18,5
+"Mory, Felix",WD,8,79,,,,0,0
+"Kim, Minjun",WD,8,79,,,,0,0
+"Aphibarnrat, Kiradech",WD,9,75,,,,0,0
+"Kruyswijk, Jacques",T113,9,70,81.0,,,18,10
+"Ko, Jeong Weon",T113,9,74,77.0,,,18,6
+"Song, Minhyuk",T113,9,72,79.0,,,18,8
+"Dantorp, Jens",T116,10,73,79.0,,,18,8
+"Park, Sungkug",T116,10,77,75.0,,,18,4
+"Norris, Shaun",122,12,78,76.0,,,18,5
