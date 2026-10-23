@@ -149,11 +149,11 @@ function H2HView({ p1, p2, live }: { p1: PlayerProfile; p2: PlayerProfile; live:
 
       {/* Header cards (stacked on phones) */}
       <div className={styles.h2hCards} style={{ display: "grid", gridTemplateColumns: "1fr 48px 1fr", gap: 0, marginBottom: 20, alignItems: "stretch" }}>
-        <H2HHeaderCard profile={p1} accent={GREEN} />
+        <H2HHeaderCard profile={p1} accent={GREEN} before={!!liveWin} />
         <div className={styles.h2hVs} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
           <span style={{ fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 900, color: "var(--bc-line)" }}>VS</span>
         </div>
-        <H2HHeaderCard profile={p2} accent={GOLD} />
+        <H2HHeaderCard profile={p2} accent={GOLD} before={!!liveWin} />
       </div>
 
       {/* Every number, one tap away. */}
@@ -204,7 +204,7 @@ function H2HView({ p1, p2, live }: { p1: PlayerProfile; p2: PlayerProfile; live:
 }
 
 
-function H2HHeaderCard({ profile, accent }: { profile: PlayerProfile; accent: string }) {
+function H2HHeaderCard({ profile, accent, before = false }: { profile: PlayerProfile; accent: string; before?: boolean }) {
   const m = profile.our_model;
   const isGreen = accent === GREEN;
   return (
@@ -236,6 +236,8 @@ function H2HHeaderCard({ profile, accent }: { profile: PlayerProfile; accent: st
           </div>
         ))}
       </div>
+      {/* During play the verdict above uses live chances; these are Tuesday's. */}
+      {before && <div style={{ fontSize: "max(var(--fs-min-xs), 0.7em)", color: MUTED, marginBottom: 6 }}>Before the week</div>}
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
         {m.odds_to_win != null && (
           <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: MUTED }}>

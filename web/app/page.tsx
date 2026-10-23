@@ -10,7 +10,8 @@
 import React, { useEffect, useState } from "react";
 import { useStoredChoice } from "@/lib/useStoredChoice";
 import Link from "next/link";
-import { getHome, HomeData } from "@/lib/api";
+import { getHome, getInPlay, HomeData, InPlayResponse } from "@/lib/api";
+import { finishNumber } from "@/lib/format";
 import { Show } from "@clerk/nextjs";
 import { Panel, SectionTag, StatStrip, pct, textLink } from "@/components/broadcast";
 import LiveMatchCard from "@/components/LiveMatchCard";
@@ -42,10 +43,33 @@ export default function Home() {
 
   useEffect(() => { getHome(tour).then(setData).catch(e => setErr(String(e))); }, [tour]);
 
+  // During play the hero and board show the live leaders (PGA live board),
+  // not Tuesday's chances. Only this hero event's board counts (rule 1).
+  const [board, setBoard] = useState<InPlayResponse | null>(null);
+  const heroTid = data?.hero?.is_live && tour === "pga" ? data.hero.tid : null;
+  useEffect(() => {
+    if (!heroTid) { setBoard(null); return; }
+    let cancelled = false;
+    getInPlay().then(d => {
+      if (!cancelled) setBoard(d.tournament_id?.toUpperCase() === heroTid.toUpperCase() && d.players?.length ? d : null);
+    }).catch(() => { if (!cancelled) setBoard(null); });
+    return () => { cancelled = true; };
+  }, [heroTid]);
+
   if (err)   return <div style={{ color: "var(--bc-red)", padding: 24 }}>Failed to load: {err}</div>;
   if (!data) return <div style={{ color: "var(--bc-muted)", padding: 24 }}>Loading…</div>;
 
   const h = data.hero;
+  const toPar = (v: number | null) => v == null ? "" : v === 0 ? "E" : v > 0 ? `+${v}` : `−${Math.abs(v)}`;
+  const leaders = board
+    ? [...board.players].filter(p => finishNumber(p.position) != null)
+        .sort((a, b) => (finishNumber(a.position) ?? 999) - (finishNumber(b.position) ?? 999)).slice(0, 3)
+    : [];
+  const leadGroup = leaders.filter(p => finishNumber(p.position) === 1);
+  const surname = (n: string) => n.trim().split(/\s+/).slice(-1)[0];
+  const leadLine = leadGroup.length && board
+    ? `${leadGroup.length > 2 ? `${leadGroup.length} players` : leadGroup.map(p => surname(p.player_name)).join(" and ")} ${leadGroup.length > 1 ? "lead" : "leads"} at ${toPar(leadGroup[0].total_numeric)}${board.current_round ? ` · Round ${board.current_round}` : ""}.`
+    : null;
   const matchupBanner = (
     <div style={{ marginTop: 24, padding: "18px 22px", borderRadius: 10,
       background: "var(--bc-card)", border: "1px solid var(--bc-line)",
@@ -139,9 +163,9 @@ export default function Home() {
         <div style={{ flex: "1 1 320px", minWidth: 0, display: "flex", flexDirection: "column", gap: 14 }}>
           <div style={{ fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, letterSpacing: "0.16em",
                         textTransform: "uppercase", color: h?.is_live ? "var(--bc-green)" : "var(--bc-muted)" }}>
-            {h ? (h.is_live ? "This week on tour · live" : "This week on tour") : "Offseason"}
+            {h ? (h.is_live ? "Live now" : "This week on tour") : "Offseason"}
             {h && ` · ${fmtDates(h.start_date, h.end_date)}`}
-            {h?.course && ` · ${h.course}`}
+            {h?.course && !h.is_live && ` · ${h.course}`}
           </div>
           <h2 style={{ margin: 0, fontWeight: 900, fontStretch: "115%",
                        fontSize: "clamp(1.4em, 4.5vw, 2.4em)", lineHeight: 1.02, textTransform: "uppercase",
@@ -151,7 +175,7 @@ export default function Home() {
           <div style={{ fontSize: "1em", lineHeight: 1.55, color: "var(--bc-muted)",
                         maxWidth: 560, textWrap: "pretty" as never }}>
             {h?.is_live
-              ? "Rounds in progress — live board, model vs reality, and your lineup tracker are running."
+              ? (leadLine ?? `Rounds in progress at ${h.course || h.location}.`)
               : h
                 ? h.start_date === data.season_start
                   ? `The season opener at ${h.course || h.location}. Predictions go live the Tuesday of tournament week.`
@@ -170,7 +194,37 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Model board */}
+        {/* Live leaders during play; otherwise the model board. */}
+        {leaders.length > 0 ? (
+        <Panel style={{ flex: "1 1 340px", maxWidth: 520, minWidth: 0 }}>
+          <SectionTag>Leaders · live</SectionTag>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {leaders.map(p => (
+              <div key={p.player_name} style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                <div style={{ fontWeight: 900, fontSize: "1.1em", color: "var(--bc-muted)", width: 34 }}>{p.position}</div>
+                <div style={{ flexGrow: 1, minWidth: 0 }}>
+                  <div style={{ fontWeight: 700 }}>{p.player_name}</div>
+                  <div style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" }}>
+                    {toPar(p.total_numeric)}{p.today != null ? ` · today ${toPar(p.today)}` : ""}
+                    {p.thru && p.thru !== "18" && p.thru !== "F" && p.thru !== "0" ? ` · thru ${p.thru}` : ""}
+                  </div>
+                </div>
+                {p.win_prob != null && (
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontWeight: 900, fontSize: "1.15em" }}>{p.win_prob.toFixed(0)}%</div>
+                    <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)" }}>win chance</div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+          <div style={{ borderTop: "1px solid var(--bc-card)", marginTop: 16, paddingTop: 12,
+                        fontSize: "max(var(--fs-min), 0.76em)", color: "var(--bc-muted)" }}>
+            Live chances from DataGolf ·{" "}
+            <Link href="/live" style={{ color: "var(--bc-green)" }}>live board →</Link>
+          </div>
+        </Panel>
+        ) : (
         <Panel style={{ flex: "1 1 340px", maxWidth: 520, minWidth: 0 }}>
           <SectionTag>
             {data.board_is_hero ? "Who the model likes" : `Last time out · ${data.board_event ?? ""}`}
@@ -213,6 +267,7 @@ export default function Home() {
             <Link href="/predictions" style={{ color: "var(--bc-green)" }}>full field →</Link>
           </div>
         </Panel>
+        )}
       </div>
 
       {/* ── Storylines ───────────────────────────────────────────────────── */}
