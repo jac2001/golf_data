@@ -59,6 +59,47 @@ export function bestEvents(
   usesLeft: number,
   show = 3,
 ): BestEvents {
-  void thisWeek; void nowEv; void future; void usesLeft; void show;
-  throw new Error("TODO(Jack): bestEvents");
+  const current: EventValue = {
+    ...thisWeek,
+    ev: nowEv,
+    thisWeek: true,
+  };
+  const all: EventValue[] = [
+    current,
+    ...future.map(event => ({
+      tid: event.tid,
+      name: event.name,
+      ev: event.ev,
+      thisWeek: false,
+    })),
+  ];
+  all.sort((a, b) => b.ev - a.ev);
+  const rank = all.findIndex(event => event.thisWeek) + 1;
+  const events = all.slice(0, show);
+  if (!events.some(event => event.thisWeek)) {
+    events.push(current);
+  }
+
+  let fit: BestEvents['fit'];
+  let tag: string;
+
+  if (usesLeft <= 0) {
+    fit = 'spent';
+    tag = "No uses left";
+  } else if (rank === 1) {
+    fit = "best";
+    tag = "Best week for him";
+  } else if (rank <= usesLeft) {
+    fit = "top";
+    tag = `One of his ${usesLeft} best`;
+  } else {
+    const futureRanked = all.filter(event => !event.thisWeek);
+    const displaced = futureRanked[usesLeft - 1];
+
+    fit = "later";
+    tag = `Better at ${displaced.name} (${k(displaced.ev)})`;
+  }
+  return { events, rank, fit, tag };
+  
+
 }

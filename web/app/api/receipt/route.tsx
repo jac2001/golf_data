@@ -17,13 +17,7 @@ import { openEventLocks } from "@/lib/eventLocks";
 
 export const runtime = "nodejs";
 
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
-
-/** The brand badge for share images, read once (assets/brand, traced into the function). */
-let badgeUrl: Promise<string> | null = null;
-const badge = () => (badgeUrl ??= readFile(join(process.cwd(), "assets/brand/badge.png"))
-  .then(b => `data:image/png;base64,${b.toString("base64")}`).catch(() => ""));
+import { brandBadge as badge, brandFonts } from "@/lib/brandAssets";
 
 
 const BG = "#0c2a1c", PANEL = "#081f14", CARD = "#0f3322", LINE = "#1e4a33";
@@ -185,7 +179,7 @@ export async function GET(req: Request) {
   }
   const isModel = uid === "model";
 
-  const logo = await badge();
+  const [logo, fonts] = await Promise.all([badge(), brandFonts()]);
   return new ImageResponse(
     (
       <div style={{
@@ -193,7 +187,7 @@ export async function GET(req: Request) {
         background: BG, color: TEXT, fontFamily: "sans-serif", padding: 48,
       }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 34, fontWeight: 900, letterSpacing: 2 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 34, letterSpacing: 2, fontFamily: "Archivo Black" }}>
             {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
             {logo && <img src={logo} width={48} height={48} />}
             GOLF EDGE
@@ -247,6 +241,6 @@ export async function GET(req: Request) {
         </div>
       </div>
     ),
-    { width: 1000, height: 560 },
+    { fonts, width: 1000, height: 560 },
   );
 }

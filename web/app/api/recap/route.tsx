@@ -27,13 +27,7 @@ import { resolvePick, UNRESOLVED_POS } from "@/lib/resultLookup";
 
 export const runtime = "nodejs";
 
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
-
-/** The brand badge for share images, read once (assets/brand, traced into the function). */
-let badgeUrl: Promise<string> | null = null;
-const badge = () => (badgeUrl ??= readFile(join(process.cwd(), "assets/brand/badge.png"))
-  .then(b => `data:image/png;base64,${b.toString("base64")}`).catch(() => ""));
+import { brandBadge as badge, brandFonts } from "@/lib/brandAssets";
 
 
 const BG = "#0c2a1c", CARD = "#0f3322", LINE = "#1e4a33";
@@ -195,7 +189,7 @@ export async function GET(req: Request) {
     </svg>
   );
 
-  const logo = await badge();
+  const [logo, fonts] = await Promise.all([badge(), brandFonts()]);
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column",
@@ -205,15 +199,15 @@ export async function GET(req: Request) {
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
             {logo && <img src={logo} width={40} height={40} />}
-            <div style={{ display: "flex", fontSize: 26, fontWeight: 900, letterSpacing: 1, color: YELLOW }}>GOLF EDGE</div>
+            <div style={{ display: "flex", fontSize: 26, letterSpacing: 1, color: YELLOW, fontFamily: "Archivo Black" }}>GOLF EDGE</div>
             <div style={{ display: "flex", fontSize: 22, fontWeight: 800, letterSpacing: 2 }}>SUNDAY RECAP</div>
           </div>
           <div style={{ display: "flex", fontSize: 19, color: MUTED }}>{grp[0].name} · {dates}</div>
         </div>
 
         <div style={{ display: "flex", alignItems: "baseline", gap: 14, marginTop: 18 }}>
-          <div style={{ display: "flex", fontSize: 48, fontWeight: 900 }}>{top.user_name}</div>
-          <div style={{ display: "flex", fontSize: 32, fontWeight: 900 }}>{money(top.total)}</div>
+          <div style={{ display: "flex", fontSize: 46, fontFamily: "Archivo Black" }}>{top.user_name}</div>
+          <div style={{ display: "flex", fontSize: 30, fontFamily: "Archivo Black" }}>{money(top.total)}</div>
           <div style={{ display: "flex", fontSize: 19, color: MUTED }}>
             lineup earnings{twoTours ? " · both tours" : ""}
           </div>
@@ -281,6 +275,6 @@ export async function GET(req: Request) {
         </div>
       </div>
     ),
-    { width: 1000, height: twoTours ? 600 : 520 },
+    { fonts, width: 1000, height: twoTours ? 600 : 520 },
   );
 }

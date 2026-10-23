@@ -14,7 +14,8 @@
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { nameKey } from "@/lib/names";
-import { adviseSlate, GolferValue } from "@/lib/advice";
+import { adviseSlate, GolferValue, contestedFutures } from "@/lib/advice";
+import { bestEvents, type BestEvents } from "@/lib/bestEvents";
 
 type League = { id: number; tours: string[]; uses_per_player: number; players_per_week: number; uses_scope: string };
 type Values = { tournament_id: string; golfers: (Omit<GolferValue, "key"> & { world_rank: number | null })[] };
@@ -70,11 +71,20 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 
   // score: adviseSlate's ranking for THIS member (Help me pick ranks by it);
   // null for "spent" (its -Infinity doesn't survive JSON).
-  const byName: Record<string, { verdict: string; reason: string; score: number | null; save_for?: string }> = {};
+  // best: Jack's lib/bestEvents.ts, this week against his best events left
+  // (the same contested windows the verdict uses) — what the tag now shows.
+  const futures = contestedFutures(field, league.players_per_week);
+  const byName: Record<string, { verdict: string; reason: string; score: number | null; save_for?: string; best?: BestEvents }> = {};
   for (const g of field) {
     const v = verdicts[g.key];
+    let best: BestEvents | undefined;
+    try {
+      best = bestEvents({ tid, name: "This week" }, g.now_ev, futures.get(g.key) ?? [],
+        usesLeft[g.key] ?? league.uses_per_player);
+    } catch { /* the Spend/Save tag stays */ }
     if (v) byName[g.player_name] = { verdict: v.verdict, reason: v.reason,
-      score: Number.isFinite(v.score) ? v.score : null, ...(v.saveFor ? { save_for: v.saveFor.name } : {}) };
+      score: Number.isFinite(v.score) ? v.score : null, ...(v.saveFor ? { save_for: v.saveFor.name } : {}),
+      ...(best ? { best } : {}) };
   }
   return Response.json({ tid, locked: false, verdicts: byName });
 }

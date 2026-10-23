@@ -2,10 +2,10 @@ import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs/config";
 
 const nextConfig: NextConfig = {
-  // The share images read the brand badge from disk at request time.
+  // The share images read the brand badge and font from disk at request time.
   outputFileTracingIncludes: {
-    "/api/recap": ["./assets/brand/badge.png"],
-    "/api/receipt": ["./assets/brand/badge.png"],
+    "/api/recap": ["./assets/brand/badge.png", "./assets/fonts/ArchivoBlack-Regular.ttf"],
+    "/api/receipt": ["./assets/brand/badge.png", "./assets/fonts/ArchivoBlack-Regular.ttf"],
   },
 };
 

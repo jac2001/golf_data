@@ -69,23 +69,33 @@ const rowBtn = (enabled: boolean): React.CSSProperties => ({
   border: `1px solid ${enabled ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
 });
 
-type Advice = { verdict: "spend" | "save" | "spent"; reason: string; score?: number | null; save_for?: string };
+type Best = { fit: "spent" | "best" | "top" | "later"; tag: string;
+  events: { name: string; ev: number; thisWeek: boolean }[] };
+type Advice = { verdict: "spend" | "save" | "spent"; reason: string; score?: number | null; save_for?: string; best?: Best };
+
+const BEST_WORD: Record<Best["fit"], string> = { spent: "", best: "Best", top: "Top", later: "Later" };
+const kMoney = (v: number) => v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(2)}M` : `$${Math.round(v / 1000)}K`;
+/** "Cognizant Classic $132K · This week $127K · WM Phoenix Open $122K" */
+const eventsLine = (b: Best) => b.events.map(e => `${e.name} ${kMoney(e.ev)}`).join(" · ");
 
 /** Spend / Save tag on a golfer — a short fixed-width word so rows never
  *  wrap; tapping shows the why in the shared reason bar above the list.
  *  Quiet colors: it's a hint, not a call to action (no yellow). */
 function AdviceTag({ a, open, onToggle }: { a?: Advice; open: boolean; onToggle: () => void }) {
   if (!a || a.verdict === "spent") return null;
-  const save = a.verdict === "save";
+  // Best events (Jack's lib/bestEvents.ts) when the server sent them; else Spend/Save.
+  const b = a.best && a.best.fit !== "spent" ? a.best : null;
+  const save = b ? b.fit === "later" : a.verdict === "save";
+  const word = b ? BEST_WORD[b.fit] : save ? "Save" : "Spend";
   const c = save ? "var(--bc-orange)" : "var(--bc-green)";
   return (
-    <button onClick={onToggle} aria-pressed={open} aria-label={`${save ? "Save" : "Spend"}: ${a.reason}`} style={{
+    <button onClick={onToggle} aria-pressed={open} aria-label={`${word}: ${b ? `${b.tag}. ${eventsLine(b)}` : a.reason}`} style={{
       cursor: "pointer", fontFamily: "inherit", padding: "1px 5px", borderRadius: 3, flexShrink: 0,
       fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, letterSpacing: "0.03em", textTransform: "uppercase",
       color: open ? "#081f14" : c, background: open ? c : "transparent",
       border: `1px solid color-mix(in srgb, ${c} 45%, transparent)`,
     }}>
-      {save ? "Save" : "Spend"}
+      {word}
     </button>
   );
 }
@@ -98,14 +108,18 @@ function AdviceBar({ name, a, onClose }: { name: string; a?: Advice; onClose: ()
       color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", lineHeight: 1.4 }}>
       {a ? (
         <>
-          <span><strong style={{ color: "var(--bc-text)" }}>{name}:</strong> {a.reason}</span>
+          <span><strong style={{ color: "var(--bc-text)" }}>{name}:</strong>{" "}
+            {a.best && a.best.fit !== "spent"
+              ? <>{a.best.tag}. <span style={{ fontVariantNumeric: "tabular-nums" }}>{eventsLine(a.best)}</span></>
+              : a.reason}</span>
           <button onClick={onClose} aria-label="Close" style={{ marginLeft: "auto", background: "none", border: "none",
             color: "var(--bc-muted)", cursor: "pointer", fontSize: "1em", padding: 0, fontFamily: "inherit" }}>✕</button>
         </>
       ) : (
-        <span>Advice for your uses: <span style={{ color: "var(--bc-green)", fontWeight: 700 }}>Spend</span> = this week is
-          one of his best windows · <span style={{ color: "var(--bc-orange)", fontWeight: 700 }}>Save</span> = he&apos;s
-          worth more later. Tap a tag for why.</span>
+        <span>For your uses left: <span style={{ color: "var(--bc-green)", fontWeight: 700 }}>Best</span> /{" "}
+          <span style={{ color: "var(--bc-green)", fontWeight: 700 }}>Top</span> = this week is among his best events ·{" "}
+          <span style={{ color: "var(--bc-orange)", fontWeight: 700 }}>Later</span> = a use is worth more at a later
+          event. Tap a tag to see his best events.</span>
       )}
     </div>
   );
