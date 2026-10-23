@@ -12,7 +12,10 @@ import PickConfirm, { buildConfirm } from "@/components/PickConfirm";
 import { WhosInCard } from "./WhosInCard";
 import { roundLockAt } from "@/lib/lockTime";
 import type { ConfirmCopy } from "@/lib/pickConfirm";
-import { getPredictions, getEventField, OpenEvent } from "@/lib/api";
+import { getPredictions, getEventField, getInPlay, getTeeTimes, OpenEvent } from "@/lib/api";
+import type { InPlayPlayer, TeeTimeGroup } from "@/lib/api";
+import { byPosition, contextLine, roundContext } from "@/lib/roundContext";
+import { nameKey } from "@/lib/names";
 import { EventInfo, FieldRow, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, inputStyle, lastName, shareReceipt, openPlusPast, useApi, useWhyLines } from "./shared";
 import { useActiveGroup } from "./ActiveGroup";
 
@@ -36,6 +39,8 @@ export function RoundGameTab() {
   const [pickingRound, setPickingRound] = useState<number | null>(null);
   const [query, setQuery] = useState("");
   const [err, setErr] = useState("");
+  const [live, setLive] = useState<InPlayPlayer[] | null>(null);
+  const [tees, setTees] = useState<{ round: number | null; groups: TeeTimeGroup[] } | null>(null);
 
   useEffect(() => {
     openPlusPast(api, "rounds").then(all => {
@@ -74,6 +79,14 @@ export function RoundGameTab() {
             player_name: p, world_rank: null, win_prob: null, top10_prob: null, cut_prob: null,
           }))))
           .catch(() => setField([])));
+    setLive(null); setTees(null);
+    getInPlay().then(d => {
+      // Rule 1 (event provenance): only this event's board, never another week's.
+      if (d.tournament_id?.toUpperCase() === selected.toUpperCase()) setLive(d.players);
+    }).catch(() => {});
+    getTeeTimes().then(d => {
+      if (d.tournament_id?.toUpperCase() === selected.toUpperCase()) setTees({ round: d.round, groups: d.groups });
+    }).catch(() => {});
   }, [api, selected, groupQuery]);
   useEffect(load, [load]);
 
@@ -118,7 +131,12 @@ export function RoundGameTab() {
     !query || r.player_name.toLowerCase().includes(query.toLowerCase()));
 
   const fmt = (v: number) => (v > 0 ? `+${v}` : v === 0 ? "E" : String(v));
-
+  // Tee times belong to ONE round: only use them for that round's picker.
+  const pickCtx = pickingRound
+    ? roundContext(live, tees?.round === pickingRound ? tees.groups : null)
+    : new Map();
+  const started = pickCtx.size > 0;
+  const pickRows = started ? [...visibleField].sort(byPosition(pickCtx)) : visibleField;
   return (
     <>
       <PickConfirm copy={confirm} onClose={() => setConfirm(null)} />
@@ -184,8 +202,9 @@ export function RoundGameTab() {
                     <div style={{ maxHeight: 280, overflowY: "auto", marginTop: 6,
                       background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
                       borderRadius: 8, WebkitOverflowScrolling: "touch" as never }}>
-                      {visibleField.map(row => {
+                      {pickRows.map(row => {
                         const used = (state?.used ?? []).includes(row.player_name);
+                        const context = contextLine(pickCtx.get(nameKey(row.player_name)));
                         return (
                           <button key={row.player_name} disabled={used}
                             onClick={() => pick(r, row.player_name)} style={{
@@ -199,10 +218,10 @@ export function RoundGameTab() {
                                 <span style={{ fontWeight: 600 }}>{row.player_name}</span>
                                 {used && <span style={{ marginLeft: 8, fontSize: "max(var(--fs-min), 0.78em)" }}>· used</span>}
                               </span>
-                              {why.get(row.player_name) && <span style={{ color: "var(--bc-muted)",
-                                fontSize: "max(var(--fs-min), 0.86em)", marginTop: 2 }}>{why.get(row.player_name)}</span>}
+                              {(context || why.get(row.player_name)) && <span style={{ color: "var(--bc-muted)",
+                                fontSize: "max(var(--fs-min), 0.86em)", marginTop: 2 }}>{context || why.get(row.player_name)}</span>}
                             </span>
-                            {row.win_prob != null && (
+                            {!started && row.win_prob != null && (
                               <span style={{ marginLeft: "auto", color: "var(--bc-muted)",
                                 fontVariantNumeric: "tabular-nums" }}>
                                 {(row.win_prob * 100).toFixed(1)}%
