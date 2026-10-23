@@ -181,7 +181,7 @@ export default function Home() {
                 <div style={{ fontWeight: 900, fontSize: "1.4em", color: "var(--bc-muted)", width: 24 }}>{i + 1}</div>
                 <div style={{ flexGrow: 1 }}>
                   <div style={{ fontWeight: 700, fontSize: "1em" }}>{b.player}</div>
-                  <div style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" }}>{b.why}</div>
+                  {b.why && <div style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" }}>{b.why}</div>}
                 </div>
                 {/* Finished event: the pick's actual result leads, the
                     pre-event number demotes to context. */}

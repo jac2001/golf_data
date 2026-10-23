@@ -8299,15 +8299,17 @@ def get_home(tour: str = "pga") -> dict:
                 bits.append(f"world No. {int(r['world_rank'])}")
             if pd.notna(r.get("recent_sg_app_weighted")) and r["recent_sg_app_weighted"] > 0.6:
                 bits.append("elite approach play")
-            return " · ".join(bits[:2]) if bits else "model favorite"
+            return " · ".join(bits[:2])
 
-        for _, r in top.iterrows():
+        for i, (_, r) in enumerate(top.iterrows()):
             board.append({
                 "player": _flip_to_first_last(str(r["player_name"])),   # "Corey Conners", as everywhere else
                 "win_prob": round(float(r["win_prob"]), 4),
                 "top10_prob": round(float(r.get("top10_prob", float("nan"))), 4)
                               if pd.notna(r.get("top10_prob")) else None,
-                "why": _why(r),
+                # "model favorite" only for the actual favorite (it once
+                # labeled whoever had no other reason, 3rd place included).
+                "why": _why(r) or ("model favorite" if i == 0 else ""),
                 "finish": _finish(r),
             })
 
