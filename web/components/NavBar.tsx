@@ -93,6 +93,9 @@ export default function NavBar() {
           letterSpacing: "0.02em", color: text,
           marginRight: 18, flexShrink: 0,
         }}>
+          {/* The badge from the brand sheet (public/brand/badge.png); the name is the text. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/badge.png" alt="" width={32} height={32} style={{ display: "block", flexShrink: 0 }} />
           Golf&nbsp;Edge
         </Link>
 
