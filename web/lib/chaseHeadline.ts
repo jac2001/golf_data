@@ -41,6 +41,50 @@ export type Standing = { user_id: string; user_name: string; total: number; rank
 // Hint: find me, then the leaders (rank 1), then build the two halves.
 
 export function chaseHeadline(lines: readonly Standing[], meId: string, final: boolean): string | null {
-  void lines; void meId; void final;
-  throw new Error("TODO(Jack): chaseHeadline");
+  const me = lines.find(line => line.user_id === meId);
+
+  if (!me || me.rank === 1) {
+    return null;
+  }
+  const leaders = lines.filter(line => line.rank === 1);
+
+  if (leaders.length === 0) {
+    return null;
+  }
+  const tied = lines.some(
+  line => line.user_id !== meId && line.rank === me.rank
+  );
+  const rankText = `${tied ? "tied for " : ""}${ordinal(me.rank)}`;
+
+  const where = final
+  ? `You finished ${rankText} of ${lines.length}.`
+  : `You're ${rankText} of ${lines.length}.`;
+  
+  const gap = money(leaders[0].total - me.total);
+
+  let lead: string;
+
+  if (leaders.length === 1) {
+    const name = leaders[0].user_name;
+    lead = final
+      ? `${name} won by ${gap}.`
+      : `${name} leads by ${gap}.`;
+  } else if (leaders.length === 2) {
+    const names = `${leaders[0].user_name} and ${leaders[1].user_name}`;
+     lead = final
+    ? `${names} shared the win, ${gap} ahead.`
+    : `${names} lead by ${gap}.`;
+} else {
+  lead = final
+    ? `${leaders.length} players shared the win, ${gap} ahead.`
+    : `${leaders.length} players share the lead, ${gap} ahead.`;
 }
+  return `${where} ${lead}`;
+}
+
+
+  
+
+
+
+

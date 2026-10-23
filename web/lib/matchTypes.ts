@@ -57,13 +57,9 @@ export function slateHeadline(s: Slate): string {
       ? `You shared the week with ${others}.`
       : `You're tied for the lead with ${others}.`;
   }
-  // Behind: Jack's lib/chaseHeadline.ts names the real leader. Until it's
-  // written (it throws "TODO"), fall back to the old rival line.
-  try {
-    const h = chaseHeadline(s.lines, s.me_id, s.status === "final");
-    if (h) return h;
-  } catch { /* scaffold not done yet */ }
-  if (s.rival && me.rank > 1) return `You're ${ordinal(me.rank)}. ${s.rival.user_name} leads you by ${money(s.gap)}.`;
+  // Behind: where you stand and who actually leads (Jack's lib/chaseHeadline.ts).
+  const behind = chaseHeadline(s.lines, s.me_id, s.status === "final");
+  if (behind) return behind;
   return `You're ${ordinal(me.rank)}.`;
 }
 
