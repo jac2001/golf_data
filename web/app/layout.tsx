@@ -28,7 +28,14 @@ const archivo = Archivo({
 
 export const metadata: Metadata = {
   title: "Golf Edge",
-  description: "Golf betting analytics and value bets",
+  description: "Friendly fantasy golf. Make picks, follow your group, and compete for weekly bragging rights.",
+  metadataBase: new URL("https://playgolfedge.com"),
+  openGraph: {
+    title: "Golf Edge",
+    description: "Pick golfers. Beat your friends. Free fantasy golf for your group.",
+    url: "https://playgolfedge.com", siteName: "Golf Edge", type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 // Tells mobile browsers to render at device width instead of zooming out to 1100px.

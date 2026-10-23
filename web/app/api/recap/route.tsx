@@ -27,6 +27,15 @@ import { resolvePick, UNRESOLVED_POS } from "@/lib/resultLookup";
 
 export const runtime = "nodejs";
 
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+
+/** The brand badge for share images, read once (assets/brand, traced into the function). */
+let badgeUrl: Promise<string> | null = null;
+const badge = () => (badgeUrl ??= readFile(join(process.cwd(), "assets/brand/badge.png"))
+  .then(b => `data:image/png;base64,${b.toString("base64")}`).catch(() => ""));
+
+
 const BG = "#0c2a1c", CARD = "#0f3322", LINE = "#1e4a33";
 const TEXT = "#f2f7f0", MUTED = "#9dbfa9", YELLOW = "#ffd24a", GREEN = "#6fd49a", RED = "#ff6b6b";
 
@@ -186,6 +195,7 @@ export async function GET(req: Request) {
     </svg>
   );
 
+  const logo = await badge();
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column",
@@ -193,6 +203,8 @@ export async function GET(req: Request) {
         {/* Brand first: a forwarded image should say what it is at a glance. */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+            {logo && <img src={logo} width={40} height={40} />}
             <div style={{ display: "flex", fontSize: 26, fontWeight: 900, letterSpacing: 1, color: YELLOW }}>GOLF EDGE</div>
             <div style={{ display: "flex", fontSize: 22, fontWeight: 800, letterSpacing: 2 }}>SUNDAY RECAP</div>
           </div>

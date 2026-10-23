@@ -67,6 +67,8 @@ export default function JoinPage() {
         {!error && !preview && <p style={{ color: "var(--bc-muted)" }}>Opening your invite…</p>}
         {preview && (
           <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/badge.png" alt="Golf Edge" width={88} height={88} style={{ display: "block", margin: "0 auto 14px" }} />
             <div style={{ color: "var(--bc-muted)", fontSize: "0.95rem" }}>{preview.inviter} invited you to</div>
             <h1 style={{ color: "var(--bc-text)", fontSize: "1.6rem", margin: "6px 0 14px", lineHeight: 1.2 }}>
               {preview.group_name}

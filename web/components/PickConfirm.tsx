@@ -76,11 +76,10 @@ export default function PickConfirm({ copy, onClose }: { copy: ConfirmCopy | nul
   return (
     <Sheet label={copy.title} onClose={close} zIndex={998} initialFocus="button" style={{
       padding: "22px 20px calc(20px + var(--bottom-nav-h))", textAlign: "center" }}>
-        <div aria-hidden="true" style={{ width: 52, height: 52, borderRadius: "50%", margin: "0 auto 12px",
-          background: "var(--bc-raised)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--bc-green)" strokeWidth="2.6"
-            strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l5 5L20 7" /></svg>
-        </div>
+        {/* A full entry is a moment: the mascot celebrates it (public/brand/cheer.png). */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/brand/cheer.png" alt="" aria-hidden="true" width={88} height={88}
+          style={{ display: "block", margin: "0 auto 12px" }} />
         <div style={{ fontWeight: 900, fontSize: "1.4em", textTransform: "uppercase", fontStretch: "110%" }}>{copy.title}</div>
         {copy.body && <p style={{ color: "var(--bc-muted)", lineHeight: 1.5, margin: "8px 0 18px" }}>{copy.body}</p>}
         <button onClick={close} style={{

@@ -12,7 +12,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Golf Edge",
     short_name: "Golf Edge",
-    description: "Golf predictions, betting board, and the Friends Game",
+    description: "Friendly fantasy golf. Make picks, follow your group, and compete for weekly bragging rights.",
     start_url: "/",
     display: "standalone",
     background_color: "#0c2a1c",
