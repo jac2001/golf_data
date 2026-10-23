@@ -221,11 +221,13 @@ coverage. PGA has two sources for most game data.
 - Live standings (Match Center, `/api/results/earnings?projected=1`):
   DataGolf in-play first (`dg_get("/preds/in-play")`, cached on Render),
   then `data/live/leaderboard_{tid}.csv` (PGA TOUR) as the fallback.
-- The fallback is starved during PGA rounds: the `live` schedule
-  (`run_live_refresh`, which runs `fetch_live_leaderboard`) has no cron
-  slot since the move to GitHub Actions, so no PGA live file exists
-  mid-event (none for R2026528 on Oct 22). A DataGolf in-play failure
-  leaves Match Center with no live standings. Roadmap #3 has the fix.
+- Fallback (fixed Oct 23): when DataGolf's in-play feed fails, the API
+  fetches the PGA TOUR's live leaderboard itself (`_pgatour_live_board`,
+  2-minute cache, PGA events only) and labels it `live_source: "pgatour"`;
+  Match Center says so. Checked on Bermuda R2: all 120 golfers' positions,
+  scores and estimated payouts identical to DataGolf's. The saved-file
+  fallback after it is still never written during rounds (the `live`
+  schedule has no cron slot); DP World Tour has no second live source.
 - Settlement: official results (`leaderboards_*.csv`) or a purse estimate.
 
 **Register.** One row per user-visible metric or scoring input; record
@@ -233,7 +235,7 @@ unknowns as unknown. Filled in with the January retrain, scoring first.
 
 | Metric | Consumer | Source and fetcher | Use | Who sees it | Permission evidence | Fallback | Open question |
 |---|---|---|---|---|---|---|---|
-| Live positions + estimated payouts | Match Center | DG in-play, `api/main.py results_earnings` | scoring | signed-in, group-scoped | Matt Oct 22 (informal); open: Q3 | PGA live CSV (starved, see above) | Is DG live data OK for a shared free game? |
+| Live positions + estimated payouts | Match Center | DG in-play, `api/main.py results_earnings` | scoring | signed-in, group-scoped | Matt Oct 22 (informal); open: Q3 | PGA TOUR live board, on demand (PGA only) | Is DG live data OK for a shared free game? |
 
 ## When this changes
 

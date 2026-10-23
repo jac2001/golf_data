@@ -142,6 +142,32 @@ def test_parse_stamp_formats():
     assert m._parse_stamp("2026-10-20T19:44:27") == m._parse_stamp("2026-10-21T00:44:27+00:00")
     assert m._parse_stamp("") is None and m._parse_stamp("not a date") is None
 
+def test_live_scoring_falls_back_to_pga_tour():
+    """DataGolf's in-play feed down -> the PGA TOUR's board scores the game,
+    labeled; up -> DataGolf, untouched. Offline: both feeds are stubbed."""
+    import pandas as pd
+    board = pd.DataFrame([
+        {"player_name": "Chandler Blanchet", "position": "T1", "thru": "18", "today": -4, "current_score": -13, "round": 2},
+        {"player_name": "Kensei Hirata", "position": "T1", "thru": "18", "today": -7, "current_score": -13, "round": 2},
+        {"player_name": "Corey Conners", "position": "3", "thru": "18", "today": -4, "current_score": -12, "round": 2},
+    ])
+    dg, pga = m._dg_live_board, m._pgatour_live_board
+    try:
+        m._dg_live_board = lambda tid: None
+        m._pgatour_live_board = lambda tid: board.copy()
+        r = m.results_earnings("R2026528", projected=1)
+        assert r["live_source"] == "pgatour" and r["projected"] is True
+        assert r["players"]["conners corey"]["position"] == "3"
+        assert r["data_updated_utc"]   # stamped with the fetch time, never blank
+        m._dg_live_board = lambda tid: board.copy()
+        m._pgatour_live_board = lambda tid: (_ for _ in ()).throw(AssertionError("PGA TOUR called while DataGolf works"))
+        assert m.results_earnings("R2026528", projected=1)["live_source"] == "live"
+        assert m._pgatour_live_board.__name__ == "<lambda>"
+    finally:
+        m._dg_live_board, m._pgatour_live_board = dg, pga
+    assert m._pgatour_live_board("E2026141") is None   # PGA events only
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_") and callable(fn):

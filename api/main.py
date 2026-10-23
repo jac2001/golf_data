@@ -5090,6 +5090,43 @@ def _dg_live_board(tid: str) -> pd.DataFrame | None:
         return None
 
 
+_pgat_live_cache: dict[str, dict] = {}
+
+
+def _pgatour_live_board(tid: str) -> pd.DataFrame | None:
+    """The PGA TOUR's own live leaderboard for a PGA event, as a DataFrame
+    with `position` — or None. The fallback when DataGolf's in-play feed
+    fails: the file fallback below is never written during rounds (the
+    live refresh lost its cron slot in the move to GitHub Actions), so
+    without this a DataGolf outage left Match Center with no standings.
+    Fetched on demand (no commit/redeploy loop), cached 2 minutes. We ask
+    for this event by its own id, so the rows are this event's (rule 1)."""
+    if not tid.upper().startswith("R"):
+        return None
+    now = time.time()
+    c = _pgat_live_cache.get(tid.upper())
+    if c and now - c["ts"] < 120:
+        return c["df"]
+    df = None
+    try:
+        scrapers = str(PROJECT_ROOT / "scripts" / "scrapers")
+        if scrapers not in sys.path:
+            sys.path.insert(0, scrapers)
+        from fetch_live_leaderboard import fetch_leaderboard, parse_leaderboard_to_df  # type: ignore
+        lb = fetch_leaderboard(tid.upper())
+        d = parse_leaderboard_to_df(lb, tid.upper()) if lb else None
+        if d is not None and len(d) and "position" in d.columns:
+            d = d[d["position"].astype(str).str.strip() != ""].copy()
+            # The earnings rows read DataGolf's names: current_score, round.
+            d["current_score"] = pd.to_numeric(d.get("total_numeric"), errors="coerce").where(lambda s: s < 900)
+            d["round"] = d.get("current_round")
+            df = d if len(d) else None
+    except Exception as e:
+        print(f"pgatour live board {tid}: {e}")
+    _pgat_live_cache[tid.upper()] = {"ts": now, "df": df}
+    return df
+
+
 def _dg_update_utc(local_str: str, fetched_ts: float) -> str:
     """DataGolf's in-play 'last_update' is wall-clock time AT THE COURSE
     ('2026-10-03 7:40 AM' in Utah, '2:39 PM' in Scotland) with no zone.
@@ -5237,6 +5274,12 @@ def results_earnings(tournament_id: str, projected: int = 0) -> dict:
         sub = _dg_live_board(tid)
         live_source = "live" if sub is not None else ""
         if sub is None:
+            # DataGolf failed or doesn't match: the PGA TOUR's live board.
+            sub = _pgatour_live_board(tid)
+            if sub is not None:
+                live_source = "pgatour"
+                print(f"results/earnings {tid}: DataGolf live board unavailable, using PGA TOUR")
+        if sub is None:
             live = DATA_DIR / "live" / f"leaderboard_{tid.lower()}.csv"
             if not live.exists():
                 live = DATA_DIR / "live" / f"rounds_{tid}.csv"
@@ -5272,6 +5315,9 @@ def results_earnings(tournament_id: str, projected: int = 0) -> dict:
                 c = _dg_live_cache.get(tour_key, {}) if live_source == "live" else {}
                 updated = c.get("updated", "")
                 updated_utc = _dg_update_utc(updated, c.get("ts", time.time())) if updated else ""
+                if live_source == "pgatour":   # fetched just now from the TOUR's own board
+                    ts = _pgat_live_cache.get(tid.upper(), {}).get("ts", time.time())
+                    updated_utc = datetime.utcfromtimestamp(ts).strftime("%Y-%m-%dT%H:%M:00Z")
                 return {"tournament_id": tid, "settled": False, "projected": True,
                         "earnings_estimated": True, "live_source": live_source,
                         "data_updated": updated, "data_updated_utc": updated_utc, "players": out}

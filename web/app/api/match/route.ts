@@ -23,6 +23,7 @@ type Ev = { tournament_id: string; name: string; tour: "pga" | "euro"; start_dat
 type PlayerMoney = { player_name: string; earnings: number; position: string;
   up_one?: number; thru?: string; today?: number | null; to_par?: number | null; round?: number | null };
 type Earnings = { settled: boolean; projected?: boolean; earnings_estimated?: boolean; data_updated?: string; data_updated_utc?: string;
+  live_source?: string;
   players: Record<string, PlayerMoney> };
 
 const money = (v: number) =>
@@ -99,6 +100,7 @@ export async function GET(req: Request) {
       estimated: !!(table?.settled && table?.earnings_estimated),
       data_updated: table?.data_updated ?? "",
       data_updated_utc: table?.data_updated_utc ?? "",
+      live_source: table?.live_source ?? "",
       me_id: userId, ...sum,
     });
   }

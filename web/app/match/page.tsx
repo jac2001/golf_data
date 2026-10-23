@@ -389,7 +389,7 @@ function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: nu
                 ? "Final totals, estimated: official prize money wasn't available, so each golfer's final position is paid from the purse's payout table."
                 : "Totals are each golfer's official prize money.")
               : "Totals use each golfer's current position on the live leaderboard and the purse's payout table, with tied positions sharing the money. They show where things stand now, not a forecast of where they'll finish."}
-            {live && ` Live scores come from DataGolf${s.data_updated_utc ? ` (last update ${clock(s.data_updated_utc)})` : ""}; this page re-checks every 2 minutes during play${checkedAt ? `, last at ${clock(checkedAt)}` : ""}.`}
+            {live && ` Live scores come from ${s.live_source === "pgatour" ? "the PGA TOUR's leaderboard (DataGolf's live feed is down)" : "DataGolf"}${s.data_updated_utc ? ` (last update ${clock(s.data_updated_utc)})` : ""}; this page re-checks every 2 minutes during play${checkedAt ? `, last at ${clock(checkedAt)}` : ""}.`}
           </div>
           {s.status === "final" && (
             <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>

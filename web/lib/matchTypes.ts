@@ -11,6 +11,8 @@ export type Line = { user_id: string; user_name: string; total: number; golfers:
 export type Slate = {
   tournament_id: string; name: string; tour: "pga" | "euro"; status: "awaiting" | "open" | "live" | "settling" | "final";
   projected: boolean; lines: Line[]; me_id: string; data_updated?: string; data_updated_utc?: string;
+  /** Where live scores came from: "live" (DataGolf), "pgatour" (the fallback), "snapshot" (a saved file). */
+  live_source?: string;
   // Final, but official prize money wasn't available: totals are the purse
   // split by final position. Every view that says "official" checks this.
   estimated?: boolean;
