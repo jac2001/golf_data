@@ -106,15 +106,20 @@ function H2HView({ p1, p2, live }: { p1: PlayerProfile; p2: PlayerProfile; live:
       higherBetter: true, tie: 0.5, fmt: v => `${v.toFixed(1)} yd` },
     { say: "a better world rank", a: m1.world_rank ?? null, b: m2.world_rank ?? null, higherBetter: false, tie: 0.5, fmt: v => `#${Math.round(v)}` },
   ];
-  let verdict = null;
-  try {
-    verdict = matchupVerdict(short(p1.player_name), short(p2.player_name),
-      { a: m1.win_prob ?? null, b: m2.win_prob ?? null, tie: 0.002 }, cats);
-  } catch { /* the table below still answers */ }
-
   // This week so far, from the live board (both golfers on it, or nothing).
   const board = new Map((live ?? []).map(p => [nameKey(p.player_name), p]));
   const l1 = board.get(nameKey(p1.player_name)), l2 = board.get(nameKey(p2.player_name));
+  // During play the live chances decide it (the board sends percent: 12.1);
+  // a pre-tournament 0.4% vs 0.1% means little between two co-leaders.
+  const liveWin = l1 && l2 && l1.win_prob != null && l2.win_prob != null;
+  const win = liveWin
+    ? { a: l1!.win_prob! / 100, b: l2!.win_prob! / 100, tie: 0.002 }
+    : { a: m1.win_prob ?? null, b: m2.win_prob ?? null, tie: 0.002 };
+
+  let verdict = null;
+  try {
+    verdict = matchupVerdict(short(p1.player_name), short(p2.player_name), win, cats);
+  } catch { /* the table below still answers */ }
   const toPar = (v: number | null) => v == null ? "" : v === 0 ? "E" : v > 0 ? `+${v}` : `−${Math.abs(v)}`;
   const liveLine = (n: string, p: InPlayPlayer) =>
     `${short(n)} ${p.position ?? ""} ${toPar(p.total_numeric)}${p.today != null ? ` (today ${toPar(p.today)})` : ""}`.replace(/\s+/g, " ").trim();
@@ -135,8 +140,9 @@ function H2HView({ p1, p2, live }: { p1: PlayerProfile; p2: PlayerProfile; live:
                 {verdict.reasons.map(x => <li key={x}>{x}</li>)}
               </ul>
             )}
-            {m1.win_prob != null && <div style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.78em)", marginTop: 8 }}>
-              Win chances are our pre-tournament numbers; skills are DataGolf&apos;s ratings.</div>}
+            <div style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.78em)", marginTop: 8 }}>
+              {liveWin ? "Win chances are live, from DataGolf's in-play model" : "Win chances are our pre-tournament numbers"};
+              skills are DataGolf&apos;s ratings.</div>
           </>}
         </div>
       )}
