@@ -132,7 +132,13 @@ export default function MatchCenterPage() {
 
   return (
     <div style={{ maxWidth: 760, margin: "0 auto" }}>
-      <PageHead kicker={data?.league ? `${data.group?.name ? data.group.name + " · " : ""}${data.league.name}` : "Your group's weekend"} title="Match Center" />
+      {/* The big broadcast title on desktop; on a phone your score comes first. */}
+      <div className="mobile-hidden">
+        <PageHead kicker={data?.league ? `${data.group?.name ? data.group.name + " · " : ""}${data.league.name}` : "Your group's weekend"} title="Match Center" />
+      </div>
+      <div className="mobile-only" style={{ fontWeight: 900, fontSize: "1.1em", margin: "0 0 10px" }}>
+        Match Center{data?.group?.name ? <span style={{ color: "var(--bc-muted)", fontWeight: 700 }}> · {data.group.name}</span> : null}
+      </div>
       {/* One plain timestamp up top, in the viewer's own timezone. The
           source and refresh cadence live in each card's details. */}
       {(() => {
@@ -170,8 +176,27 @@ export default function MatchCenterPage() {
           <div style={card}>No Let It Ride season in this group yet — the owner starts one from <Link href={groupId ? `/friends?game=ride&group=${groupId}` : "/friends"} style={{ color: "var(--bc-text)", textDecoration: "underline" }}>Friends → Let It Ride</Link>.</div>
         ) : (
           <>
-            {data.slates.map(s => <SlateCard key={s.tournament_id} s={s} groupId={groupId} groupName={data.group?.name ?? ""} checkedAt={data.checked_at} />)}
-            {data.college && data.college.lines.length > 0 && <CollegeCard c={data.college} />}
+            {(() => {
+              // Games you're in get the full card; locked games you're not in
+              // get one line at the bottom instead of a card that says so.
+              const started = (s: Slate) => s.status !== "open" && s.status !== "awaiting";
+              const notIn = (s: Slate) => started(s) && !s.lines.some(l => l.user_id === s.me_id);
+              const col = data.college;
+              const collegeIn = !!col && col.lines.some(l => l.user_id === col.me_id);
+              const out = [
+                ...data.slates.filter(notIn).map(s => s.tour === "euro" ? `DP World Tour (${s.name})` : s.name),
+                ...(col && col.lines.length > 0 && !collegeIn && col.status !== "open" && col.status !== "awaiting" ? ["College Game"] : []),
+              ];
+              return <>
+                {data.slates.filter(s => !notIn(s)).map(s => <SlateCard key={s.tournament_id} s={s} groupId={groupId} groupName={data.group?.name ?? ""} checkedAt={data.checked_at} />)}
+                {col && col.lines.length > 0 && (collegeIn || col.status === "open" || col.status === "awaiting") && <CollegeCard c={col} />}
+                {out.length > 0 && (
+                  <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)", margin: "4px 2px 16px" }}>
+                    Not playing this week: {out.join(", ")}.
+                  </div>
+                )}
+              </>;
+            })()}
           </>
         )}
     </div>
@@ -258,7 +283,6 @@ function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: nu
       <div style={{ fontWeight: 900, fontSize: "1.35em", margin: "6px 0 4px", lineHeight: 1.2 }}>{matchHeadline(s)}</div>
       {me && <div style={{ fontWeight: 700, fontSize: "max(var(--fs-min), 0.95em)", fontVariantNumeric: "tabular-nums" }}>{totalsLine(s)}</div>}
       <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", marginTop: 2 }}>{moneyNote(s)}</div>
-      {groupId && <ChirpThread groupId={groupId} slate={s} />}
 
       {/* Layer 2 — who am I watching? */}
       {me && me.golfers.length > 0 && (
@@ -290,6 +314,8 @@ function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: nu
           {s.beating_model} of {s.humans} players {s.status === "final" ? "beat" : "are beating"} the model.
         </div>
       )}
+      {/* Chirps after the score and standings: the score is what you came for. */}
+      {groupId && <ChirpThread groupId={groupId} slate={s} />}
 
       {/* How the total is made (Jack's lib/scoreBreakdown.ts); null before lock or without a lineup. */}
       {score && <ScoreBreakdownPanel score={score} />}
@@ -361,7 +387,7 @@ function Standings({ s, title }: { s: Slate; title: string }) {
             <span style={{ fontWeight: 800, color: isMe ? "var(--bc-green)" : "var(--bc-text)" }}>{isMe ? "You" : l.user_name}</span>
             {isModel && <span style={tag("var(--bc-line-hi)", "var(--bc-text)")}>Model</span>}
             {isRival && !isModel && <span style={tag("var(--bc-orange)", "#081f14")}>Rival</span>}
-            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1, minWidth: 0 }}>
               {displaySurnames(l.golfers.map(g => g.name)).join(", ")}
             </span>
             <span style={{ marginLeft: "auto", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>{money(l.total)}</span>
@@ -373,8 +399,8 @@ function Standings({ s, title }: { s: Slate; title: string }) {
 }
 
 function tag(bg: string, fg: string): React.CSSProperties {
-  return { fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 900, letterSpacing: "0.06em", textTransform: "uppercase",
-    color: fg, background: bg, borderRadius: 3, padding: "1px 5px" };
+  return { fontSize: "max(var(--fs-min-xs), 0.62em)", fontWeight: 900, letterSpacing: "0.04em", textTransform: "uppercase",
+    color: fg, background: bg, borderRadius: 3, padding: "0 4px", flexShrink: 0 };
 }
 
 function CollegeCard({ c }: { c: NonNullable<College> }) {
