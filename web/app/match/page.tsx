@@ -17,6 +17,8 @@ import { PageHead } from "@/components/broadcast";
 import ChirpThread from "@/components/ChirpThread";
 import { logEvent } from "@/lib/logEvent";
 import SchoolBadge from "@/components/SchoolBadge";
+import ScoreBreakdownPanel from "./_components/ScoreBreakdownPanel";
+import { buildScoreBreakdown } from "@/lib/scoreBreakdown";
 import { displaySurnames } from "@/lib/names";
 import { College, CollegeGolfer, Group, Match, Slate, collegeHeadline, collegeTotals, golferProgress, isMatch, isSoloVsModel, matchHeadline, money, moneyNote, ordinal, totalsLine } from "@/lib/matchTypes";
 
@@ -238,6 +240,7 @@ function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: nu
     );
   }
 
+  const score = buildScoreBreakdown({ game: "ride", status: s.status, estimated: s.estimated, lineup: me ?? null });
   const solo = isSoloVsModel(s);
   const live = s.status === "live";
   const others = s.lines.filter(l => l.user_id !== s.me_id);
@@ -288,10 +291,12 @@ function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: nu
         </div>
       )}
 
-      {/* Layer 3 — the math, on request */}
+      {/* How the total is made (Jack's lib/scoreBreakdown.ts); null before lock or without a lineup. */}
+      {score && <ScoreBreakdownPanel score={score} />}
+      {/* Additional context stays available separately from the score arithmetic. */}
       <details style={{ marginTop: 12 }}>
         <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)", color: "var(--bc-text)" }}>
-          View scoring details
+          {score ? "Matchup insights and data details" : "View scoring details"}
         </summary>
         <div style={{ marginTop: 8, display: "grid", gap: 10 }}>
           {s.story && live && <div style={{ fontSize: "max(var(--fs-min), 0.88em)" }}>{s.story}</div>}
@@ -374,6 +379,8 @@ function tag(bg: string, fg: string): React.CSSProperties {
 
 function CollegeCard({ c }: { c: NonNullable<College> }) {
   const me = c.lines.find(l => l.user_id === c.me_id);
+  const score = buildScoreBreakdown({ game: "college", status: c.status, estimated: c.estimated,
+    lineup: me ? { ...me, golfers: me.counting } : null });
   const solo = c.lines.length <= 2 && c.lines.some(l => l.user_id === "model");
   const label: React.CSSProperties = { fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color: "var(--bc-muted)",
     textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 };
@@ -431,11 +438,13 @@ function CollegeCard({ c }: { c: NonNullable<College> }) {
 
       {!solo && c.lines.length > 1 && race}
 
-      {/* Layer 3 — the math, on request */}
+      {/* How the total is made (Jack's lib/scoreBreakdown.ts); null before lock or without a lineup. */}
+      {score && <ScoreBreakdownPanel score={score} />}
+      {/* Additional context stays available separately from the score arithmetic. */}
       {me && (
         <details style={{ marginTop: 12 }}>
           <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)", color: "var(--bc-text)" }}>
-            View scoring details
+            {score ? "Matchup insights and data details" : "View scoring details"}
           </summary>
           <div style={{ marginTop: 8, display: "grid", gap: 10 }}>
             {c.story && c.status === "live" && <div style={{ fontSize: "max(var(--fs-min), 0.88em)" }}>{c.story}</div>}

@@ -200,6 +200,18 @@ height on phones. In order (each its own commit, preview-verified at 375px):
 edge 100x too small; H2H "Season Wins" shows top-10s; missing data shown as 0 / World #500;
 the AI synopsis shows Anthropic's billing error. Work in the audit's suggested order.
 
+## Match Center scoring clarity (Jack requested, Oct 22)
+
+- [x] (Oct 23, Jack) `web/lib/scoreBreakdown.ts` — Jack implemented the presentation
+      helper (TODO + tests); the compact panel and Let It Ride/College wiring
+      are ready. Until it returns a breakdown the existing UI stays unchanged.
+      Keep server scoring authoritative; unknown data says Pending, true zero
+      stays zero; distinguish live, settling, estimated final and official final.
+      Instructions: `docs/MATCH_SCORING_EXERCISE.md`.
+- [ ] After the exercise passes: check phone and desktop, light and dark,
+      both games and incomplete data. Review repeated content in the older
+      insights panel before removing anything. Round/Fade are outside this change.
+
 ## Now (Oct 17; PGA resumes Oct 22, Bermuda)
 
 The production loop runs itself: data refresh → Tuesday predictions →
