@@ -9,6 +9,7 @@
  * Pure, no "@/" imports: `npm test` runs it.
  */
 
+import { stat } from "fs";
 import type { GameId } from "./landing.ts";
 
 /** One game's state for the member, built by the page (the plumbing). */
@@ -62,6 +63,25 @@ export const SOON_MS = 24 * 60 * 60 * 1000;
 // Hint: filter, then sort, then map. Compare Dates with getTime().
 
 export function weekChecklist(statuses: readonly GameStatus[], now: Date): ChecklistItem[] {
-  void statuses; void now;
-  throw new Error("TODO(Jack): weekChecklist");
+  const nowMs = now.getTime();
+
+  const eligible = statuses.filter(
+    (status): status is GameStatus & { locksAt: Date } =>
+      status.needed > 0 &&
+      status.have < status.needed &&
+      status.locksAt !== null &&
+      status.locksAt.getTime() > nowMs
+  );
+
+  eligible.sort(
+    (a, b) => a.locksAt.getTime() - b.locksAt.getTime()
+  );
+  return eligible.map(status => ({
+    key: status.key,
+    game: status.game,
+    label: status.label,
+    locksAt: status.locksAt,
+    left: status.needed - status.have,
+    soon: status.locksAt.getTime() - nowMs <= SOON_MS
+  }));
 }
