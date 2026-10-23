@@ -48,7 +48,8 @@ export function WhosInCard({ game, tid, eventName, startDate, tour, round, refre
             lockDetail = eventStatusLine({ status: "open", tour: t, startDate, lockAt: at, round: null }, new Date()).detail;
           }
         } catch { /* unknown lock: leave it out */ }
-        try { setView(whosIn(members, needed, eventName, lockDetail)); } catch { setView(null); }
+        const label = game === "rounds" && round ? `Round ${round} of the ${eventName}` : eventName;
+        try { setView(whosIn(members, needed, label, lockDetail)); } catch { setView(null); }
       })
       .catch(() => { if (!cancelled) setView(null); });
     return () => { cancelled = true; };
