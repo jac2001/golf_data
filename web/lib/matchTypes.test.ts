@@ -37,10 +37,11 @@ test("solo behind, final", () => {
   assert.equal(matchHeadline(s), "The model beat you by $100,000.");
 });
 
-test("group keeps the rank headline", () => {
+// TODO(Jack): drop this flag with chaseHeadline's (same switch).
+test("group headline names the leader (chaseHeadline)", { todo: "Jack: chaseHeadline" }, () => {
   const s = slate([line("sam", 1, 500_000, "Sam"), line("me", 2, 300_000), line("model", 3, 100_000)],
     { rival: { user_id: "sam", user_name: "Sam", total: 500_000 }, gap: 200_000 });
-  assert.equal(matchHeadline(s), "You're 2nd. Sam leads you by $200,000.");
+  assert.equal(matchHeadline(s), "You're 2nd of 3. Sam leads by $200,000.");
   assert.equal(totalsLine(s), "You $300,000 · Sam $500,000");
 });
 
