@@ -15,6 +15,7 @@ import { finishNumber } from "@/lib/format";
 import { Show } from "@clerk/nextjs";
 import { Panel, SectionTag, StatStrip, pct, textLink } from "@/components/broadcast";
 import LiveMatchCard from "@/components/LiveMatchCard";
+import Term from "@/components/Term";
 import { useLiveEvents } from "@/lib/useLiveEvents";
 
 const STORY_COLORS: Record<string, string> = {
@@ -34,6 +35,13 @@ function fmtDates(start: string, end: string): string {
     return `${fmt(s)}–${e.getDate()}`;
   } catch { return start; }
 }
+
+/** Why two co-leaders can have different chances, and a golfer behind can rate higher. */
+const LIVE_WIN_HELP = {
+  label: "Live win chance",
+  definition: "The chance he goes on to win from here, from DataGolf's in-play model. It weighs how good each golfer is and how much golf is left, not just today's score, so it moves after every hole.",
+  example: "Conners at −12 can rate above two leaders at −13: one shot is little with two rounds left, and the model rates him the stronger player.",
+};
 
 export default function Home() {
   const [data, setData] = useState<HomeData | null>(null);
@@ -189,7 +197,7 @@ export default function Home() {
               border: "1px solid var(--bc-btn2-line)", color: "var(--bc-btn2-fg)", background: "var(--bc-btn2-bg)", fontWeight: 800,
               textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)", letterSpacing: "0.06em",
               padding: "12px 22px", borderRadius: 4 }}>
-              This week's forecast
+              {h?.is_live ? "Pre-tournament picks & analysis" : "This week's forecast"}
             </Link>
           </div>
         </div>
@@ -212,7 +220,9 @@ export default function Home() {
                 {p.win_prob != null && (
                   <div style={{ textAlign: "right" }}>
                     <div style={{ fontWeight: 900, fontSize: "1.15em" }}>{p.win_prob.toFixed(0)}%</div>
-                    <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)" }}>win chance</div>
+                    <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)" }}>
+                      <Term help={LIVE_WIN_HELP}>win chance</Term>
+                    </div>
                   </div>
                 )}
               </div>

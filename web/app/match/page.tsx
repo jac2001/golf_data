@@ -388,9 +388,14 @@ function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: nu
               ? (s.estimated
                 ? "Final totals, estimated: official prize money wasn't available, so each golfer's final position is paid from the purse's payout table."
                 : "Totals are each golfer's official prize money.")
-              : "Totals use each golfer's current position on the live leaderboard and the purse's payout table, with tied positions sharing the money. They show where things stand now, not a forecast of where they'll finish."}
-            {live && ` Live scores come from ${s.live_source === "pgatour" ? "the PGA TOUR's leaderboard (DataGolf's live feed is down)" : "DataGolf"}${s.data_updated_utc ? ` (last update ${clock(s.data_updated_utc)})` : ""}; this page re-checks every 2 minutes during play${checkedAt ? `, last at ${clock(checkedAt)}` : ""}.`}
+              : "Each golfer earns the payout for his current position; tied golfers share it. Estimates update as the leaderboard changes."}
           </div>
+          {live && (
+            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", lineHeight: 1.5 }}>
+              Source: {s.live_source === "pgatour" ? "the PGA TOUR's leaderboard (DataGolf's live feed is down)" : "DataGolf"}
+              {s.data_updated_utc ? `, updated ${clock(s.data_updated_utc)}` : ""} · rechecked every 2 minutes{checkedAt ? `, last ${clock(checkedAt)}` : ""}.
+            </div>
+          )}
           {s.status === "final" && (
             <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>
               Sunday recap card: Friends → Groups → Share recap.
@@ -409,13 +414,17 @@ function Standings({ s, title }: { s: Slate; title: string }) {
         textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>{title}</div>
       {s.lines.map(l => {
         const isMe = l.user_id === s.me_id, isModel = l.user_id === "model", isRival = l.user_id === s.rival?.user_id;
+        // The rival is the person directly above you (or, when you lead, directly
+        // behind): the headline names the leader, so the badge says which this is.
+        const myRank = s.lines.find(x => x.user_id === s.me_id)?.rank ?? 0;
+        const rivalLabel = l.rank < myRank ? "Next to catch" : "Chasing you";
         return (
           <div key={l.user_id} style={{ display: "flex", gap: 10, alignItems: "baseline", padding: "5px 0", fontSize: "max(var(--fs-min), 0.88em)",
             borderBottom: "1px solid var(--bc-line)" }}>
             <span style={{ width: 22, fontWeight: 900, color: "var(--bc-muted)" }}>{l.rank}</span>
             <span style={{ fontWeight: 800, color: isMe ? "var(--bc-green)" : "var(--bc-text)" }}>{isMe ? "You" : l.user_name}</span>
             {isModel && <span style={tag("var(--bc-line-hi)", "var(--bc-text)")}>Model</span>}
-            {isRival && !isModel && <span style={tag("var(--bc-orange)", "#081f14")}>Rival</span>}
+            {isRival && !isModel && <span style={tag("var(--bc-orange)", "#081f14")}>{rivalLabel}</span>}
             <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1, minWidth: 0 }}>
               {displaySurnames(l.golfers.map(g => g.name)).join(", ")}
             </span>
