@@ -17,3 +17,10 @@
   .sortPicker { display: flex; gap: 6px; align-items: center; margin-bottom: 10px; }
   .clickHint { display: none; }
 }
+
+/* Head-to-Head on phones: pickers and player cards stack (they overflowed
+   side by side: "Corey Conne" / "dler Blanchet", a card cut off). */
+@media (max-width: 600px) {
+  .h2hPickers, .h2hCards { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .h2hVs { display: none !important; }
+}

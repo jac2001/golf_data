@@ -70,6 +70,116 @@ export function matchupVerdict(
   win: { a: number | null; b: number | null; tie: number },
   cats: readonly Category[],
 ): Verdict | null {
-  void nameA; void nameB; void win; void cats;
-  throw new Error("TODO(Jack): matchupVerdict");
+  const isNumber = (value: number | null): value is number => value !== null && Number.isFinite(value);
+  const categoryLeader = (
+  a: number,
+  b: number,
+  tie: number,
+  higherBetter: boolean,
+): Verdict["edge"] => {
+  if (Math.abs(a - b) <= tie) {
+    return "even";
+  }
+
+  const aLeads = higherBetter ? a > b : a < b;
+
+  return aLeads ? "a" : "b";
+  };
+  const comparable = cats.filter(
+  (cat): cat is Category & { a: number; b: number } =>
+    isNumber(cat.a) && isNumber(cat.b)
+  );
+  
+const comparisons = comparable.map(cat => ({
+  ...cat,
+  leader: categoryLeader(cat.a, cat.b, cat.tie, cat.higherBetter),
+}));
+
+const aLeads = comparisons.filter(cat => cat.leader === "a");
+const bLeads = comparisons.filter(cat => cat.leader === "b");
+
+const winKnown = isNumber(win.a) && isNumber(win.b);
+
+if (!winKnown && comparisons.length === 0) {
+  return null;
+}
+let edge: Verdict["edge"];
+
+if (isNumber(win.a) && isNumber(win.b)) {
+  edge = categoryLeader(win.a, win.b, win.tie, true);
+} else if (aLeads.length > bLeads.length) {
+  edge = "a";
+} else if (bLeads.length > aLeads.length) {
+  edge = "b";
+} else {
+  edge = "even";
+}
+  const pct = (value: number): string =>
+  `${(Math.round(value * 1000) / 10).toFixed(1)}%`;
+
+let headline: string;
+
+if (isNumber(win.a) && isNumber(win.b)) {
+  if (edge === "even") {
+    headline = `Too close to call: ${pct(win.a)} vs ${pct(win.b)} to win.`;
+  } else {
+    const leaderName = edge === "a" ? nameA : nameB;
+    const leaderChance = edge === "a" ? win.a : win.b;
+    const otherChance = edge === "a" ? win.b : win.a;
+
+    headline = `${leaderName} has the edge: ${pct(leaderChance)} vs ${pct(otherChance)} to win.`;
+  }
+} else if (edge === "even") {
+  const count = aLeads.length;
+  const categoryWord = count === 1 ? "category" : "categories";
+
+  headline = `Even: ${count} ${categoryWord} each.`;
+} else {
+  const leaderName = edge === "a" ? nameA : nameB;
+  const count = edge === "a" ? aLeads.length : bLeads.length;
+  const categoryWord =
+    comparisons.length === 1 ? "category" : "categories";
+
+  headline = `${leaderName} leads ${count} of ${comparisons.length} ${categoryWord}.`;
+}
+  const reasonFor = (
+  cat: (typeof comparisons)[number],
+  side: "a" | "b",
+): string => {
+  const name = side === "a" ? nameA : nameB;
+  const value = side === "a" ? cat.a : cat.b;
+  const otherValue = side === "a" ? cat.b : cat.a;
+
+  return `${name}: ${cat.say} (${cat.fmt(value)} vs ${cat.fmt(otherValue)})`;
+};
+
+let reasons: string[];
+
+if (edge === "even") {
+  reasons = [
+    ...aLeads.slice(0, 1).map(cat => reasonFor(cat, "a")),
+    ...bLeads.slice(0, 1).map(cat => reasonFor(cat, "b")),
+  ];
+} else {
+  const leaderLeads = edge === "a" ? aLeads : bLeads;
+  const otherLeads = edge === "a" ? bLeads : aLeads;
+  const otherSide = edge === "a" ? "b" : "a";
+  const leaderName = edge === "a" ? nameA : nameB;
+
+  reasons = [
+    ...leaderLeads.slice(0, 2).map(cat => reasonFor(cat, edge)),
+    ...otherLeads.slice(0, 1).map(cat => reasonFor(cat, otherSide)),
+  ];
+
+  if (
+    comparisons.length >= 2 &&
+    leaderLeads.length === comparisons.length
+  ) {
+    reasons.push(`${leaderName} leads every category we compare.`);
+  }
+}
+
+return { edge, headline, reasons };
+  
+
 }

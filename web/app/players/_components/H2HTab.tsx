@@ -3,12 +3,16 @@
 /** Head-to-Head tab: two profiles side by side.
  *  Split out of app/players/page.tsx (Players audit #24, Oct 22). */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { PlayerProfile, getPlayerProfile } from "@/lib/api";
+import { PlayerProfile, getPlayerProfile, getInPlay, type InPlayPlayer } from "@/lib/api";
 import { GOLD, BORDER, CARD_BG, GREEN, MUTED, TEXT, card, fmt, sectionLabel, tint, Notice } from "./shared";
 import { PlayerSelect } from "./PlayerPicker";
 import { MISSING, fmtSigned } from "@/lib/format";
+import { matchupVerdict, type Category } from "@/lib/matchupVerdict";
+import { nameKey } from "@/lib/names";
+import styles from "./players.module.css";
+
 
 
 // ── Head-to-Head tab ─────────────────────────────────────────────────────────
@@ -36,15 +40,22 @@ export function H2HTab({ players }: { players: string[] }) {
 
   const ready = p1 && p2 && !loadingP1 && !loadingP2;
 
+  // This week's live board (PGA): "this week so far" and a suggested matchup.
+  const [live, setLive] = useState<InPlayPlayer[] | null>(null);
+  useEffect(() => {
+    getInPlay().then(d => setLive(d.players ?? null)).catch(() => setLive(null));
+  }, []);
+  const suggest = (live ?? []).filter(p => players.includes(p.player_name)).slice(0, 2);
+
   return (
     <>
       {/* Two selectors */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: 12, alignItems: "center", marginBottom: 24 }}>
+      <div className={styles.h2hPickers} style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: 12, alignItems: "center", marginBottom: 24 }}>
         <div>
           <div style={{ ...sectionLabel, marginBottom: 6 }}>Player 1</div>
           <PlayerSelect players={players} value={p1Name} onChange={handleP1} id="h2h-p1" placeholder="Select player 1…" />
         </div>
-        <div style={{ fontSize: "1.1em", fontWeight: 900, color: "var(--bc-line)", paddingTop: 22 }}>VS</div>
+        <div className={styles.h2hVs} style={{ fontSize: "1.1em", fontWeight: 900, color: "var(--bc-line)", paddingTop: 22 }}>VS</div>
         <div>
           <div style={{ ...sectionLabel, marginBottom: 6 }}>Player 2</div>
           <PlayerSelect players={players} value={p2Name} onChange={handleP2} id="h2h-p2" placeholder="Select player 2…" />
@@ -54,11 +65,21 @@ export function H2HTab({ players }: { players: string[] }) {
       {(loadingP1 || loadingP2) && <Notice kind="loading">Loading…</Notice>}
       {failed && <Notice kind="error">Couldn&apos;t load {failed}&apos;s profile. Pick the golfer again to retry.</Notice>}
 
-      {ready && <H2HView p1={p1!} p2={p2!} />}
+      {ready && <H2HView p1={p1!} p2={p2!} live={live} />}
 
       {!p1Name && !p2Name && (
-        <div style={{ textAlign: "center", padding: "48px 0", color: MUTED, fontSize: "max(var(--fs-min), 0.88em)" }}>
-          Select two players above to compare them head-to-head.
+        <div style={{ textAlign: "center", padding: "40px 0", color: MUTED, fontSize: "max(var(--fs-min), 0.88em)" }}>
+          Pick two golfers above to compare them.
+          {suggest.length === 2 && (
+            <div style={{ marginTop: 14 }}>
+              <button onClick={() => { handleP1(suggest[0].player_name); handleP2(suggest[1].player_name); }} style={{
+                cursor: "pointer", fontFamily: "inherit", fontWeight: 800, padding: "10px 16px", borderRadius: 8,
+                background: "var(--bc-btn2-bg)", color: "var(--bc-btn2-fg)", border: "1px solid var(--bc-btn2-line)",
+              }}>
+                Try this week&apos;s top two: {suggest[0].player_name} vs {suggest[1].player_name}
+              </button>
+            </div>
+          )}
         </div>
       )}
     </>
@@ -68,29 +89,78 @@ export function H2HTab({ players }: { players: string[] }) {
 
 // ── H2H view ──────────────────────────────────────────────────────────────────
 
-function H2HView({ p1, p2 }: { p1: PlayerProfile; p2: PlayerProfile }) {
+function H2HView({ p1, p2, live }: { p1: PlayerProfile; p2: PlayerProfile; live: InPlayPlayer[] | null }) {
   const m1 = p1.our_model;
   const m2 = p2.our_model;
+  const short = (n: string) => n.split(" ").slice(-1)[0];
+
+  // The answer first (Jack's lib/matchupVerdict.ts), then the numbers.
+  const sg = (v: number) => `${v >= 0 ? "+" : ""}${v.toFixed(2)}`;
+  const cats: Category[] = [
+    { say: "better approach play", a: p1.skill_ratings?.app ?? null, b: p2.skill_ratings?.app ?? null, higherBetter: true, tie: 0.05, fmt: sg },
+    { say: "better off the tee", a: p1.skill_ratings?.ott ?? null, b: p2.skill_ratings?.ott ?? null, higherBetter: true, tie: 0.05, fmt: sg },
+    { say: "better around the green", a: p1.skill_ratings?.arg ?? null, b: p2.skill_ratings?.arg ?? null, higherBetter: true, tie: 0.05, fmt: sg },
+    { say: "better putting", a: p1.skill_ratings?.putt ?? null, b: p2.skill_ratings?.putt ?? null, higherBetter: true, tie: 0.05, fmt: sg },
+    { say: "better recent form", a: m1.form_trend ?? null, b: m2.form_trend ?? null, higherBetter: true, tie: 0.05, fmt: sg },
+    { say: "longer off the tee", a: p1.betting_profile?.driving_distance ?? null, b: p2.betting_profile?.driving_distance ?? null,
+      higherBetter: true, tie: 0.5, fmt: v => `${v.toFixed(1)} yd` },
+    { say: "a better world rank", a: m1.world_rank ?? null, b: m2.world_rank ?? null, higherBetter: false, tie: 0.5, fmt: v => `#${Math.round(v)}` },
+  ];
+  let verdict = null;
+  try {
+    verdict = matchupVerdict(short(p1.player_name), short(p2.player_name),
+      { a: m1.win_prob ?? null, b: m2.win_prob ?? null, tie: 0.002 }, cats);
+  } catch { /* the table below still answers */ }
+
+  // This week so far, from the live board (both golfers on it, or nothing).
+  const board = new Map((live ?? []).map(p => [nameKey(p.player_name), p]));
+  const l1 = board.get(nameKey(p1.player_name)), l2 = board.get(nameKey(p2.player_name));
+  const toPar = (v: number | null) => v == null ? "" : v === 0 ? "E" : v > 0 ? `+${v}` : `−${Math.abs(v)}`;
+  const liveLine = (n: string, p: InPlayPlayer) =>
+    `${short(n)} ${p.position ?? ""} ${toPar(p.total_numeric)}${p.today != null ? ` (today ${toPar(p.today)})` : ""}`.replace(/\s+/g, " ").trim();
 
   return (
     <>
-      {/* Header cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 48px 1fr", gap: 0, marginBottom: 20, alignItems: "stretch" }}>
+      {(verdict || (l1 && l2)) && (
+        <div style={{ ...card, marginBottom: 16 }}>
+          {l1 && l2 && (
+            <div style={{ fontSize: "max(var(--fs-min), 0.86em)", color: MUTED, marginBottom: verdict ? 8 : 0 }}>
+              <strong style={{ color: TEXT }}>This week so far:</strong> {liveLine(p1.player_name, l1)} · {liveLine(p2.player_name, l2)}
+            </div>
+          )}
+          {verdict && <>
+            <div style={{ fontWeight: 900, fontSize: "1.15em", lineHeight: 1.3 }}>{verdict.headline}</div>
+            {verdict.reasons.length > 0 && (
+              <ul style={{ margin: "8px 0 0", paddingLeft: 18, color: MUTED, fontSize: "max(var(--fs-min), 0.88em)", lineHeight: 1.5 }}>
+                {verdict.reasons.map(x => <li key={x}>{x}</li>)}
+              </ul>
+            )}
+            {m1.win_prob != null && <div style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.78em)", marginTop: 8 }}>
+              Win chances are our pre-tournament numbers; skills are DataGolf&apos;s ratings.</div>}
+          </>}
+        </div>
+      )}
+
+      {/* Header cards (stacked on phones) */}
+      <div className={styles.h2hCards} style={{ display: "grid", gridTemplateColumns: "1fr 48px 1fr", gap: 0, marginBottom: 20, alignItems: "stretch" }}>
         <H2HHeaderCard profile={p1} accent={GREEN} />
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className={styles.h2hVs} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
           <span style={{ fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 900, color: "var(--bc-line)" }}>VS</span>
         </div>
         <H2HHeaderCard profile={p2} accent={GOLD} />
       </div>
 
-      {/* Comparison grid */}
+      {/* Every number, one tap away. */}
+      <details>
+      <summary style={{ cursor: "pointer", fontWeight: 800, margin: "4px 0 10px", fontSize: "max(var(--fs-min), 0.9em)" }}>
+        Every number side by side
+      </summary>
       <div style={{ ...card, padding: 0, overflow: "hidden" }}>
 
         <H2HSection label="Model Predictions" />
         <H2HRow label="Win %" va={m1.win_prob != null ? m1.win_prob * 100 : null} vb={m2.win_prob != null ? m2.win_prob * 100 : null} fmt=".1f" suffix="%" higherBetter />
         <H2HRow label="Top 10 %" va={m1.top10_prob != null ? m1.top10_prob * 100 : null} vb={m2.top10_prob != null ? m2.top10_prob * 100 : null} fmt=".1f" suffix="%" higherBetter />
         <H2HRow label="Cut %" va={m1.cut_prob != null ? m1.cut_prob * 100 : null} vb={m2.cut_prob != null ? m2.cut_prob * 100 : null} fmt=".0f" suffix="%" higherBetter />
-        <H2HRow label="Our edge vs market" va={m1.model_vs_vegas_edge != null ? m1.model_vs_vegas_edge * 100 : null} vb={m2.model_vs_vegas_edge != null ? m2.model_vs_vegas_edge * 100 : null} fmt="+.1f" suffix="pp" higherBetter />
 
         <H2HSection label="DG Model" />
         <H2HRow label="DG Win %" va={p1.dg_prediction?.win != null ? p1.dg_prediction.win * 100 : null} vb={p2.dg_prediction?.win != null ? p2.dg_prediction.win * 100 : null} fmt=".1f" suffix="%" higherBetter />
@@ -122,6 +192,7 @@ function H2HView({ p1, p2 }: { p1: PlayerProfile; p2: PlayerProfile }) {
         <H2HRow label="Drive Distance" va={p1.betting_profile?.driving_distance} vb={p2.betting_profile?.driving_distance} fmt=".1f" suffix=" yd" higherBetter />
         <H2HRow label="Season Wins" va={p1.betting_profile?.wins} vb={p2.betting_profile?.wins} fmt=".0f" higherBetter />
       </div>
+      </details>
     </>
   );
 }
@@ -162,7 +233,7 @@ function H2HHeaderCard({ profile, accent }: { profile: PlayerProfile; accent: st
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
         {m.odds_to_win != null && (
           <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: MUTED }}>
-            {m.odds_to_win >= 0 ? "+" : ""}{Math.round(m.odds_to_win)}
+            Odds to win {m.odds_to_win >= 0 ? "+" : ""}{Math.round(m.odds_to_win)}
           </span>
         )}
       </div>

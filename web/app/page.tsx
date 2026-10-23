@@ -236,7 +236,13 @@ export default function Home() {
       <div style={{ paddingBottom: 44 }}>
         <StatStrip
           title="Track record"
-          stats={Object.values(data.trust).map(t => ({ value: t.value, label: t.label }))}
+          // Statements that stay true, not counts with a date (the last ones
+          // read "through the 3M Open, Jul 26" three months later).
+          stats={[
+            { value: "Pre-event", label: "every forecast is saved before the first tee shot and graded as it stood" },
+            { value: "10,000", label: "simulated tournaments behind each week's chances" },
+            { value: "Weekly", label: "graded against real results after every event" },
+          ]}
           right={<Link href="/methodology" style={textLink}>
             How it works →</Link>}
         />
