@@ -19,8 +19,11 @@ import { logEvent } from "@/lib/logEvent";
 import SchoolBadge from "@/components/SchoolBadge";
 import ScoreBreakdownPanel from "./_components/ScoreBreakdownPanel";
 import { buildScoreBreakdown } from "@/lib/scoreBreakdown";
-import { displaySurnames } from "@/lib/names";
+import { displaySurnames, nameKey } from "@/lib/names";
 import { College, CollegeGolfer, Group, Match, Slate, collegeHeadline, collegeTotals, golferProgress, isMatch, isSoloVsModel, matchHeadline, money, moneyNote, ordinal, totalsLine } from "@/lib/matchTypes";
+import { getTeeTimes } from "@/lib/api";
+import type { TeeTimeGroup } from "@/lib/api";
+import { roundContext } from "@/lib/roundContext";
 
 const last = (n: string) => n.includes(",") ? n.split(",")[0].trim() : (n.trim().split(/\s+/).pop() ?? n);
 const card: React.CSSProperties = {
@@ -236,7 +239,25 @@ function clock(iso: string): string {
 function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: number | null; groupName: string; checkedAt?: string }) {
   const me = s.lines.find(l => l.user_id === s.me_id);
   const tourLabel = s.tour === "euro" ? "DP World Tour" : "PGA Tour";
-
+  // The next round's tee sheet, for "R2 tees 7:57 AM" between rounds. Hooks
+  // stay above the early returns below (same hooks, same order, every render).
+  const [tees, setTees] = useState<{ round: number; groups: TeeTimeGroup[] } | null>(null);
+  useEffect(() => {
+    if (s.status !== "live") return;
+    let cancelled = false;
+    getTeeTimes().then(d => {
+      // Rule 1 (event provenance): only this event's tee sheet.
+      if (!cancelled && d.round && d.tournament_id?.toUpperCase() === s.tournament_id.toUpperCase()) {
+        setTees({ round: d.round, groups: d.groups });
+      }
+    }).catch(() => {});
+    return () => { cancelled = true; };
+  }, [s.tournament_id, s.status]);
+  const teeCtx = roundContext(null, tees?.groups);
+  const teeFor = (name: string) => {
+    const time = teeCtx.get(nameKey(name))?.teeTime;
+    return tees && time ? { round: tees.round, time } : null;
+  };
   if (s.status === "awaiting") {
     return (
       <div style={card}>
@@ -294,9 +315,9 @@ function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: nu
               <span style={{ fontWeight: 800, width: 40, flexShrink: 0, color: "var(--bc-muted)" }}>{g.position}</span>
               <span style={{ minWidth: 0 }}>
                 <span style={{ fontWeight: 700 }}>{g.name}</span>
-                {golferProgress(g, s.status) && (
+                {golferProgress(g, s.status, teeFor(g.name)) && (
                   <span style={{ display: "block", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)" }}>
-                    {golferProgress(g, s.status)}
+                    {golferProgress(g, s.status, teeFor(g.name))}
                   </span>
                 )}
               </span>

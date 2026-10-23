@@ -55,7 +55,14 @@ test("golfer progress", () => {
   assert.equal(golferProgress(g("12", -6, 2), "live"), "−6 · Thru 12");
   assert.equal(golferProgress(g("F", 0, 3), "live"), "E · Round 3 done");
   assert.equal(golferProgress(g("0", 2, 3), "live"), "+2 · Not started");
+  const tee = { round: 3, time: "9:15 AM" };
+  assert.equal(golferProgress(g("0", 2, 3), "live", tee), "+2 · R3 tees 9:15 AM");
+  assert.equal(golferProgress(g("0", null, 3), "live", tee), "R3 tees 9:15 AM");
+  assert.equal(golferProgress(g("0", null, 3), "live", null), "Not started");
+  assert.equal(golferProgress(g("12", -6, 2), "live", tee), "−6 · Thru 12");
   assert.equal(golferProgress(g("F", -11, 4), "final"), "−11");
+  assert.equal(golferProgress(g("0", -4, 1), "live", { round: 2, time: "7:57 AM" }), "−4 · R2 tees 7:57 AM");
+  assert.equal(golferProgress(g("12", -6, 2), "live", { round: 2, time: "7:57 AM" }), "−6 · Thru 12");   // playing: no tee time
 });
 
 // ── College card ────────────────────────────────────────────────────────
@@ -82,3 +89,4 @@ test("college: tied for first with the model, final", () => {
   const c = college([school("me", "Stanford", 1, 400_000), school("model", "Texas", 1, 400_000, "The Model")], "final");
   assert.equal(collegeHeadline(c), "Stanford shared the school race with Texas (the model).");
 });
+

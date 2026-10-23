@@ -102,14 +102,18 @@ export function moneyNote(s: Slate): string {
 }
 
 /** "−6 · Thru 12" / "E · Round 3 done" / "Not started" for one golfer. */
-export function golferProgress(g: { thru?: string; to_par?: number | null; round?: number | null }, status: Slate["status"]): string {
+export function golferProgress(
+  g: { thru?: string; to_par?: number | null; round?: number | null },
+  status: Slate["status"],
+  tee?: { round: number; time: string } | null,
+): string {
   const par = g.to_par == null ? "" : g.to_par === 0 ? "E" : g.to_par > 0 ? `+${g.to_par}` : `−${Math.abs(g.to_par)}`;
   const t = String(g.thru ?? "").trim().toUpperCase();
   let where = "";
   if (status === "final" || status === "settling") where = "";
   else if (t === "F" || t === "18") where = g.round ? `Round ${g.round} done` : "Round done";
   else if (t && t !== "0" && t !== "-") where = `Thru ${t}`;
-  else where = "Not started";
+  else where = tee ? `R${tee.round} tees ${tee.time}` : "Not started";
   return [par, where].filter(Boolean).join(" · ");
 }
 
