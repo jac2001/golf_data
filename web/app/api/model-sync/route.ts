@@ -40,7 +40,12 @@ type OpenEvent = {
   tournament_id: string; name: string; tour: string; start_date: string;
   purse: number | null; locked: boolean; has_model: boolean;
 };
-type PredRow = Probs & { player_name: string; player_id?: string | null; world_rank?: number | null };
+type PredRow = Probs & { player_name: string; player_id?: string | null; world_rank?: number | null;
+  win_prob_sim?: number | null; top10_prob_sim?: number | null };
+/** The chance members see (simulation when present, as This Week shows): for
+ *  the pick reasons only. The model's decisions still read its own Probs. */
+const shownWin = (p?: PredRow) => p ? (p.win_prob_sim ?? p.win_prob) : null;
+const shownTop10 = (p?: PredRow) => p ? (p.top10_prob_sim ?? p.top10_prob) : null;
 
 /** name -> PGA player_id from this event's predictions, unique names only
  *  (a shared name stores no id and falls back to name matching). */
@@ -199,7 +204,7 @@ export async function GET(req: Request) {
             for (const f of d.players ?? []) form.set(nameKey(f.player_name), f);
           }
         } catch { /* reasons fall back to the win chance and the timing */ }
-        const byWin = preds.filter(p => p.win_prob != null).sort((a, b) => (b.win_prob ?? 0) - (a.win_prob ?? 0));
+        const byWin = preds.filter(p => shownWin(p) != null).sort((a, b) => (shownWin(b) ?? 0) - (shownWin(a) ?? 0));
         const predOf = new Map(preds.map(p => [nameKey(p.player_name), p]));
         const winRank = new Map(byWin.map((p, i) => [nameKey(p.player_name), i + 1]));
 
@@ -236,10 +241,10 @@ export async function GET(req: Request) {
               let why: string | null = null;
               try {
                 why = f ? whyLine({ recent: f.recent, courseStarts: f.event_starts, courseCuts: f.event_cuts,
-                  winProb: p?.win_prob ?? null, top10Prob: p?.top10_prob ?? null, worldRank: p?.world_rank ?? null }) || null : null;
+                  winProb: shownWin(p), top10Prob: shownTop10(p), worldRank: p?.world_rank ?? null }) || null : null;
               } catch { /* no line beats a wrong one */ }
               try {
-                reasons[name] = g ? modelPickReason({ winProb: p?.win_prob ?? null, winRank: winRank.get(key) ?? null, why,
+                reasons[name] = g ? modelPickReason({ winProb: shownWin(p), winRank: winRank.get(key) ?? null, why,
                   nowEv: g.now_ev, usesLeft: usesLeft[key] ?? lg.uses_per_player, future: futures.get(key) ?? [] }) : "";
               } catch {
                 reasons[name] = advice.verdicts[key]?.reason ?? "";   // the older spend/save line

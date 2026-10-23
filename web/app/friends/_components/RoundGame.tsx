@@ -69,8 +69,11 @@ export function RoundGameTab() {
         if (String(d.tournament_id ?? "").toUpperCase() !== selected.toUpperCase()) {
           throw new Error("wrong event");
         }
+        // The published chances (simulation when present), as This Week shows.
         setField((d.players ?? [])
           .filter((r: FieldRow) => r.player_name)
+          .map((r: FieldRow & { win_prob_sim?: number | null; top10_prob_sim?: number | null }) =>
+            ({ ...r, win_prob: r.win_prob_sim ?? r.win_prob, top10_prob: r.top10_prob_sim ?? r.top10_prob }))
           .sort((a: FieldRow, b: FieldRow) => (b.win_prob ?? 0) - (a.win_prob ?? 0)));
       })
       .catch(() =>

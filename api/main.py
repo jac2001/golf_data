@@ -8232,7 +8232,10 @@ def get_home(tour: str = "pga") -> dict:
     board, board_event, board_is_hero = [], None, False
     lp = OUTPUTS_DIR / "latest_predictions.csv"
     if lp.exists():
-        df = pd.read_csv(lp)
+        # The published chances (simulation when present), as on This Week
+        # and Players: the base model ranked Conners 1st at 6.3% while every
+        # other page showed his published 3.4% (Oct 23).
+        df = _published_chances(pd.read_csv(lp))
         board_tid = str(df["tournament_id"].iloc[0]) if len(df) else ""
         board_is_hero = bool(hero and board_tid.upper() == hero["tid"].upper())
         sp26 = DATA_DIR / "raw" / "schedule_2026.csv"
@@ -8300,7 +8303,7 @@ def get_home(tour: str = "pga") -> dict:
 
         for _, r in top.iterrows():
             board.append({
-                "player": str(r["player_name"]),
+                "player": _flip_to_first_last(str(r["player_name"])),   # "Corey Conners", as everywhere else
                 "win_prob": round(float(r["win_prob"]), 4),
                 "top10_prob": round(float(r.get("top10_prob", float("nan"))), 4)
                               if pd.notna(r.get("top10_prob")) else None,

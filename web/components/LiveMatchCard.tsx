@@ -37,7 +37,10 @@ export default function LiveMatchCard({ fallback }: { fallback: React.ReactNode 
   }, []);
 
   if (data === null) return <div style={{ ...shell, minHeight: 120 }} aria-busy="true" />;
-  const slates = data === "none" ? [] : data.slates.filter(s => s.status === "live" && s.lines.length > 0);
+  // Only live events you're actually in: a "You didn't play this one" block
+  // is noise on the home page (Jack, Oct 23).
+  const slates = data === "none" ? [] : data.slates.filter(s =>
+    s.status === "live" && s.lines.some(l => l.user_id === s.me_id));
   if (data === "none" || slates.length === 0) return <>{fallback}</>;
 
   return (
