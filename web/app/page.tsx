@@ -271,7 +271,9 @@ export default function Home() {
       </div>
 
       {/* ── Storylines ───────────────────────────────────────────────────── */}
-      {data.storylines.length > 0 && (
+      {/* Pre-event stories ("the field's hottest player") step aside during
+          play; the live leaders tell the story then (Jack, Oct 23). */}
+      {data.storylines.length > 0 && !h?.is_live && (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
                       gap: 20, paddingBottom: 30 }}>
           {data.storylines.map(s => (
