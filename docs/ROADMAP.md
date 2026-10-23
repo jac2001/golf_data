@@ -200,6 +200,17 @@ height on phones. In order (each its own commit, preview-verified at 375px):
 edge 100x too small; H2H "Season Wins" shows top-10s; missing data shown as 0 / World #500;
 the AI synopsis shows Anthropic's billing error. Work in the audit's suggested order.
 
+## Let It Ride advice: best events instead of spend/save (Jack's idea, Oct 23)
+
+Spend/save is a yes/no built on far-off estimates; it flips on small gaps
+and once argued against a pick the model made (Kohles, Bermuda). Show each
+golfer's best events left instead ("Conners: Bermuda $127K, Cognizant
+$132K, WM Phoenix $122K; you have 3 uses") and let the member decide.
+Presentation only: advice_values.py and contestedFutures stay as they are.
+- [x] The Model's saved reasons use it (Jack's lib/pickReason.ts, Oct 23; from Mexico on).
+- [ ] Jack: the pure "rank this golfer's events" helper (scaffold first).
+- [ ] Replace the Spend/Save tags in Let It Ride's field list with it.
+
 ## Match Center scoring clarity (Jack requested, Oct 22)
 
 - [x] (Oct 23, Jack) `web/lib/scoreBreakdown.ts` — Jack implemented the presentation
