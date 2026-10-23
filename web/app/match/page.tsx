@@ -314,6 +314,29 @@ function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: nu
           {s.beating_model} of {s.humans} players {s.status === "final" ? "beat" : "are beating"} the model.
         </div>
       )}
+      {(() => {
+        // Why The Model picked its golfers (saved with its picks; shown only
+        // after lock, when picks are revealed). Visible, not buried in details.
+        const model = s.lines.find(l => l.user_id === "model");
+        const why = model?.golfers.filter(g => g.reason) ?? [];
+        return why.length ? (
+          <details style={{ marginTop: 10 }}>
+            <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)" }}>
+              Why The Model picked {displaySurnames(why.map(g => g.name)).join(", ")}
+            </summary>
+            {why.map(g => (
+              <div key={g.name} style={{ fontSize: "max(var(--fs-min), 0.86em)", padding: "6px 0", lineHeight: 1.45,
+                borderBottom: "1px solid var(--bc-line)" }}>
+                <div style={{ fontWeight: 700 }}>
+                  {g.name}
+                  <span style={{ color: "var(--bc-muted)", fontWeight: 600 }}> · {g.position} · {money(g.earnings)}</span>
+                </div>
+                <div style={{ color: "var(--bc-muted)" }}>{g.reason}</div>
+              </div>
+            ))}
+          </details>
+        ) : null;
+      })()}
       {/* Chirps after the score and standings: the score is what you came for. */}
       {groupId && <ChirpThread groupId={groupId} slate={s} />}
 
@@ -338,22 +361,7 @@ function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: nu
             </div>
           )}
           {solo && <Standings s={s} title="You vs. the model" />}
-          {(() => {
-            // The model's own spend/save reasoning — saved with its picks,
-            // visible here only after lock (reveal-at-lock hides them before).
-            const why = s.lines.find(l => l.user_id === "model")?.golfers.filter(g => g.reason) ?? [];
-            return why.length ? (
-              <div>
-                <div style={label}>Why the model picked them</div>
-                {why.map(g => (
-                  <div key={g.name} style={{ fontSize: "max(var(--fs-min), 0.86em)", padding: "3px 0" }}>
-                    <span style={{ fontWeight: 700 }}>{g.name}</span>
-                    <span style={{ color: "var(--bc-muted)" }}> — {g.reason}</span>
-                  </div>
-                ))}
-              </div>
-            ) : null;
-          })()}
+
           <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.5 }}>
             {s.status === "final"
               ? (s.estimated

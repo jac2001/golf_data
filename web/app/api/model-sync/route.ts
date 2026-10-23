@@ -28,7 +28,9 @@ import { cronUnauthorized } from "@/lib/cronAuth";
 import { getSql, MODEL_API } from "@/lib/db";
 import { resultKey } from "@/lib/resultKey";
 import { modelCollegePick, modelFadePicks, modelLetItRidePick, modelRoundPick, Probs } from "@/lib/modelBrain";
-import { adviseSlate, GolferValue } from "@/lib/advice";
+import { adviseSlate, contestedFutures, GolferValue } from "@/lib/advice";
+import { modelPickReason } from "@/lib/pickReason";
+import { whyLine } from "@/lib/whyLine";
 import { nameKey } from "@/lib/names";
 
 const MODEL_ID = "model";
@@ -187,6 +189,20 @@ export async function GET(req: Request) {
           return v;
         }
 
+        // For the pick reasons (Jack's lib/pickReason.ts): this event's golfer
+        // facts (Jack's whyLine) and each golfer's win-chance rank.
+        const form = new Map<string, { recent: (number | "MC")[]; event_starts: number; event_cuts: number }>();
+        try {
+          const res = await fetch(`${MODEL_API}/api/golfer-form?tournament_id=${tid}`, { cache: "no-store" });
+          const d = res.ok ? await res.json() : null;
+          if (d && String(d.tournament_id ?? "").toUpperCase() === tid) {   // rule 1: this event's facts only
+            for (const f of d.players ?? []) form.set(nameKey(f.player_name), f);
+          }
+        } catch { /* reasons fall back to the win chance and the timing */ }
+        const byWin = preds.filter(p => p.win_prob != null).sort((a, b) => (b.win_prob ?? 0) - (a.win_prob ?? 0));
+        const predOf = new Map(preds.map(p => [nameKey(p.player_name), p]));
+        const winRank = new Map(byWin.map((p, i) => [nameKey(p.player_name), i + 1]));
+
         for (const lg of leagues) {
           // Per-tour budgets ('tour' scope): a DPWT use can only be spent on
           // the DPWT, so only this tour's future purses compete for it.
@@ -212,7 +228,23 @@ export async function GET(req: Request) {
           if (values) {
             const advice = adviseSlate(values, usesLeft, lg.uses_per_player, lg.players_per_week);
             slate = advice.slate;
-            for (const name of slate) reasons[name] = advice.verdicts[nameKey(name)]?.reason ?? "";
+            const futures = contestedFutures(values, lg.players_per_week);
+            for (const name of slate) {
+              const key = nameKey(name);
+              const g = values.find(v => v.key === key);
+              const p = predOf.get(key), f = form.get(key);
+              let why: string | null = null;
+              try {
+                why = f ? whyLine({ recent: f.recent, courseStarts: f.event_starts, courseCuts: f.event_cuts,
+                  winProb: p?.win_prob ?? null, top10Prob: p?.top10_prob ?? null, worldRank: p?.world_rank ?? null }) || null : null;
+              } catch { /* no line beats a wrong one */ }
+              try {
+                reasons[name] = g ? modelPickReason({ winProb: p?.win_prob ?? null, winRank: winRank.get(key) ?? null, why,
+                  nowEv: g.now_ev, usesLeft: usesLeft[key] ?? lg.uses_per_player, future: futures.get(key) ?? [] }) : "";
+              } catch {
+                reasons[name] = advice.verdicts[key]?.reason ?? "";   // the older spend/save line
+              }
+            }
           } else {
             slate = modelLetItRidePick(preds, ev.purse, usesLeft, lg.uses_per_player,
                                        lg.players_per_week, upcoming);

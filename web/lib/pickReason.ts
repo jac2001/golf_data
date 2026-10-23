@@ -54,6 +54,38 @@ export const k = (v: number) =>
 // Joined with one space. Hint: build the two parts separately, then join.
 
 export function modelPickReason(input: PickReasonInput): string {
-  void input;
-  throw new Error("TODO(Jack): modelPickReason");
+  let golferCase = "";
+  const hasWinChance = input.winProb !== null && input.winProb > 0 && input.winProb <= 1;
+  if (hasWinChance && input.winProb !== null && input.winRank === 1) {
+    const n = Math.round(1 / input.winProb);
+    golferCase = `Model's top pick: about a 1 in ${n} chance to win.`;
+  } else if (input.why) {
+    golferCase = `${input.why}.`;
+  } else if (hasWinChance && input.winProb !== null) {
+    const n = Math.round(1 / input.winProb);
+    golferCase = `About a 1 in ${n} chance to win.`;
+  }
+  const future = [...input.future].sort((a, b) => b.ev - a.ev);
+
+  const rank =
+    1 + future.filter(event => event.ev > input.nowEv).length;
+  let timing: string;
+
+if (rank === 1) {
+  const bestFuture = future[0];
+
+  timing = bestFuture
+    ? `His best event left: about ${k(input.nowEv)} expected, ahead of ${bestFuture.name} (${k(bestFuture.ev)}).`
+    : `His best event left: about ${k(input.nowEv)} expected.`;
+} else if (rank <= input.usesLeft) {
+  const bestFuture = future[0];
+
+  timing = `One of his ${input.usesLeft} best events left: about ${k(input.nowEv)} expected (best: ${k(bestFuture.ev)} at ${bestFuture.name}).`;
+} else {
+  const displaced = future[input.usesLeft - 1];
+
+  timing = `Worth more at ${displaced.name} (${k(displaced.ev)}), but still one of this week's best uses.`;
+}
+
+return [golferCase, timing].filter(Boolean).join(" ");
 }
