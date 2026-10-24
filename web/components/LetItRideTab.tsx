@@ -12,6 +12,7 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getEventField, getGolferForm, getPredictions, OpenEvent } from "@/lib/api";
+import { shown as publishedChances } from "@/lib/published";
 import { whyLine } from "@/lib/whyLine";
 import { helpMePick } from "@/lib/helpMePick";
 import type { Candidate, Suggestion } from "@/lib/helpMePick";
@@ -393,7 +394,8 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
       getPredictions(200, ev.tournament_id).catch(() => null),
       getGolferForm(ev.tournament_id).catch(() => ({ players: [] })),
     ]).then(([f, p, form]) => {
-      const pred = new Map((p?.players ?? []).map(x => [nameKey(x.player_name), x]));
+      // The published chances, as This Week shows (lib/published.ts).
+      const pred = new Map((p?.players ?? []).map(x => [nameKey(x.player_name), publishedChances(x)]));
       const facts = new Map(form.players.map(x => [nameKey(x.player_name), x]));
       const names = f.players.length ? f.players : (p?.players ?? []).map(x => x.player_name);
       setField(names.map(n => {

@@ -9,6 +9,8 @@
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { roundLockAt } from "@/lib/lockTime";
+import { shown } from "@/lib/published";
+
 
 export async function GET(req: Request) {
   const { userId } = await auth();
@@ -89,8 +91,10 @@ export async function GET(req: Request) {
           if (p.ok) {
             const d = await p.json();
             if (String(d.tournament_id ?? "").toUpperCase() === tid.toUpperCase()) {
-              why = new Map((d.players ?? []).map((r: { player_name: string; win_prob: number | null }) =>
-                [r.player_name, r.win_prob != null ? `${(r.win_prob * 100).toFixed(1)}% to win` : ""]));
+              why = new Map((d.players ?? []).map((raw: { player_name: string; win_prob: number | null; win_prob_sim?: number | null }) => {
+                const r = shown(raw);   // the published chance, as This Week shows
+                return [r.player_name, r.win_prob != null ? `${(r.win_prob * 100).toFixed(1)}% to win` : ""];
+              }));
             }
           }
         } catch { /* moves still listed, just without numbers */ }

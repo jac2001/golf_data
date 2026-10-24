@@ -13,6 +13,7 @@ import Link from "next/link";
 import { PageHead } from "@/components/broadcast";
 import { Show } from "@clerk/nextjs";
 import { getPredictions, getOpenEvents, getEventEarnings, getDemoChallenges, DemoChallenge, PlayerPrediction, EarningsTable } from "@/lib/api";
+import { shown } from "@/lib/published";
 import { expectedPayout } from "@/lib/modelBrain";
 import { lookupResult } from "@/lib/resultLookup";
 
@@ -55,7 +56,7 @@ export default function HowToPlayPage() {
     setMode("history");
     setChallenge(tid);
     setEventName(name);
-    setField((preds.players ?? []).filter(p => p.player_name));
+    setField((preds.players ?? []).filter(p => p.player_name).map(shown));
     setEarnings(earn);
     setPicks([]);
     setRevealed(false);
@@ -77,7 +78,7 @@ export default function HowToPlayPage() {
       try {
         const o = await getOpenEvents();
         const d = await getPredictions(20);
-        setField((d.players ?? []).filter(p => p.player_name));
+        setField((d.players ?? []).filter(p => p.player_name).map(shown));
         const ev = (o.events ?? []).find(e => e.tournament_id.toUpperCase() === String(d.tournament_id ?? "").toUpperCase());
         if (ev?.purse) setPurse(ev.purse);
         setEventName(ev?.name ?? "");
