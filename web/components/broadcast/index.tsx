@@ -22,8 +22,10 @@ export function PageHead({ kicker, title, right, zone = "public" }: {
 }) {
   const z = Z[zone];
   return (
-    <div style={{ display: "flex", alignItems: "flex-end", gap: 24, padding: "34px 0 18px" }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+    // Wraps on a phone: the right-hand control drops below the title instead
+    // of squeezing the kicker into a narrow column (Live wrapped to 5 lines).
+    <div style={{ display: "flex", alignItems: "flex-end", gap: "12px 24px", padding: "34px 0 18px", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6, flex: "1 1 260px", minWidth: 0 }}>
         <div style={{ fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 700, letterSpacing: "0.16em",
                       textTransform: "uppercase", color: z.muted }}>{kicker}</div>
         <div style={{ fontWeight: 900, fontStretch: "118%", fontSize: "2.6em",
