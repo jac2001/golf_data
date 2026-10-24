@@ -45,6 +45,23 @@ accuracy and data permissions continue regardless.)
 
 ---
 
+## Oct 24 site-audit learning scaffold
+
+- [x] (Oct 24, Jack) `web/lib/recommendationState.ts` passes its 9 tests.
+      Left: Jack's extra test (unknown market state: archived after the
+      cutoff, unavailable before); then the workbook's section 4 (real timing
+      metadata from the producer, server enforcement, Betting Board wiring).
+- [x] Workbook #2 (b6acedf): Odds and Our edge read the opening line once play starts.
+- [x] Workbook #5 (f16bfa6): one live round label on This Week, Live and Betting.
+- [x] Workbook #6 (ada4f69): WD/DQ have no rank change; a missed cut counts at the cut line.
+- [x] Workbook #10 (d999cf5): tee times label their time zone, rank and chances.
+- [x] Workbook #12 (1556bf8): Home's matchup card has a skeleton and an error state.
+- [x] Fade (da61ca1, Jack's calls): pre-tee-off WDs are void (the slot counts as the
+      member's average); everyone tied at 20th is in the pool.
+- [ ] Remaining workbook rows: #3 results by date, #4 weather to event dates, #7 Round
+      pick first on phones, #8 simpler profiles, #9 Live header on phones, #11 How to Play
+      vs real scoring. Recheck each before editing.
+
 ## Audit first (Oct 20): the roadmap is paused until Phase A is done
 
 Source: `Golf-Edge-Legacy-Code-Audit-2026-10-20.md` (18 findings; every P1
