@@ -309,9 +309,15 @@ export default function PredictionsPage() {
       )}
 
       {/* ── Weather strip ────────────────────────────────────────────────── */}
-      {activeTab === "field" && weather && weather.days.length > 0 && (
-        <WeatherStrip days={weather.days} savedAt={weather.saved_at} />
-      )}
+      {activeTab === "field" && weather && weather.days.length > 0 && (<>
+        <WeatherStrip days={weather.days} savedAt={weather.saved_at}
+          credit={weather.source === "open-meteo" ? { label: "Open-Meteo.com", href: "https://open-meteo.com/" } : undefined} />
+        {weather.coverage === "partial" && (
+          <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", marginTop: 4 }}>
+            The forecast doesn&apos;t reach every tournament day yet; the rest appear as they come into range.
+          </div>
+        )}
+      </>)}
 
       {/* ── Weekly narrative ─────────────────────────────────────────────── */}
       {activeTab === "field" && preds && (

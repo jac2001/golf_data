@@ -7458,37 +7458,147 @@ def rate_chat(body: RateRequest):
     return {"ok": True}
 
 
+def _schedule_row(tid: str) -> dict | None:
+    """This PGA event's schedule row (dates, coordinates), or None."""
+    for sp in sorted((DATA_DIR / "raw").glob("schedule_2*.csv")):
+        try:
+            s = pd.read_csv(sp)
+        except Exception:
+            continue
+        row = s[s["tournament_id"].astype(str).str.upper() == tid.upper()]
+        if len(row):
+            return row.iloc[0].to_dict()
+    return None
+
+
+_WMO = {0: "DAY_SUNNY", 1: "DAY_MOSTLY_SUNNY", 2: "DAY_PARTLY_CLOUDY", 3: "CLOUDY", 45: "FOG", 48: "FOG",
+        95: "THUNDERSTORMS", 96: "THUNDERSTORMS", 99: "THUNDERSTORMS"}
+
+
+def _openmeteo_event_days(tid: str, sched: dict) -> list[dict] | None:
+    """PGA weather from Open-Meteo at the course's coordinates, for exactly
+    the event's dates (the DP World Tour already uses it; it replaces the PGA
+    TOUR feed, whose lows were wrong). Cached 3 hours. None on any failure,
+    so the caller falls back to the PGA TOUR feed."""
+    lat, lon = sched.get("latitude"), sched.get("longitude")
+    if lat is None or lon is None or pd.isna(lat) or pd.isna(lon):
+        return None
+    cache = DATA_DIR / "weather" / f"{tid}_openmeteo_pga.json"
+    try:
+        if cache.exists() and time.time() - cache.stat().st_mtime < 3 * 3600:
+            return json.load(open(cache)) or None
+        import requests as _rq
+        fc = _rq.get("https://api.open-meteo.com/v1/forecast", params={
+            "latitude": float(lat), "longitude": float(lon),
+            "daily": "weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,"
+                     "wind_speed_10m_max,wind_direction_10m_dominant",
+            "temperature_unit": "fahrenheit", "wind_speed_unit": "mph", "timezone": "auto",
+            "start_date": str(sched["start_date"])[:10], "end_date": str(sched["end_date"])[:10],
+        }, timeout=10).json()
+        d = fc.get("daily") or {}
+        compass = ["North", "North East", "East", "South East", "South", "South West", "West", "North West"]
+        fetched = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+        out = []
+        for n, date in enumerate(d.get("time", [])):
+            hi, lo = d["temperature_2m_max"][n], d["temperature_2m_min"][n]
+            if hi is None:
+                continue   # beyond the forecast horizon: left out, never filled in
+            code = d["weather_code"][n]
+            cond = _WMO.get(code) or ("RAIN" if code in range(51, 68) or code in range(80, 83)
+                                      else "SNOW" if code in range(71, 78) or code in (85, 86) else "CLOUDY")
+            deg = d["wind_direction_10m_dominant"][n]
+            out.append({
+                "day": pd.Timestamp(date).strftime("%a"), "date": date, "condition": cond,
+                "wind_mph": str(round(d["wind_speed_10m_max"][n])) if d["wind_speed_10m_max"][n] is not None else "",
+                "wind_dir": compass[int(((deg + 22.5) % 360) // 45)] if deg is not None else "",
+                "precip_pct": f"{d['precipitation_probability_max'][n]}%" if d["precipitation_probability_max"][n] is not None else "",
+                "humidity": "", "high_f": f"{round(hi)}°F", "low_f": f"{round(lo)}°F" if lo is not None else "",
+                "_fetched": fetched,
+            })
+        if out:
+            cache.parent.mkdir(parents=True, exist_ok=True)
+            json.dump(out, open(cache, "w"))
+        return out or None
+    except Exception as e:
+        print(f"open-meteo weather {tid}: {e}")
+        return None
+
+
 @app.get("/api/weather")
 def get_weather() -> dict:
-    """Thu–Sun forecast from data/weather/{tid}.json (written by scheduler)."""
+    """The event days' forecast: Open-Meteo at the course (PGA weather moved
+    off the PGA TOUR feed, Oct 24), else the PGA TOUR file, dated and limited
+    to the event's own dates. `coverage` says full/partial; never filled in."""
     _freshen("weather")
     tid = _get_tournament_id()
     path = DATA_DIR / "weather" / f"{tid}.json"
-    if not path.exists():
-        raise HTTPException(status_code=404, detail="No weather data for this tournament")
+    raw: dict = {}
+    if path.exists():
+        with open(path) as f:
+            raw = json.load(f)
 
-    with open(path) as f:
-        raw = json.load(f)
+    # Only the EVENT'S OWN dates (audit #4): days were matched by weekday name
+    # ("Thu".."Sun"), so a forecast saved a week out or running past Sunday
+    # could put next week's days in this week's strip. Each PGA-feed day is
+    # dated from when the forecast was saved, then kept only inside the
+    # schedule's start..end dates.
+    sched = _schedule_row(tid)
+    start = pd.to_datetime(sched.get("start_date"), errors="coerce") if sched else pd.NaT
+    end = pd.to_datetime(sched.get("end_date"), errors="coerce") if sched else pd.NaT
 
-    ROUND_DAYS = {"Thu", "Fri", "Sat", "Sun"}
+    om = _openmeteo_event_days(tid, sched) if sched else None
+    if om:
+        expected = (end - start).days + 1 if pd.notna(start) and pd.notna(end) else len(om)
+        return {"tournament_id": tid, "saved_at": om[0].get("_fetched", ""), "source": "open-meteo",
+                "coverage": "full" if len(om) >= expected else "partial",
+                "days": [{k: v for k, v in d.items() if k != "_fetched"} for d in om]}
 
-    def _parse_day(d: dict) -> dict:
+    def _parse_day(d: dict, date) -> dict:
         temp = d.get("temperature", {})
         return {
             "day":         d.get("title", ""),
+            "date":        date.strftime("%Y-%m-%d") if date is not None else "",
             "condition":   d.get("condition", ""),
             "wind_mph":    d.get("windSpeedMPH", ""),
             "wind_dir":    d.get("windDirection", "").replace("_", " ").title(),
             "precip_pct":  d.get("precipitation", ""),
             "humidity":    d.get("humidity", ""),
             "high_f":      temp.get("maxTempF", ""),
-            "low_f":       temp.get("minTempF", ""),
+            # The PGA TOUR feed's lows are wrong (Bermuda, Oct 2026: 44-51°F
+            # against Open-Meteo's 72-77°F; highs agree), so none are shown.
+            "low_f":       "",
         }
 
-    days = [_parse_day(d) for d in raw.get("daily", []) if d.get("title") in ROUND_DAYS]
+    saved = pd.to_datetime(raw.get("saved_at", ""), errors="coerce")
+    daily = raw.get("daily", [])
+    days = []
+    if pd.notna(saved) and pd.notna(start) and pd.notna(end) and daily and daily[0].get("title"):
+        # The feed's first day is the first date on/after the save date with
+        # that weekday name (it can start the day after saving); titles then
+        # confirm every following day. Older files stored saved_at without a
+        # zone, so only the calendar date is used.
+        saved_day = (saved.tz_convert("America/New_York").tz_localize(None) if saved.tzinfo else saved).normalize()
+        names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        if daily[0]["title"] in names:
+            offset = (names.index(daily[0]["title"]) - saved_day.weekday()) % 7
+        else:
+            offset = None
+        first = saved_day + pd.Timedelta(days=offset) if offset is not None else None
+        for k, d in enumerate(daily if first is not None else []):
+            date = first + pd.Timedelta(days=k)
+            if d.get("title") and d["title"] != date.strftime("%a"):
+                days = []   # titles and dates disagree: don't guess
+                break
+            if start <= date <= end:
+                days.append(_parse_day(d, date))
+    if not days and not raw:
+        raise HTTPException(status_code=404, detail="No weather data for this tournament")
+    expected = (end - start).days + 1 if pd.notna(start) and pd.notna(end) else 4
     return {
         "tournament_id": tid,
         "saved_at":      raw.get("saved_at", ""),
+        "source":        "pgatour",
+        "coverage":      "full" if len(days) >= expected else ("partial" if days else "none"),
         "days":          days,
     }
 

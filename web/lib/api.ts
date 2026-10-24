@@ -1001,6 +1001,10 @@ export type WeatherDay = {
 export type WeatherResponse = {
   tournament_id: string;
   saved_at: string;
+  /** "open-meteo" (PGA weather since Oct 24) or "pgatour" (the fallback). */
+  source?: string;
+  /** "full" when every event day has a forecast; "partial" when some don't yet. */
+  coverage?: "full" | "partial" | "none";
   days: WeatherDay[];
 };
 

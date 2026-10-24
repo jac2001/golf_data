@@ -167,7 +167,7 @@ Power rankings: dropped Oct 20 (nothing used them).
 | `fetch_tournament_stats`, `fetch_form_stats` | `historical-raw-data/rounds` (SG by round) | Some events have no SG (`sg_categories: no`, e.g. Baycurrent). Model features: January retrain. |
 | `fetch_tee_times`, `fetch_withdrawals` | `field-updates` | Already pulled every refresh. Verify tee times are present for both rounds. |
 | `fetch_world_rankings` | DG rankings (OWGR column) | Verify the field. |
-| PGA weather | Open-Meteo | Already used for DP World Tour. |
+| PGA weather | Open-Meteo | Done Oct 24: /api/weather reads Open-Meteo at the schedule's coordinates for the event's dates (the PGA TOUR feed's lows were wrong: Bermuda 44-51°F vs 72-77°F). The PGA TOUR file is the fallback, without lows. CC BY credit shown. |
 | `fetch_live_leaderboard` (settlement) | DG live stats for positions; DG `historical-event-data/events` for official earnings | Corrected Oct 21: DataGolf now has official PGA TOUR earnings per player (`historical-event-data/events`, "Event Finishes, Earnings & Points", PGA only, 2025-26; our Scratch Plus key returns it, e.g. Baycurrent 2026 posted by Oct 21). Not used for display. Settlement still estimates from the schedule purse; Baycurrent ($6M) and Biltmore ($6M) were corrected Oct 21 to $8M / $5M, read off the winner's official 18% share. Using DG earnings would be a new public display of DG data: check DG's display terms (Summary row) first. |
 | `fetch_hole_scores` | none | Per-player hole scores exist only at PGA TOUR (Live scorecard grid). |
 | `fetch_player_colleges` | none | College Game needs it. |
