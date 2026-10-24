@@ -103,6 +103,10 @@ export function whyLine(g: GolferFacts): string {
   if (g.courseStarts >= MIN_COURSE_STARTS && g.courseCuts === g.courseStarts) return `Made the cut at this event ${g.courseCuts} of ${g.courseStarts} times`;
   if (n >= MIN_RECENT_STARTS && missed >= COLD_MISSES) return `Missed ${missed} of his last ${n} cuts`;
   if (g.winProb !== null && g.winProb >= FAVORITE_WIN) return `Model favorite: about a ${oneIn(g.winProb)} chance`;
-  if (g.winProb !== null && g.winProb < LONG_SHOT_WIN) return `Long shot: about a ${oneIn(g.winProb)} chance to win`;
+  if (g.winProb !== null && g.winProb < LONG_SHOT_WIN) {
+    // A chance that rounds to 0 has no "1 in N": it printed "a null chance" (Oct 23).
+    const odds = oneIn(g.winProb);
+    return odds ? `Long shot: about a ${odds} chance to win` : "Long shot: a very small chance to win";
+  }
   return "";
 }

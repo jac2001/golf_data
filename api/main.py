@@ -2060,6 +2060,8 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
         if dg:
             entry["odds_to_win"] = dg["odds_to_win"]
             entry["dk_odds_direction"] = dg["dk_odds_direction"]
+        published = entry.get("win_prob_sim") if entry.get("win_prob_sim") is not None else entry.get("win_prob")
+        entry["model_vs_vegas_edge"] = _edge_from_market(published, dg.get("market_prob") if dg else None)
         records.append(entry)
 
     # Actual field size from DG /field-updates (reuse tee-times cache if
@@ -2150,8 +2152,25 @@ def _dg_odds_for(tid: str) -> dict[str, dict]:
                 move = odds_move(open_prob.get(k), float(r["implied_prob"]))
             except Exception:
                 move = None   # until Jack's odds_move is in, no Move column
-        out[k] = {"odds_to_win": american, "dk_odds_direction": move}
+        try:
+            market = float(r["implied_prob"])
+        except (TypeError, ValueError):
+            market = None
+        out[k] = {"odds_to_win": american, "dk_odds_direction": move, "market_prob": market}
     return out
+
+
+def _edge_from_market(win_prob, market_prob):
+    """'Our edge' = our published chance minus DataGolf's consensus chance:
+    the SAME market as the odds shown beside it. The pipeline's edge came
+    from an older market source (2.66% for Conners when DataGolf's
+    consensus said 3.47%). None when either is unknown: no edge beats a
+    wrong one."""
+    try:
+        w, m = float(win_prob), float(market_prob)
+    except (TypeError, ValueError):
+        return None
+    return round(w - m, 6) if w == w and m == m else None
 
 
 def _live_board_files(tid: str) -> tuple[Path | None, dict]:
@@ -3557,7 +3576,9 @@ def get_tee_times() -> dict:
     rank_map: dict = {}
     pred_path = OUTPUTS_DIR / "latest_predictions.csv"
     if pred_path.exists():
-        preds = pd.read_csv(pred_path)
+        # The published chances (simulation when present), as This Week's Field
+        # shows: tee-time cards read the base model and disagreed (Oct 23).
+        preds = _published_chances(pd.read_csv(pred_path))
         preds = preds.sort_values("win_prob", ascending=False).reset_index(drop=True)
         preds["model_rank"] = preds.index + 1
         for col in ["win_prob", "top10_prob", "world_rank", "form_trend",
@@ -3583,8 +3604,9 @@ def get_tee_times() -> dict:
             rank_map[_flip_name(raw_name)] = entry
 
 
-    # Group by tee time
-    groups: dict[str, list] = {}
+    # Group by tee time AND starting hole: rounds 3-4 send threesomes off the
+    # 1st and 10th at the same minute, and one card held both (Oct 23).
+    groups: dict[tuple, list] = {}
     for row in rows:
         tt = str(row.get("tee_time_str") or row.get("tee_time_local") or "").strip()
         if not tt or tt == "nan":
@@ -3606,7 +3628,7 @@ def get_tee_times() -> dict:
             "edge":        pinfo.get("edge"),
             "drift":       pinfo.get("drift", ""),
         }
-        groups.setdefault(tt, []).append(player)
+        groups.setdefault((tt, row.get("start_tee") or 1), []).append(player)
 
     # Sort by tee time string, then sort players within each group by model rank
     def _tt_sort_key(tt: str) -> tuple:
@@ -3624,9 +3646,10 @@ def get_tee_times() -> dict:
     sorted_groups = [
         {
             "tee_time": tt,
+            "start_tee": start,
             "players":  sorted(players, key=lambda p: p["model_rank"] or 999),
         }
-        for tt, players in sorted(groups.items(), key=lambda x: _tt_sort_key(x[0]))
+        for (tt, start), players in sorted(groups.items(), key=lambda x: (_tt_sort_key(x[0][0]), x[0][1]))
     ]
 
     result = {"tournament_id": tid, "round": round_num, "groups": sorted_groups, "field_size": total_players}
@@ -5435,6 +5458,7 @@ def get_player_profile(player: str) -> dict:
     dg = dg_odds.get(_name_key(_flip_to_last_first(player))) or dg_odds.get(_name_key(player))
     our_model["odds_to_win"] = dg["odds_to_win"] if dg else None
     our_model["dk_odds_direction"] = dg["dk_odds_direction"] if dg else None
+    our_model["model_vs_vegas_edge"] = _edge_from_market(our_model.get("win_prob"), dg.get("market_prob") if dg else None)
 
     # No uses / badge / recommendation / EV here (Players audit #1): they were
     # Jack's personal tracker and the dead strategy file, served to anyone.

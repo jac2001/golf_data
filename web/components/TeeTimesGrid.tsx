@@ -45,7 +45,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: 10 }}>
         {data.groups.map(group => {
           return (
-            <div key={group.tee_time} style={{
+            <div key={`${group.tee_time}-${group.start_tee ?? group.players[0]?.start_tee ?? 1}`} style={{
               background: "var(--bc-panel)",
               border: "1px solid var(--bc-line)",
               borderRadius: 8, overflow: "hidden",
@@ -61,9 +61,9 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                   {group.tee_time}
                 </span>
                 <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                  {group.players[0]?.start_tee && (
+                  {(group.start_tee ?? group.players[0]?.start_tee) && (
                     <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min-xs), 0.68em)" }}>
-                      Hole {group.players[0].start_tee}
+                      Hole {group.start_tee ?? group.players[0].start_tee}
                     </span>
                   )}
                 </div>

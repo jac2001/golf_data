@@ -125,3 +125,8 @@ test("a long shot beats a cold streak (decision a)", () => {
 test("a contender is never called a long shot", () => {
   assert.doesNotMatch(whyLine(g({ winProb: 0.048 })), /long shot/i);
 });
+
+test("a zero win chance never prints 'null'", () => {
+  const line = whyLine({ recent: [], courseStarts: 0, courseCuts: 0, winProb: 0, top10Prob: null, worldRank: null });
+  assert.ok(!line.includes("null"), line);
+});

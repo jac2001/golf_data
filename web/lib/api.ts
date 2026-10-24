@@ -215,6 +215,8 @@ export type TeeTimePlayer = {
 
 export type TeeTimeGroup = {
   tee_time: string;
+  /** The hole this group starts on (1 or 10); one card per group. */
+  start_tee?: number | null;
   players: TeeTimePlayer[];
 };
 

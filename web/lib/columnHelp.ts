@@ -43,11 +43,11 @@ export const COLUMN_HELP = {
     definition: "Which way his game is heading: the trend in his strokes gained over his last five events. Positive means improving, negative means slipping.",
     example: "+0.17 means he's been gaining about 0.17 more shots per round each event lately.",
   },
-  // model_vs_vegas_edge: win_prob - market implied win probability (scripts/predictions/odds_ensemble.py)
+  // model_vs_vegas_edge: our published win chance - DataGolf's consensus chance (api/main.py _edge_from_market)
   edge: {
     label: "Our edge",
-    definition: "Our win chance minus the betting market's, in percentage points. Positive means we rate him higher than the market does. It's a disagreement, not a guarantee.",
-    example: "+3.7pp means we give him a 3.7-point better chance to win than the market implies.",
+    definition: "Our win chance minus the betting market's (DataGolf's consensus, with the bookmakers' margin taken out), in percentage points. Positive means we rate him higher than the market does. It's a disagreement, not a guarantee.",
+    example: "+1.5pp means we give him a 1.5-point better chance to win than the market does.",
   },
   odds: {
     label: "Odds",
