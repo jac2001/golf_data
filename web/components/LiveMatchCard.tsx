@@ -15,28 +15,67 @@ import Link from "next/link";
 import { Group, Match, isMatch, matchHeadline, moneyNote, totalsLine } from "@/lib/matchTypes";
 
 export default function LiveMatchCard({ fallback }: { fallback: React.ReactNode }) {
-  const [data, setData] = useState<Match | null | "none">(null);
+  // null = loading, "none" = nothing to show (no group/season), "error" = the
+  // request failed (offline, server down): said so, with a retry (audit #12).
+  const [data, setData] = useState<Match | null | "none" | "error">(null);
+  const [tries, setTries] = useState(0);
 
   useEffect(() => {
     let alive = true;
     const load = async () => {
       try {
-        const g = await fetch("/api/friends/groups").then(r => r.ok ? r.json() : { groups: [] });
+        const gr = await fetch("/api/friends/groups");
+        if (!gr.ok) throw new Error(String(gr.status));
+        const g = await gr.json();
         const groups: Group[] = g.groups ?? [];
         let saved: number | null = null;
         try { saved = Number(localStorage.getItem("match-group")) || null; } catch { /* fine */ }
         const pick = groups.find(x => x.id === saved) ?? groups[0];
         if (!pick) { if (alive) setData("none"); return; }
-        const m = await fetch(`/api/match?group_id=${pick.id}`).then(r => r.ok ? r.json() : null);
+        const mr = await fetch(`/api/match?group_id=${pick.id}`);
+        if (!mr.ok) throw new Error(String(mr.status));
+        const m = await mr.json();
         if (alive) setData(isMatch(m) ? m : "none");
-      } catch { if (alive) setData("none"); }
+      } catch {
+        // Keep a card we already have on a failed refresh; only a first load says so.
+        if (alive) setData(d => (d && d !== "none" && d !== "error" ? d : "error"));
+      }
     };
     load();
     const t = setInterval(load, 120_000);
     return () => { alive = false; clearInterval(t); };
-  }, []);
+  }, [tries]);
 
-  if (data === null) return <div style={{ ...shell, minHeight: 120 }} aria-busy="true" />;
+  if (data === null) {
+    // A skeleton shaped like the card, with words, not an empty box.
+    const bar = (w: string, h = 12) => <div style={{ width: w, height: h, borderRadius: 4, background: "var(--bc-raised)", marginTop: 8 }} />;
+    return (
+      <div style={{ ...shell, borderColor: "var(--bc-line)" }} aria-busy="true">
+        <div style={{ fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+          Loading your matchup…
+        </div>
+        {bar("70%", 20)}{bar("45%")}{bar("30%", 36)}
+      </div>
+    );
+  }
+  if (data === "error") {
+    return (
+      <div style={{ ...shell, borderColor: "var(--bc-line)" }} role="status">
+        <div style={{ fontWeight: 800 }}>Couldn&apos;t load your matchup.</div>
+        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)", marginTop: 2 }}>
+          Check your connection, or open Match Center directly.
+        </div>
+        <div style={{ display: "flex", gap: 14, alignItems: "center", marginTop: 10, flexWrap: "wrap" }}>
+          <button onClick={() => { setData(null); setTries(n => n + 1); }} style={{
+            cursor: "pointer", fontFamily: "inherit", fontWeight: 800, padding: "9px 16px", borderRadius: 6,
+            background: "var(--bc-btn2-bg)", color: "var(--bc-btn2-fg)", border: "1px solid var(--bc-btn2-line)" }}>
+            Try again
+          </button>
+          <Link href="/match" style={{ fontWeight: 700, color: "var(--bc-text)" }}>Match Center →</Link>
+        </div>
+      </div>
+    );
+  }
   if (data === "none") return <>{fallback}</>;
 
   // The card follows the week (one main action, never a guess):
