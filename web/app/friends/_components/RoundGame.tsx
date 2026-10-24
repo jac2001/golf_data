@@ -145,10 +145,6 @@ export function RoundGameTab() {
   return (
     <>
       <PickConfirm copy={confirm} onClose={() => setConfirm(null)} />
-      {state?.event && openRound && field.length > 0 && (
-        <WhosInCard game="rounds" tid={selected} eventName={state.event.name} startDate={state.event.startDate}
-          tour={state.event.tour} round={openRound} refreshKey={Object.values(state.rounds ?? {}).filter(Boolean).length} />
-      )}
       <EventNav events={fromOpenEvents(events)} selected={selected}
         onPick={tid => { setSelected(tid); setPickingRound(null); }} />
 
@@ -245,6 +241,12 @@ export function RoundGameTab() {
         {err && <p style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.84em)", marginTop: 10 }}>{err}</p>}
       </div>
 
+      {/* Who's in (organizer detail) comes after your own picks: on a phone the
+          next round to pick is the first thing you see (audit #7). */}
+      {state?.event && openRound && field.length > 0 && (
+        <WhosInCard game="rounds" tid={selected} eventName={state.event.name} startDate={state.event.startDate}
+          tour={state.event.tour} round={openRound} refreshKey={Object.values(state.rounds ?? {}).filter(Boolean).length} />
+      )}
       {/* Event board */}
       {board && board.length > 0 && (
         <div style={{ ...card, padding: 0, overflow: "hidden" }}>

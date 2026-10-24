@@ -140,8 +140,8 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
                   <td style={{ ...td, color: totalColor, fontWeight: 700 }}>{p.total ?? "—"}</td>
                   <td style={{ ...td, color: "var(--bc-muted)" }}>{p.thru ?? "—"}</td>
                   <td style={{ ...td, color: "var(--bc-yellow)", fontWeight: 700 }}>{p.model_rank != null ? `#${p.model_rank}` : "—"}</td>
-                  <td style={{ ...td, color: diffColor, fontWeight: Math.abs(diff) > 5 ? 700 : 400 }}
-                    title={diff > 0 ? "beating model prediction" : diff < 0 ? "below model prediction" : "on model"}>
+                  <td style={{ ...td, color: diffColor, fontWeight: diff != null && Math.abs(diff) > 5 ? 700 : 400 }}
+                    title={diff == null ? "no rank change (withdrew or unranked)" : diff > 0 ? "beating model prediction" : diff < 0 ? "below model prediction" : "on model"}>
                     {diffStr}
                   </td>
                   <td style={{ ...td, color: "var(--bc-green)" }}>{p.win_prob != null ? `${p.win_prob.toFixed(1)}%` : "—"}</td>

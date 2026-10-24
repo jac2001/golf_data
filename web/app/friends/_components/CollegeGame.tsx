@@ -93,10 +93,6 @@ export function CollegeTab() {
   return (
     <>
       <PickConfirm copy={confirm} onClose={() => setConfirm(null)} />
-      {event && !event.locked && schools.length > 0 && (
-        <WhosInCard game="college" tid={selected} eventName={event.name} startDate={event.startDate}
-          tour={event.tour} refreshKey={pick ? 1 : 0} />
-      )}
       <EventNav events={fromOpenEvents(events)} selected={selected} onPick={setSelected} />
 
       <div style={card}>
@@ -186,6 +182,12 @@ export function CollegeTab() {
           </div>
         </div>
       )}
+      {/* Who's in (organizer detail) after your own picks (audit #7). */}
+      {event && !event.locked && schools.length > 0 && (
+        <WhosInCard game="college" tid={selected} eventName={event.name} startDate={event.startDate}
+          tour={event.tour} refreshKey={pick ? 1 : 0} />
+      )}
+
     </>
   );
 }
