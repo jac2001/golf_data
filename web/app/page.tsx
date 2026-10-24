@@ -40,7 +40,7 @@ function fmtDates(start: string, end: string): string {
 const LIVE_WIN_HELP = {
   label: "Live win chance",
   definition: "The chance he goes on to win from here, from DataGolf's in-play model. It weighs how good each golfer is and how much golf is left, not just today's score, so it moves after every hole.",
-  example: "Conners at −12 can rate above two leaders at −13: one shot is little with two rounds left, and the model rates him the stronger player.",
+  example: "A stronger player one shot back can rate above the leaders: one shot is little with two rounds left.",
 };
 
 export default function Home() {
