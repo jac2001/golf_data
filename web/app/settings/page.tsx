@@ -202,7 +202,7 @@ export default function SettingsPage() {
             {user?.primaryEmailAddress?.emailAddress}
           </div>
           <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", marginTop: 4 }}>
-            This is the name and photo your group sees.
+            This is the name your group sees on every board.
           </div>
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
