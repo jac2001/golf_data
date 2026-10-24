@@ -2062,9 +2062,13 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
             entry["dk_odds_direction"] = dg["dk_odds_direction"]
         published = entry.get("win_prob_sim") if entry.get("win_prob_sim") is not None else entry.get("win_prob")
         entry["model_vs_vegas_edge"] = _edge_from_market(published, dg.get("market_prob") if dg else None)
-        # The market's chance (DataGolf consensus): the Fade Game's pool is the
-        # 20 betting favorites (Jack, Oct 23; web/lib/modelBrain.ts fadePool).
-        entry["market_prob"] = round(float(dg["market_prob"]), 6) if dg and dg.get("market_prob") else None
+        # The Fade Game's pool is the 20 betting favorites (Jack, Oct 23;
+        # web/lib/modelBrain.ts fadePool). It reads the OPENING line, saved once
+        # per event and never overwritten, so the pool is set when odds open and
+        # can't shift under a fade already made (live odds pulled Bermuda's
+        # co-leaders into the 'favorites' mid-event). Current line if no opening.
+        mkt = (dg.get("open_prob") if dg and dg.get("open_prob") is not None else (dg.get("market_prob") if dg else None))
+        entry["market_prob"] = round(float(mkt), 6) if mkt else None
         records.append(entry)
 
     # Actual field size from DG /field-updates (reuse tee-times cache if
@@ -2164,7 +2168,8 @@ def _dg_odds_for(tid: str) -> dict[str, dict]:
         # consensus said 3.47%, about +2780), so the two columns disagreed.
         if market and 0 < market < 1:
             american = round((1 / market - 1) * 100) if market < 0.5 else -round(market / (1 - market) * 100)
-        out[k] = {"odds_to_win": american, "dk_odds_direction": move, "market_prob": market}
+        out[k] = {"odds_to_win": american, "dk_odds_direction": move, "market_prob": market,
+                  "open_prob": open_prob.get(k)}
     return out
 
 

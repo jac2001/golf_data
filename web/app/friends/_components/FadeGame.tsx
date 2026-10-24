@@ -39,7 +39,7 @@ export function FadeTab() {
   const why = useWhyLines(selected, pool);
   const [loading, setLoading] = useState(true);
 
-  // The fade pool is defined by model win chances, so only PGA
+  // The pool needs this week's odds and model numbers, so only PGA events are playable.
   // (has_model) events are playable.
   useEffect(() => {
     openPlusPast(api, "fades").then(all => {
@@ -235,7 +235,7 @@ export function FadeTab() {
           <div style={{ padding: "14px 16px 6px", fontWeight: 800 }}>
             The pool
             <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.78em)", marginLeft: 8 }}>
-              top 20 by model win chance — pick the ones you don&apos;t believe in
+              the 20 betting favorites — pick the ones you don&apos;t believe in
             </span>
           </div>
           {partial && (

@@ -57,13 +57,19 @@ export function modelRoundPick(
     return bestPlayer.player_name; 
 }
 
-/** The Fade Game pool: the event's top N by model win chance. */
-export function fadePool(preds: (Probs & { player_name: string })[], n = 20) {
-  // TODO(Jack): return the n players with the highest win_prob.
-    // (Sort a COPY — [...preds] — remember the mutation lesson.)
-    
-const sortedPreds = [...preds].sort((a, b) => (b.win_prob ?? 0) - (a.win_prob ?? 0)); // descending order
-    return sortedPreds.slice(0, n);
+/** The Fade Game pool: the event's 20 betting favorites, by DataGolf's
+ *  consensus chance (market_prob). Before most of the field has a price
+ *  (early in the week), the model's published chance stands in, so the
+ *  pool is never short. Jack's call, Oct 23 (was: the base model's top 20). */
+export function fadePool(
+  preds: (Probs & { player_name: string; market_prob?: number | null; win_prob_sim?: number | null })[],
+  n = 20,
+) {
+  const priced = preds.filter(p => p.market_prob != null).length;
+  const useMarket = priced >= Math.min(n, preds.length);
+  const chance = (p: (typeof preds)[number]) =>
+    (useMarket ? p.market_prob : (p.win_prob_sim ?? p.win_prob)) ?? -1;
+  return [...preds].sort((a, b) => chance(b) - chance(a)).slice(0, n);
 }
 
 

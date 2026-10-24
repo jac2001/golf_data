@@ -28,7 +28,7 @@ const money = (v: number) =>
 const GAMES = [
   { name: "Let It Ride", tag: "Pick 3 golfers each week — their prize money is your score. The catch: each golfer can only be used a few times a season (your group sets it — 3 per tour by default), so every week you choose who to spend and who to save. Best week earns a star; most money wins the season." },
   { name: "Round Game", tag: "One golfer per round, each player once per event, scored against par. Miss the cut with your pick and it costs you +5." },
-  { name: "Fade Game", tag: "Pick 3 of the top-20 favorites you think will FLOP. Lowest combined earnings wins — fade the champion and you eat his whole check." },
+  { name: "Fade Game", tag: "Pick 3 of the 20 betting favorites you think will FLOP. Lowest combined earnings wins — fade the champion and you eat his whole check." },
   { name: "College Game", tag: "Root for your school instead of a golfer. Claim one college each week; its two best alumni in the field score their prize money for you. Auburn vs. Alabama, settled on Sunday — friends can share a school, and each tied school gets a win." },
 ];
 

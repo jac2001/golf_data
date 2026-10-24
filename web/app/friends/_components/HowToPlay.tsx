@@ -40,11 +40,10 @@ export function HowToPlay({ game }: { game: GameMode }) {
       </>)}
       {game === "fades" && (<>
         <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6 }}>
-          before lock (midnight ET the night before round 1 (UK time for DP World Tour events)), fade 3 players from the top 20 —
+          before lock (midnight ET the night before round 1 (UK time for DP World Tour events)), fade 3 of the 20 betting favorites —
           the favorites you think are overhyped. Your score is their combined
           prize money and the LOWEST total wins, so fading the eventual champion
-          is a disaster. The model plays too: it fades the three players in its
-          own top 20 it expects to earn the least.
+          is a disaster. The model plays too: it fades the three favorites it expects to earn the least.
         </p>
       </>)}
       {game === "college" && (<>

@@ -3,7 +3,7 @@
  * ====================================
  * Pick 3 players you think will FLOP; your score is their combined
  * earnings and LOWEST total wins. The catch that makes it a game: you
- * may only fade from the model's top 20 by win chance (the "pool") —
+ * you may only fade from the event’s 20 betting favorites (the ‘pool’)—
  * otherwise the winning strategy is three club pros and everyone ties
  * at $0. PGA events only, since the pool is defined by model numbers.
  *
@@ -28,7 +28,7 @@ type EventInfo = {
   tid: string; name: string; tour: string; locked: boolean;
   startDate: string; purse: number | null; hasModel: boolean;
 };
-type PredRow = Probs & { player_name: string };
+type PredRow = Probs & { player_name: string; market_prob?: number | null; win_prob_sim?: number | null};
 
 async function openEvent(tid: string | null): Promise<EventInfo | null> {
   try {
@@ -124,7 +124,7 @@ export async function POST(req: Request) {
     return Response.json({ error: "No fresh model numbers for this event yet." }, { status: 503 });
   }
   if (!pool.some(p => p.player_name === player)) {
-    return Response.json({ error: `${player} isn't in the top 20 — you can only fade the favorites.` }, { status: 400 });
+    return Response.json({ error: `${player} isn't one of the 20 betting favorites — you can only fade the favorites.` }, { status: 400 });
   }
 
   const sql = getSql();
