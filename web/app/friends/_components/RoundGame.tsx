@@ -153,7 +153,7 @@ export function RoundGameTab() {
         <div style={{ fontWeight: 800, fontSize: "1.05em", marginBottom: 4 }}>Your round picks</div>
         <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.88em)", lineHeight: 1.5, marginBottom: 14 }}>
           One player per round, each player once per event. Score is their round
-          to par; a missed round costs +{5}. Lowest total wins.
+          to par; a pick who posts no score for a round (missed cut, withdrew) costs +{5}. Lowest total wins.
         </div>
 
         {[1, 2, 3, 4].map(r => {
@@ -166,7 +166,7 @@ export function RoundGameTab() {
               {current
                 ? <span style={{ fontWeight: 600 }}><PlayerLink name={current} /></span>
                 : <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)" }}>
-                    {locked ? "no pick — +5" : "no pick yet"}
+                    {locked ? "no pick" : "no pick yet"}
                   </span>}
               {!locked && state?.event?.startDate && (
                 <span style={{ fontSize: "max(var(--fs-min), 0.82em)" }}>
@@ -298,7 +298,7 @@ export function RoundGameTab() {
             </tbody>
           </table>
           <div style={{ padding: "8px 12px", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>
-            Each pick&apos;s round score to par · … = round still being played · a missed round counts +5.
+            Each pick&apos;s round score to par · … = round still being played · +5 = the pick posted no score (missed cut or withdrew), counted once the field finishes that round.
           </div>
         </div>
       )}

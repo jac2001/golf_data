@@ -21,7 +21,9 @@ export function HowToPlay({ game }: { game: GameMode }) {
           sets it — 3 per tour by default), so every week you choose who to
           spend and who to save. Best week earns a star; most money wins the
           season. Picks stay hidden until lock. The Golf Edge model plays too,
-          as a member of your group.
+          as a member of your group. During play, totals are estimated payouts
+          from current positions; they become final when official prize money
+          posts, usually Monday.
         </p>
       )}
       {game === "rounds" && (<>
@@ -40,12 +42,14 @@ export function HowToPlay({ game }: { game: GameMode }) {
       </>)}
       {game === "fades" && (<>
         <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6 }}>
-          before lock (midnight ET the night before round 1 (UK time for DP World Tour events)), fade 3 of the 20 betting favorites —
+          before lock (midnight ET the night before round 1; UK time for DP World Tour events), fade 3 of the 20 betting favorites —
           the favorites you think are overhyped. Your score is their combined
           prize money and the LOWEST total wins, so fading the eventual champion
           is a disaster. A golfer who withdraws before teeing off is void: that fade counts as the
           average of your other two, so it can't hand anyone a free $0. The model plays too: it fades
-          the three favorites it expects to earn the least.
+          the three favorites it expects to earn the least. During play, totals are
+          estimates from current positions; they become final when official prize
+          money posts, usually Monday.
         </p>
       </>)}
       {game === "college" && (<>
@@ -53,7 +57,9 @@ export function HowToPlay({ game }: { game: GameMode }) {
           claim ONE school per event — you can change it until
           lock, midnight ET the night before round 1 (UK time for DP World Tour
           events). Only schools with alumni in that week&apos;s field can be
-          claimed. Schools stay hidden until lock.
+          claimed. Schools stay hidden until lock. During play the board shows
+          estimated payouts from current positions; they become final when
+          official prize money posts, usually Monday.
         </p>
         <ul style={{ margin: "8px 0 0", paddingLeft: 18, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6 }}>
           <li><strong style={{ color: "var(--bc-text)" }}>Schools aren&apos;t exclusive.</strong> Two
