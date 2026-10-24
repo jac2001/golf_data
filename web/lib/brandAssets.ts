@@ -8,16 +8,16 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const file = (p: string) => readFile(join(process.cwd(), p));
-
+// Literal paths, one per file: a path built from a variable makes the
+// bundler trace the whole project into these routes.
 let badgeP: Promise<string> | null = null;
 /** The round badge as a data URL, or "" if it can't be read (images still render). */
-export const brandBadge = () => (badgeP ??= file("assets/brand/badge.png")
+export const brandBadge = () => (badgeP ??= readFile(join(process.cwd(), "assets/brand/badge.png"))
   .then(b => `data:image/png;base64,${b.toString("base64")}`).catch(() => ""));
 
 let fontP: Promise<ArrayBuffer | null> | null = null;
 /** Archivo Black for ImageResponse `fonts`, or null (falls back to the default font). */
-export const archivoBlack = () => (fontP ??= file("assets/fonts/ArchivoBlack-Regular.ttf")
+export const archivoBlack = () => (fontP ??= readFile(join(process.cwd(), "assets/fonts/ArchivoBlack-Regular.ttf"))
   .then(b => b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength) as ArrayBuffer).catch(() => null));
 
 /** The `fonts` option for ImageResponse: Archivo Black when it loaded. */
