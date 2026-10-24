@@ -21,7 +21,7 @@ import { openEventLocks } from "@/lib/eventLocks";
 
 type PickRow = { user_id: string; user_name: string; player_name: string; player_id: string | null };
 type EarningsResp = {
-  settled: boolean;
+  settled: boolean; projected?: boolean;
   earnings_estimated?: boolean;
   players: Record<string, { player_name: string; earnings: number; position: string }>;
 };
@@ -108,8 +108,11 @@ export async function GET(req: Request) {
   let table: EarningsResp | null = null;
   if (locked) {
     try {
-      const res = await fetch(`${MODEL_API}/api/results/earnings?tournament_id=${tid}`,
-        { next: { revalidate: 300 } });
+      // projected=1: during play, estimated payouts from current positions
+      // (as Match Center and the College board show); final money once settled.
+      // Without it the board showed '…' for every total until Monday (Oct 23).
+      const res = await fetch(`${MODEL_API}/api/results/earnings?tournament_id=${tid}&projected=1`,
+        { next: { revalidate: 120 } });
       if (res.ok) table = await res.json();
     } catch { /* board shows pending */ }
   }
@@ -125,7 +128,8 @@ export async function GET(req: Request) {
       u.fades.push({ player: "hidden", earnings: null, position: null });
     } else {
       const { hit, unresolved } = resolvePick(table?.players, p, "fadeboard");
-      const earnings = table?.settled && !unresolved ? (hit?.earnings ?? 0) : null;
+      const counted = !!table?.settled || !!table?.projected;
+      const earnings = counted && !unresolved ? (hit?.earnings ?? 0) : null;
       u.fades.push({ player: p.player_name, earnings, position: unresolved ? UNRESOLVED_POS : hit?.position ?? null,
                      ...(unresolved ? { unresolved: true } : {}) });
       if (unresolved && table?.settled) u.incomplete = true;
@@ -141,6 +145,7 @@ export async function GET(req: Request) {
   return Response.json({
     tournament_id: tid, locked,
     settled: !!table?.settled,
+    projected: !table?.settled && !!table?.projected,
     earnings_estimated: !!table?.earnings_estimated,
     standings, me: userId,
   });

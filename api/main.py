@@ -5025,10 +5025,20 @@ def events_rounds(tournament_id: str) -> dict:
         to_par_col = "current_score"
     else:
         fp = DATA_DIR / "live" / f"leaderboard_{tid.lower()}.csv"
-        if not fp.exists():
-            return {"tournament_id": tid, "rounds_available": 0, "players": {}}
-        df = pd.read_csv(fp)
-        to_par_col = "total_numeric"
+        if fp.exists():
+            df = pd.read_csv(fp)
+            to_par_col = "total_numeric"
+        else:
+            # No file during play (nothing writes one mid-event), so the Round
+            # Game graded nothing until settlement: Bermuda showed '…' for every
+            # finished round (Oct 23). Same live sources as Match Center:
+            # DataGolf's in-play board (completed rounds' strokes), then the
+            # PGA TOUR's. Both are checked to be this event.
+            df, to_par_col = _dg_live_board(tid), "current_score"
+            if df is None or "R1" not in df.columns:
+                df, to_par_col = _pgatour_live_board(tid), "total_numeric"
+            if df is None:
+                return {"tournament_id": tid, "rounds_available": 0, "players": {}}
 
     for c in ["R1", "R2", "R3", "R4"]:
         if c not in df.columns:

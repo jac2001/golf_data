@@ -31,7 +31,7 @@ export function FadeTab() {
   const [pool, setPool]   = useState<FadePoolRow[]>([]);
   const [partial, setPartial] = useState(false);
   const [fades, setFades] = useState<string[]>([]);
-  const [board, setBoard] = useState<{ settled: boolean; earnings_estimated: boolean;
+  const [board, setBoard] = useState<{ settled: boolean; projected?: boolean; earnings_estimated: boolean;
     standings: FadeBoardRow[]; me: string } | null>(null);
   const [err, setErr]     = useState("");
   const why = useWhyLines(selected, pool);
@@ -218,6 +218,12 @@ export function FadeTab() {
               ))}
             </tbody>
           </table>
+          <div style={{ padding: "8px 12px", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>
+            {board.settled
+              ? (board.earnings_estimated ? "Final, estimated from the purse: official money wasn't posted." : "Final prize money.")
+              : board.projected ? "Estimated payouts if the tournament ended now. Least money wins."
+              : "Totals appear once play starts."}
+          </div>
         </div>
       )}
 

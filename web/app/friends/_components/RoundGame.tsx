@@ -271,7 +271,7 @@ export function RoundGameTab() {
                               <span style={{ color: "var(--bc-muted)" }}>{lastName(c.player)}</span>{" "}
                               <span style={{ fontWeight: 700, color: c.score == null ? "var(--bc-muted)"
                                 : c.score < 0 ? "var(--bc-green)" : c.score > 0 ? "var(--bc-red-text)" : "var(--bc-text)" }}>
-                                {c.score == null ? "…" : fmt(c.score)}
+                                {c.score == null ? <span title="Round in progress">…</span> : fmt(c.score)}
                               </span>
                             </>}
                       </td>
@@ -293,6 +293,9 @@ export function RoundGameTab() {
               ))}
             </tbody>
           </table>
+          <div style={{ padding: "8px 12px", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>
+            Each pick&apos;s round score to par · … = round still being played · a missed round counts +5.
+          </div>
         </div>
       )}
     </>
