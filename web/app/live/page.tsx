@@ -199,7 +199,10 @@ export default function LivePage() {
   }
 
   const currentRound = inPlay?.current_round ?? null;
-  const leader = inPlay?.players?.[0] ?? null;
+  // Everyone tied for the lead (T1), not just the first row (audit #9).
+  const leaders = (inPlay?.players ?? []).filter(p => /^T?1$/.test(String(p.position ?? "").trim()));
+  const surname = (n: string) => n.trim().split(/\s+/).slice(-1)[0];
+  const leaderNames = leaders.length > 2 ? `${leaders.length} tied` : leaders.map(p => surname(p.player_name)).join(" & ");
 
   if (tour === "euro") {
     return (
@@ -219,9 +222,10 @@ export default function LivePage() {
       {/* ── Tournament header ────────────────────────────────────────────── */}
       <PageHead
         kicker={tournament
+          // Event and round only: the leader has its own card below, so the
+          // header doesn't wrap to five lines on a phone (audit #9).
           ? [inPlay?.event_name || tournament.name,
              inPlay?.round_label ?? (currentRound ? `Round ${currentRound}` : null),
-             leader ? `Leader: ${leader.player_name} (${leader.total ?? "E"})` : null,
             ].filter(Boolean).join(" · ")
           : "Loading tournament…"}
         title="Live"
@@ -234,12 +238,12 @@ export default function LivePage() {
                 background: "transparent",
                 border: "1px solid var(--bc-line-hi)", borderRadius: 4,
                 color: refreshing ? "var(--bc-muted)" : "var(--bc-text)",
-                padding: "9px 16px", fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 900,
+                padding: "7px 12px", fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 900, whiteSpace: "nowrap",
                 textTransform: "uppercase", letterSpacing: "0.06em",
                 cursor: refreshing ? "default" : "pointer", fontFamily: "inherit",
               }}
             >
-              {refreshing ? "Refreshing…" : "Refresh Now"}
+              {refreshing ? "Refreshing…" : "Refresh"}
             </button>
             <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", marginTop: 4 }}>
               {lastPollAt && `Updated ${lastPollAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}
@@ -255,21 +259,21 @@ export default function LivePage() {
       {inPlay && !loadingLb && inPlay.players.length > 0 && (
         <div style={{ display: "flex", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
           <GlanceCard label="Field Size" value={String(inPlay.count)} />
-          {leader && (
+          {leaders.length > 0 && (
             <GlanceCard
-              label="Leader"
-              value={leader.player_name}
-              sub={leader.total ?? "E"}
+              label={leaders.length > 1 ? "Tied for the lead" : "Leader"}
+              value={leaders.length > 1 ? leaderNames : leaders[0].player_name}
+              sub={leaders[0].total ?? "E"}
             />
           )}
-          {leader?.win_prob != null && (
-            <GlanceCard
-              label="Leader Win%"
-              value={`${leader.win_prob.toFixed(1)}%`}
-              sub="DG live"
-            />
+          {/* One leader's live chance; for a tie, each leader's (no single "leader" number). */}
+          {leaders.length === 1 && leaders[0].win_prob != null && (
+            <GlanceCard label="Leader win %" value={`${leaders[0].win_prob.toFixed(1)}%`} sub="DataGolf live" />
           )}
-          {currentRound && <GlanceCard label="Round" value={String(currentRound)} />}
+          {leaders.length === 2 && leaders.every(p => p.win_prob != null) && (
+            <GlanceCard label="Leaders' win %" value={leaders.map(p => `${p.win_prob!.toFixed(0)}%`).join(" · ")}
+              sub={leaderNames} />
+          )}
         </div>
       )}
 
