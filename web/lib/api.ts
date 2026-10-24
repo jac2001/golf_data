@@ -86,6 +86,8 @@ export type Tournament = {
   tournament_id: string;
   name?: string;
   current_round?: number;
+  /** From the live board, the same on every page: "Round 2 complete · Round 3 next". */
+  round_label?: string | null;
   round_status?: string;
   leader_score?: number;
   leader_name?: string;
@@ -577,6 +579,7 @@ export type InPlayResponse = {
   tournament_id: string;
   event_name: string;
   current_round: number | null;
+  round_label?: string | null;
   last_update: string;
   players: InPlayPlayer[];
   count: number;

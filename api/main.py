@@ -1373,6 +1373,27 @@ def _load_bets(tid: str) -> pd.DataFrame:
 
 # ── Routes ───────────────────────────────────────────────────────────────────
 
+def _round_label(tid: str) -> str | None:
+    """One round label for every page, from the LIVE board: 'Round 2
+    complete · Round 3 next', 'Round 3 in progress', 'Final round complete'.
+    This Week and Betting said 'Round 3' on Friday night (a calendar guess)
+    while Live said Round 2 (audit #5). None when there's no live board."""
+    d = _dg_live_board(tid) if tid else None
+    if d is None or "round" not in d.columns or not len(d):
+        return None
+    rnd = pd.to_numeric(d["round"], errors="coerce").max()
+    if pd.isna(rnd):
+        return None
+    rnd = int(rnd)
+    pos = d["position"].astype(str).str.strip().str.upper() if "position" in d.columns else pd.Series([""] * len(d))
+    active = d[~pos.isin(["CUT", "MC", "WD", "W/D", "DQ", "MDF"])]
+    thru = active["thru"].astype(str).str.strip().str.upper() if "thru" in active.columns else pd.Series(dtype=str)
+    complete = len(active) > 0 and bool(thru.isin(["18", "F", "18.0"]).all())
+    if complete:
+        return "Final round complete" if rnd >= 4 else f"Round {rnd} complete · Round {rnd + 1} next"
+    return f"Round {rnd} in progress"
+
+
 @app.get("/api/tournament")
 def get_tournament() -> dict:
     """Current tournament info: name, id, phase, week."""
@@ -1476,6 +1497,8 @@ def get_tournament() -> dict:
         pass
 
     result["generated_at"] = datetime.utcnow().isoformat() + "Z"
+    result["round_label"] = _round_label(tid)
+
     return result
 
 
@@ -2844,6 +2867,7 @@ def get_inplay() -> dict:
         "tournament_id":  _get_tournament_id(),
         "event_name":     info.get("event_name", ""),
         "current_round":  info.get("current_round"),
+        "round_label":    _round_label(_get_tournament_id()),
         "last_update":    info.get("last_update", ""),
         "players":        rows,
         "count":          len(rows),

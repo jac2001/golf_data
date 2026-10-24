@@ -155,7 +155,7 @@ export default function BettingPage() {
       <PageHead
         kicker={[
           tournament?.name ?? "Loading tournament…",
-          tournament?.current_round ? `Round ${tournament.current_round}` : null,
+          tournament?.round_label ?? (tournament?.current_round ? `Round ${tournament.current_round}` : null),
           tournament?.leader_name ? `Leader: ${tournament.leader_name}` : null,
         ].filter(Boolean).join(" · ")}
         title="Betting Board"

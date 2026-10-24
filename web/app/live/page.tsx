@@ -220,7 +220,7 @@ export default function LivePage() {
       <PageHead
         kicker={tournament
           ? [inPlay?.event_name || tournament.name,
-             currentRound ? `Round ${currentRound}` : null,
+             inPlay?.round_label ?? (currentRound ? `Round ${currentRound}` : null),
              leader ? `Leader: ${leader.player_name} (${leader.total ?? "E"})` : null,
             ].filter(Boolean).join(" · ")
           : "Loading tournament…"}

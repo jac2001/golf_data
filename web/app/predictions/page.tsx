@@ -225,7 +225,7 @@ export default function PredictionsPage() {
       <PageHead
         kicker={[
           tournament?.name ?? "Loading tournament…",
-          tournament?.current_round ? `Round ${tournament.current_round}` : null,
+          tournament?.round_label ?? (tournament?.current_round ? `Round ${tournament.current_round}` : null),
           tournament?.round_status ?? null,
           tournament?.leader_name ? `Leader: ${tournament.leader_name}` : null,
           lastUpdated ? `updated ${lastUpdated.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : null,
