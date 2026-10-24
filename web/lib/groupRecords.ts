@@ -20,13 +20,19 @@ export type GroupRecords = {
 export const emptyRecords = (): GroupRecords => ({ wins: null, streak: null, earnings: null });
 
 /**
- * TODO(Jack): computeGroupRecords — see docs/RECORDS_CHIRPS_WORKBOOK.md.
+ * computeGroupRecords (Jack) — see docs/RECORDS_CHIRPS_WORKBOOK.md.
  * 1. Filter exact scope, sort a COPY by order ascending.
- * 2. Pending/incomplete/unofficial weeks award nothing and break streaks.
- * 3. A qualifying week has >=2 distinct entries (model counts).
- * 4. Only a unique highest earner wins; ties break all winning streaks.
+ * 2. Pending/incomplete/unofficial weeks award nothing and break EVERY streak
+ *    (we can't know who won).
+ * 3. A qualifying week has >=2 distinct entries (model counts). A week with
+ *    fewer is neutral: no award, no streak breaks, its money isn't a record.
+ * 4. Only a unique highest earner wins.
  * 5. Track total wins, current streak per person, best streak, highest earnings.
- *    Absence/loss breaks a person's streak; do not skip those weeks.
+ *
+ * Missing a week pauses a streak.
+ *    In a qualifying week, reset the streak of every member who PLAYED and
+ *    didn't win outright (lost, or tied for first). A member with no entry
+ *    that week keeps their streak as it was.
  * 6. Return all tied record holders, sorted by ID; no positive wins => null.
  *    Earnings of zero is a valid record. No qualifying weeks => all null.
  * Inputs are validated by prepareRecordWeeks. No mutation, dates, or fetches.
@@ -45,16 +51,17 @@ export function computeGroupRecords(weeks: readonly RecordWeek[], scope: RecordS
   const highestEarnings = new Map<string, number>();
 
   for (const week of ordered) {
-    const qualifies =
+    const resolved =
       week.status === 'final' &&
       week.complete &&
-      week.official &&
-      week.entries.length >= 2;
+      week.official;
     
-    if (!qualifies) {
+    if (!resolved) {
     currentStreaks.clear();
     continue;
   }
+
+  if (week.entries.length < 2) continue;
 
   for (const entry of week.entries) {
     const previous = highestEarnings.get(entry.userId) ?? 0;
@@ -73,7 +80,9 @@ export function computeGroupRecords(weeks: readonly RecordWeek[], scope: RecordS
   );
 
   if (leaders.length !== 1) {
-    currentStreaks.clear();
+    for (const entry of week.entries) {
+      currentStreaks.set(entry.userId, 0);
+    }
     continue;
   }
 
@@ -83,7 +92,9 @@ export function computeGroupRecords(weeks: readonly RecordWeek[], scope: RecordS
 
   const streak = (currentStreaks.get(winner) ?? 0) + 1;
 
-  currentStreaks.clear();
+  for (const entry of week.entries) {
+    if (entry.userId !== winner) currentStreaks.set(entry.userId, 0);
+  }
   currentStreaks.set(winner, streak);
 
   bestStreaks.set(

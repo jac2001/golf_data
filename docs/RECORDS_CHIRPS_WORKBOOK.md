@@ -8,7 +8,8 @@ Let It Ride only, one group and season. Three records: most outright weekly wins
 longest winning streak, highest weekly lineup earnings. Include the model as an
 opponent, labeled The Model. All tied record holders appear; tied weekly first
 places do not count as outright wins and break a winning streak. A solo entry
-cannot earn these competitive records. Missing a scheduled week breaks a streak.
+cannot earn these competitive records. Missing a week pauses your streak; it
+does not break it (Jack, Oct 24). A week with fewer than two entrants is neutral.
 Pending, incomplete, and estimated-money weeks award nothing and break streaks
 until official results allow a fresh rebuild. This conservative rule prevents
 silently claiming consecutive wins across an unresolved week.

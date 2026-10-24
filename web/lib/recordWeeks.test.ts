@@ -49,7 +49,7 @@ test("recordWeeks: estimated money is not official; an ambiguous name is incompl
   assert.ok(h.ok && h.weeks[0].complete === false);
 });
 
-test("recordWeeks: a scheduled week nobody played still exists and breaks streaks", () => {
+test("recordWeeks: a scheduled week nobody played still exists and pauses streaks", () => {
   const events = [ev("R1", "2026-10-01"), ev("R2", "2026-10-08"), ev("R3", "2026-10-15")];
   const picks = [pick("a", "R1", "X"), pick("model", "R1", "Y"), pick("a", "R3", "X"), pick("model", "R3", "Y")];
   const h = build(events, picks, { R1: res({ X: 10, Y: 1 }), R3: res({ X: 10, Y: 1 }) });
@@ -58,7 +58,7 @@ test("recordWeeks: a scheduled week nobody played still exists and breaks streak
   assert.deepEqual(h.weeks[1].entries, []);
   const rec = computeGroupRecords(prepareRecordWeeks(h.weeks), scope);
   assert.deepEqual(rec.wins, { value: 2, holderIds: ["a"] });
-  assert.deepEqual(rec.streak, { value: 1, holderIds: ["a"] });
+  assert.deepEqual(rec.streak, { value: 2, holderIds: ["a"] });
 });
 
 test("recordWeeks: events not started yet are left out; future picks are fine", () => {

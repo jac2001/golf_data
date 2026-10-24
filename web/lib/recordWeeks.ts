@@ -7,7 +7,7 @@
  * the season plays, between its start and end dates), never from
  * settlement time or adjacent tournament ids. Every scheduled week that
  * has begun gets exactly one row, including weeks nobody played and
- * weeks still pending, so a missed or unresolved week breaks streaks.
+ * weeks still pending: an unresolved week breaks streaks, a missed one pauses them.
  *
  * Money is graded the way every scoring view grades it (resolvePick:
  * id first, then a unique name, never a guess). A week is:
