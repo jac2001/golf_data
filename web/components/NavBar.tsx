@@ -154,7 +154,20 @@ export default function NavBar() {
 
           {/* Auth: avatar menu when signed in, quiet link when not */}
           <Show when="signed-in">
-            <UserButton />
+            {/* One account menu: your photo opens Settings, Manage account and
+                Sign out (the separate gear is gone). Photo is set in Manage account. */}
+            <UserButton appearance={{ elements: { avatarBox: { width: 34, height: 34 } } }}>
+              <UserButton.MenuItems>
+                <UserButton.Link label="Settings" href="/settings" labelIcon={
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="3" />
+                    <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" />
+                  </svg>} />
+                <UserButton.Action label="manageAccount" />
+                <UserButton.Action label="signOut" />
+              </UserButton.MenuItems>
+            </UserButton>
           </Show>
           <Show when="signed-out">
             <Link href="/sign-in" style={{
@@ -167,14 +180,6 @@ export default function NavBar() {
             </Link>
           </Show>
 
-                      <Show when="signed-in">
-              <Link href="/settings" title="Settings" style={{
-                color: muted, fontSize: "1.1em", padding: "6px 8px",
-                lineHeight: 1, borderRadius: 6,
-              }}>
-                ⚙
-              </Link>
-            </Show>
 
         </div>
       </nav>

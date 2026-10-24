@@ -47,18 +47,35 @@ function useApi() {
   }, [getToken]);
 }
 
-function Toggle({ on, busy, onClick }: { on: boolean; busy?: boolean; onClick: () => void }) {
+/** An on/off switch (a sliding knob, like a phone's settings). */
+function Toggle({ on, busy, onClick, label }: { on: boolean; busy?: boolean; onClick: () => void; label: string }) {
   return (
-    <button onClick={onClick} disabled={busy} style={{
-      ...btnQuiet, marginLeft: "auto", minWidth: 52,
-      color: on ? "var(--bc-sel-fg)" : "var(--bc-muted)",
-      background: on ? "var(--bc-sel-bg)" : "transparent",
-      borderColor: on ? "var(--bc-sel-line)" : "var(--bc-line)",
+    <button role="switch" aria-checked={on} aria-label={label} onClick={onClick} disabled={busy} style={{
+      marginLeft: "auto", flexShrink: 0, width: 48, height: 28, borderRadius: 14, padding: 3, cursor: "pointer",
+      border: "none", opacity: busy ? 0.6 : 1, transition: "background 0.15s",
+      background: on ? "var(--bc-go-bg)" : "var(--bc-line-hi)",
     }}>
-      {busy ? "…" : on ? "On" : "Off"}
+      <span aria-hidden style={{ display: "block", width: 22, height: 22, borderRadius: "50%", background: "#fff",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.3)", transform: on ? "translateX(20px)" : "none", transition: "transform 0.15s" }} />
     </button>
   );
 }
+
+/** A card's title with a small icon. */
+function SectionTitle({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 800, marginBottom: 6 }}>
+      <span aria-hidden style={{ display: "flex", color: "var(--bc-green)" }}>{icon}</span>{children}
+    </div>
+  );
+}
+const icon = (d: string) => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round"><path d={d} /></svg>
+);
+const BELL = icon("M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0");
+const SLIDERS = icon("M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6");
+const SHIELD = icon("M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z");
 
 function Row({ label, sub, children }: {
   label: string; sub?: string; children?: React.ReactNode;
@@ -172,25 +189,41 @@ export default function SettingsPage() {
     <div style={{ maxWidth: 720, margin: "0 auto" }}>
       <PageHead kicker="Profile · notifications · defaults" title="Settings" />
 
-      <div style={card}>
-        <div style={{ fontWeight: 800, marginBottom: 6 }}>Profile</div>
-        <Row label={`Friends see you as “${displayName}”`}
-          sub="Your first and last name, if you've added one; otherwise your username. Change it under Manage account.">
-          <button onClick={() => clerk.openUserProfile()} style={{ ...btnQuiet, marginLeft: "auto" }}>
-            Manage account
+      {/* Profile: your photo and the name friends see, each one tap to change. */}
+      <div style={{ ...card, display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+        {user?.imageUrl
+          // eslint-disable-next-line @next/next/no-img-element
+          ? <img src={user.imageUrl} alt="" width={72} height={72} style={{ borderRadius: "50%", objectFit: "cover",
+              border: "3px solid var(--bc-yellow-fill)", flexShrink: 0 }} />
+          : <div style={{ width: 72, height: 72, borderRadius: "50%", background: "var(--bc-raised)", flexShrink: 0 }} />}
+        <div style={{ flex: "1 1 180px", minWidth: 0 }}>
+          <div style={{ fontWeight: 900, fontSize: "1.3em", lineHeight: 1.2 }}>{displayName}</div>
+          <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {user?.primaryEmailAddress?.emailAddress}
+          </div>
+          <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", marginTop: 4 }}>
+            This is the name and photo your group sees.
+          </div>
+        </div>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <button onClick={() => clerk.openUserProfile()} style={{ ...btnQuiet, color: "var(--bc-quiet-fg)", borderColor: "var(--bc-quiet-line)" }}>
+            Change photo
           </button>
-        </Row>
+          <button onClick={() => clerk.openUserProfile()} style={{ ...btnQuiet, color: "var(--bc-quiet-fg)", borderColor: "var(--bc-quiet-line)" }}>
+            Edit name
+          </button>
+        </div>
       </div>
 
       <div style={card}>
-        <div style={{ fontWeight: 800, marginBottom: 6 }}>Pick reminders</div>
+        <SectionTitle icon={BELL}>Pick reminders</SectionTitle>
         {prefs && (
           <>
             <Row label="Let It Ride reminders" sub="Nudge the day before an event locks when your season picks aren't in — all devices">
-              <Toggle on={prefs.remind_weekly} busy={busyPref === "remind_weekly"} onClick={() => flipPref("remind_weekly")} />
+              <Toggle label="Let It Ride reminders" on={prefs.remind_weekly} busy={busyPref === "remind_weekly"} onClick={() => flipPref("remind_weekly")} />
             </Row>
             <Row label="Fade Game reminders" sub="Same nudge for missing fades — all devices">
-              <Toggle on={prefs.remind_fades} busy={busyPref === "remind_fades"} onClick={() => flipPref("remind_fades")} />
+              <Toggle label="Fade Game reminders" on={prefs.remind_fades} busy={busyPref === "remind_fades"} onClick={() => flipPref("remind_fades")} />
             </Row>
           </>
         )}
@@ -221,7 +254,7 @@ export default function SettingsPage() {
       </div>
 
       <div style={card}>
-        <div style={{ fontWeight: 800, marginBottom: 6 }}>Defaults</div>
+        <SectionTitle icon={SLIDERS}>Defaults</SectionTitle>
         <Row label="Favorite tour" sub="Home and This Week open here (this device)">
           <div style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
             {([["pga", "PGA"], ["euro", "DPWT"]] as const).map(([id, label]) => (
@@ -250,7 +283,7 @@ export default function SettingsPage() {
       </div>
 
       <div style={card}>
-        <div style={{ fontWeight: 800, marginBottom: 6 }}>Your data</div>
+        <SectionTitle icon={SHIELD}>Your data</SectionTitle>
         <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6 }}>
           What we store: your account (managed by Clerk — email, optional
           username), your picks, fades, round picks, bets and tails, group
