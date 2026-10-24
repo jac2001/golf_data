@@ -5762,6 +5762,54 @@ def _season_record_from_results(player: str) -> dict:
     }
 
 
+_EVENTS_DF = None
+_EVENT_DATE_CACHE: dict[str, Any] = {}
+
+
+def _sort_by_event_date(df: pd.DataFrame) -> pd.DataFrame:
+    """Newest event first, by the event's real DATE (audit #3): tournament
+    ids aren't calendar order (R2026010 Cognizant is after R2026007 Genesis,
+    and fall events reuse low numbers). Dates come from the shared helper the
+    model's training uses (scripts/features/event_dates, DataGolf's event
+    list + sourced overrides), then the schedule; an event with no known
+    date sorts after dated ones, by year and id, rather than being guessed."""
+    global _EVENTS_DF
+    if not len(df):
+        return df
+    try:
+        from scripts.features.event_dates import load_events, training_event_date
+        if _EVENTS_DF is None:
+            _EVENTS_DF = load_events()
+    except Exception:
+        training_event_date = None  # type: ignore
+    sched: dict[str, Any] = {}
+    for sp in sorted((DATA_DIR / "raw").glob("schedule_2*.csv")):
+        try:
+            s = pd.read_csv(sp, usecols=["tournament_id", "start_date"])
+            sched.update(dict(zip(s["tournament_id"].astype(str).str.upper(), pd.to_datetime(s["start_date"], errors="coerce"))))
+        except Exception:
+            continue
+
+    def date_of(tid: str, name: str):
+        key = f"{tid}|{name}"
+        if key not in _EVENT_DATE_CACHE:
+            d = None
+            if training_event_date is not None:
+                try:
+                    d = training_event_date(tid, name, _EVENTS_DF)
+                except Exception:
+                    d = None
+            if d is None or pd.isna(d):
+                d = sched.get(tid.upper())
+            _EVENT_DATE_CACHE[key] = d
+        return _EVENT_DATE_CACHE[key]
+
+    names = df["tournament_name"] if "tournament_name" in df.columns else pd.Series([""] * len(df), index=df.index)
+    df = df.copy()
+    df["_date"] = pd.to_datetime([date_of(str(t), str(n)) for t, n in zip(df["tournament_id"], names)], errors="coerce")
+    return df.sort_values(["_date", "year", "tournament_id"], ascending=False, na_position="last")
+
+
 def _career_from_csvs(player: str) -> dict:
     """Career without DuckDB (the cloud has no golf_data.db).
 
@@ -5802,7 +5850,7 @@ def _career_from_csvs(player: str) -> dict:
                         return None
 
                 df["_pos"] = df["position"].map(posn)
-                df = df.sort_values(["year", "tournament_id"], ascending=False)
+                df = _sort_by_event_date(df)
 
                 recent = []
                 for _, r in df.head(50).iterrows():
@@ -5883,7 +5931,7 @@ def _career_from_csvs(player: str) -> dict:
     df["_earn"] = df["earnings"].map(earn)
     if "year" not in df.columns:
         df["year"] = df["tournament_id"].astype(str).str[1:5].astype(int)
-    df = df.sort_values(["year", "tournament_id"], ascending=False)
+    df = _sort_by_event_date(df)
 
     def sf(v):
         try:
@@ -6037,8 +6085,9 @@ def get_player_career(player: str) -> dict:
                     AND f.tournament_id = l.tournament_id
                 WHERE l.player_id IN ({ids_sql})
                 ORDER BY l.year DESC, l.tournament_id DESC
-                LIMIT 50
             """).fetchdf()
+            # Newest by real event date, then the 50 most recent (audit #3).
+            recent_df = _sort_by_event_date(recent_df).head(50)
 
             # ── Step 3: year-by-year summary ──────────────────────────────────
             yearly_df = conn.execute(f"""
