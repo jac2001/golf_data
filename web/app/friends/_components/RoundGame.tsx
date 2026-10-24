@@ -17,7 +17,8 @@ import type { InPlayPlayer, TeeTimeGroup } from "@/lib/api";
 import { byPosition, contextLine, roundContext } from "@/lib/roundContext";
 import { nameKey } from "@/lib/names";
 import { EventInfo, FieldRow, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, inputStyle, lastName, shareReceipt, openPlusPast, useApi, useWhyLines } from "./shared";
-import { useActiveGroup } from "./ActiveGroup";
+import { useActiveGroup } from "./ActiveGroup";import Avatar, { useAvatars } from "@/components/Avatar";
+
 
 // ── Round Game ───────────────────────────────────────────────────────────────
 
@@ -27,6 +28,7 @@ export type RoundRow = { user_id: string; user_name: string; total: number; scor
   rounds: Record<string, { player: string; score: number | null; visible: boolean }> };
 
 export function RoundGameTab() {
+  const av = useAvatars();   // members' photos (components/Avatar.tsx)
   const api = useApi();
   const { groupQuery } = useActiveGroup();
   const [events, setEvents] = useState<OpenEvent[]>([]);
@@ -257,7 +259,7 @@ export function RoundGameTab() {
                 <tr key={row.user_id} style={{ background: row.user_id === me ? "var(--bc-card-hi)" : "transparent" }}>
                   <td style={{ ...cell, fontWeight: 800, color: "var(--bc-muted)" }}>{i + 1}</td>
                   <td style={{ ...cell, fontWeight: 700 }}>
-                    {row.user_name}
+                    <Avatar userId={row.user_id} name={row.user_name} url={av[row.user_id]} size={22} />{" "}{row.user_name}
                     {row.user_id === "model" && <ModelBadge />}
                     {row.user_id === me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
                   </td>

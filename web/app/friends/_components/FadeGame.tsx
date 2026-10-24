@@ -13,7 +13,8 @@ import { WhosInCard } from "./WhosInCard";
 import type { ConfirmCopy } from "@/lib/pickConfirm";
 import { OpenEvent } from "@/lib/api";
 import { EventInfo, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, lastName, money, shareReceipt, openPlusPast, useApi, useWhyLines } from "./shared";
-import { useActiveGroup } from "./ActiveGroup";
+import { useActiveGroup } from "./ActiveGroup";import Avatar, { useAvatars } from "@/components/Avatar";
+
 
 // ── Fade Game ────────────────────────────────────────────────────────────────
 
@@ -23,6 +24,7 @@ export type FadeBoardRow = { user_id: string; user_name: string; total: number |
   fades: { player: string; earnings: number | null; position: string | null }[] };
 
 export function FadeTab() {
+  const av = useAvatars();   // members' photos (components/Avatar.tsx)
   const api = useApi();
   const { groupQuery } = useActiveGroup();
   const [events, setEvents] = useState<OpenEvent[]>([]);
@@ -185,7 +187,7 @@ export function FadeTab() {
                 <tr key={row.user_id} style={{ background: row.user_id === board.me ? "var(--bc-card-hi)" : "transparent" }}>
                   <td style={{ ...cell, fontWeight: 800, color: "var(--bc-muted)" }}>{i + 1}</td>
                   <td style={{ ...cell, fontWeight: 700 }}>
-                    {row.user_name}
+                    <Avatar userId={row.user_id} name={row.user_name} url={av[row.user_id]} size={22} />{" "}{row.user_name}
                     {row.user_id === "model" && <ModelBadge />}
                     {row.user_id === board.me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
                   </td>

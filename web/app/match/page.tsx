@@ -23,7 +23,8 @@ import { displaySurnames, nameKey } from "@/lib/names";
 import { College, CollegeGolfer, Group, Match, Slate, collegeHeadline, collegeTotals, golferProgress, isMatch, isSoloVsModel, matchHeadline, money, moneyNote, ordinal, totalsLine } from "@/lib/matchTypes";
 import { getTeeTimes } from "@/lib/api";
 import type { TeeTimeGroup } from "@/lib/api";
-import { roundContext } from "@/lib/roundContext";
+import { roundContext } from "@/lib/roundContext";import Avatar, { useAvatars } from "@/components/Avatar";
+
 
 const last = (n: string) => n.includes(",") ? n.split(",")[0].trim() : (n.trim().split(/\s+/).pop() ?? n);
 const card: React.CSSProperties = {
@@ -408,6 +409,7 @@ function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: nu
 }
 
 function Standings({ s, title }: { s: Slate; title: string }) {
+  const av = useAvatars();   // members' photos (components/Avatar.tsx)
   return (
     <div style={{ marginTop: 14 }}>
       <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color: "var(--bc-muted)",
@@ -419,9 +421,10 @@ function Standings({ s, title }: { s: Slate; title: string }) {
         const myRank = s.lines.find(x => x.user_id === s.me_id)?.rank ?? 0;
         const rivalLabel = l.rank < myRank ? "Next to catch" : "Chasing you";
         return (
-          <div key={l.user_id} style={{ display: "flex", gap: 10, alignItems: "baseline", padding: "5px 0", fontSize: "max(var(--fs-min), 0.88em)",
+          <div key={l.user_id} style={{ display: "flex", gap: 10, alignItems: "center", padding: "5px 0", fontSize: "max(var(--fs-min), 0.88em)",
             borderBottom: "1px solid var(--bc-line)" }}>
             <span style={{ width: 22, fontWeight: 900, color: "var(--bc-muted)" }}>{l.rank}</span>
+            <Avatar userId={l.user_id} name={l.user_name} url={av[l.user_id]} size={24} />
             <span style={{ fontWeight: 800, color: isMe ? "var(--bc-green)" : "var(--bc-text)" }}>{isMe ? "You" : l.user_name}</span>
             {isModel && <span style={tag("var(--bc-line-hi)", "var(--bc-text)")}>Model</span>}
             {isRival && !isModel && <span style={tag("var(--bc-orange)", "#081f14")}>{rivalLabel}</span>}

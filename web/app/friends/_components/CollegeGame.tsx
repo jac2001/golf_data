@@ -14,7 +14,8 @@ import { WhosInCard } from "./WhosInCard";
 import type { ConfirmCopy } from "@/lib/pickConfirm";
 import { OpenEvent } from "@/lib/api";
 import { EventInfo, card, cell, hdr, lastName, money, openPlusPast, useApi } from "./shared";
-import { useActiveGroup } from "./ActiveGroup";
+import { useActiveGroup } from "./ActiveGroup";import Avatar, { useAvatars } from "@/components/Avatar";
+
 
 // ── College Game ─────────────────────────────────────────────────────────────
 
@@ -23,6 +24,7 @@ export type CollegeBoardRow = { user_id: string; user_name: string; school: stri
   total: number | null; counted: { player: string; earnings: number; position: string }[] };
 
 export function CollegeTab() {
+  const av = useAvatars();   // members' photos (components/Avatar.tsx)
   const api = useApi();
   const { groupQuery } = useActiveGroup();
   const [events, setEvents] = useState<OpenEvent[]>([]);
@@ -130,7 +132,7 @@ export function CollegeTab() {
                 <tr key={r.user_id} style={{ background: r.user_id === board.me ? "var(--bc-card-hi)" : "transparent" }}>
                   <td style={{ ...cell, fontWeight: 800, color: "var(--bc-muted)", width: 34 }}>{i + 1}</td>
                   <td style={{ ...cell, fontWeight: 700 }}>
-                    {r.user_name}
+                    <Avatar userId={r.user_id} name={r.user_name} url={av[r.user_id]} size={22} />{" "}{r.user_name}
                     {r.user_id === board.me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
                     <div style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.82em)" }}>
                       <SchoolBadge school={r.school} size={0.9} /> {r.school}{r.counted.length > 0 &&
@@ -189,6 +191,7 @@ export function CollegeTab() {
 }
 
 export function CollegeStandings() {
+  const av = useAvatars();   // members' photos (components/Avatar.tsx)
   const api = useApi();
   const { groupQuery } = useActiveGroup();
   const [rows, setRows] = useState<{ user_id: string; user_name: string; wins: number; entered: number }[] | null>(null);
@@ -221,7 +224,7 @@ export function CollegeStandings() {
             <tr key={r.user_id} style={{ background: r.user_id === me ? "var(--bc-card-hi)" : "transparent" }}>
               <td style={{ ...cell, fontWeight: 800, color: "var(--bc-muted)" }}>{i + 1}</td>
               <td style={{ ...cell, fontWeight: 700 }}>
-                {r.user_name}
+                <Avatar userId={r.user_id} name={r.user_name} url={av[r.user_id]} size={22} />{" "}{r.user_name}
                 {r.user_id === me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
               </td>
               <td style={{ ...cell, textAlign: "right", fontWeight: 800 }}>{r.wins}</td>

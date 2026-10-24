@@ -24,7 +24,8 @@ import PickConfirm, { buildConfirm } from "@/components/PickConfirm";
 import { WhosInCard } from "@/app/friends/_components/WhosInCard";
 import type { ConfirmCopy } from "@/lib/pickConfirm";
 import EventNav, { NavEvent, landingEvent, favoriteTour, Star } from "@/components/EventNav";
-import { resolveConsider } from "@/lib/consider";
+import { resolveConsider } from "@/lib/consider";import Avatar, { useAvatars } from "@/components/Avatar";
+
 
 type Group = { id: number; name: string; is_owner: boolean };
 type League = {
@@ -718,6 +719,7 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
  *  each pick's finish and money. "Final" only once settled; until then the
  *  numbers are estimated payouts if the tournament ended now (rule 6). */
 function WeekResults({ tid, standings, me }: { tid: string; standings: Standing[]; me: string }) {
+  const av = useAvatars();   // members' photos (components/Avatar.tsx)
   const rows = standings
     .map(s => ({ s, line: s.events?.[tid] }))
     .filter((r): r is { s: Standing; line: NonNullable<Standing["events"]>[string] } => !!r.line)
@@ -737,6 +739,7 @@ function WeekResults({ tid, standings, me }: { tid: string; standings: Standing[
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
             <span style={{ fontWeight: 800 }}>
               <span style={{ color: i === 0 && settled ? "var(--bc-yellow)" : "var(--bc-muted)", marginRight: 8 }}>{i + 1}</span>
+              <Avatar userId={s.user_id} name={s.user_name} url={av[s.user_id]} size={22} />{" "}
               {s.user_id === "model" ? "The Model" : s.user_name}{s.user_id === me ? " (you)" : ""}
             </span>
             <span style={{ fontWeight: 900 }}>{money(line.event_total)}</span>
@@ -784,6 +787,7 @@ function LockedSlate({ picks, me }: { picks: SlatePick[]; me: string }) {
 //   s.live > 0, a small "+$X live" next to it (and a caption explaining it).
 //   Think about: what should sorting use — banked, or banked + live?
 function SeasonStandings({ standings, me }: { standings: Standing[]; me: string }) {
+  const av = useAvatars();   // members' photos (components/Avatar.tsx)
   const th: React.CSSProperties = {
     padding: "7px 8px", fontSize: "max(var(--fs-min), 0.7em)", color: "var(--bc-muted)", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em", textAlign: "right", borderBottom: "1px solid var(--bc-line)",
@@ -807,7 +811,7 @@ function SeasonStandings({ standings, me }: { standings: Standing[]; me: string 
           {standings.map((s, i) => (
             <tr key={s.user_id}>
               <td style={{ ...td, textAlign: "left", fontWeight: 700, color: s.user_id === me ? "var(--bc-green)" : "var(--bc-text)" }}>
-                {i + 1}. {s.user_name}
+                {i + 1}. <Avatar userId={s.user_id} name={s.user_name} url={av[s.user_id]} size={22} /> {s.user_name}
               </td>
               <td style={{ ...td, color: "var(--bc-yellow)", whiteSpace: "nowrap" }}>
                 {s.stars > 0 ? Array.from({ length: Math.min(s.stars, 5) }).map((_, i) => <Star key={i} />) : "—"}
