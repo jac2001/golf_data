@@ -2060,6 +2060,7 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
         if dg:
             entry["odds_to_win"] = dg["odds_to_win"]
             entry["dk_odds_direction"] = dg["dk_odds_direction"]
+            entry["odds_basis"] = dg.get("odds_basis")   # "current" before the start, "opening" after
         published = entry.get("win_prob_sim") if entry.get("win_prob_sim") is not None else entry.get("win_prob")
         entry["model_vs_vegas_edge"] = _edge_from_market(published, dg.get("market_prob") if dg else None)
         # The Fade Game's pool is the 20 betting favorites (Jack, Oct 23;
@@ -2122,6 +2123,26 @@ def _null_placeholders(df: pd.DataFrame, maybe_unfilled: list[str]) -> pd.DataFr
     return df
 
 
+def _event_has_started(tid: str) -> bool:
+    """Has this event's first round begun (its start date reached on the
+    tour's clock)? Unknown -> False, so the current line stays in use."""
+    from zoneinfo import ZoneInfo
+    euro = tid.upper().startswith("E")
+    tz = "Europe/London" if euro else "America/New_York"
+    for sp in sorted((DATA_DIR / "raw").glob("schedule_euro_*.csv" if euro else "schedule_2*.csv")):
+        try:
+            s = pd.read_csv(sp)
+        except Exception:
+            continue
+        row = s[s["tournament_id"].astype(str).str.upper() == tid.upper()]
+        if len(row):
+            start = pd.to_datetime(row.iloc[0]["start_date"], errors="coerce")
+            if pd.isna(start):
+                return False
+            return pd.Timestamp(datetime.now(ZoneInfo(tz)).date()) >= start.normalize()
+    return False
+
+
 def _dg_odds_for(tid: str) -> dict[str, dict]:
     """DataGolf consensus win odds + this week's move, keyed by _name_key.
 
@@ -2146,6 +2167,13 @@ def _dg_odds_for(tid: str) -> dict[str, dict]:
     except Exception:
         odds_move = None
     open_prob = {_name_key(n): p for n, p in zip(opening["player_name"], opening["implied_prob"])}
+    # Once play starts, the odds file keeps taking LIVE prices while our
+    # chances are Tuesday's pre-event numbers; a live quote against a frozen
+    # forecast fakes an edge. After the start, Odds and Our edge both read
+    # the opening line: pre-event against pre-event (audit #2, Oct 24).
+    started = _event_has_started(tid) and len(opening) > 0
+    if started:
+        now = opening
     out: dict[str, dict] = {}
     for _, r in now.iterrows():
         k = _name_key(r["player_name"])
@@ -2168,8 +2196,9 @@ def _dg_odds_for(tid: str) -> dict[str, dict]:
         # consensus said 3.47%, about +2780), so the two columns disagreed.
         if market and 0 < market < 1:
             american = round((1 / market - 1) * 100) if market < 0.5 else -round(market / (1 - market) * 100)
-        out[k] = {"odds_to_win": american, "dk_odds_direction": move, "market_prob": market,
-                  "open_prob": open_prob.get(k)}
+        out[k] = {"odds_to_win": american, "dk_odds_direction": None if started else move,
+                  "market_prob": market, "open_prob": open_prob.get(k),
+                  "odds_basis": "opening" if started else "current"}
     return out
 
 

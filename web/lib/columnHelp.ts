@@ -46,12 +46,12 @@ export const COLUMN_HELP = {
   // model_vs_vegas_edge: our published win chance - DataGolf's consensus chance (api/main.py _edge_from_market)
   edge: {
     label: "Our edge",
-    definition: "Our win chance minus the betting market's (DataGolf's consensus, with the bookmakers' margin taken out), in percentage points. Positive means we rate him higher than the market does. It's a disagreement, not a guarantee.",
+    definition: "Our pre-event win chance minus the betting market's (DataGolf's consensus with the bookmakers' margin taken out; the opening line once play starts), in percentage points. Positive means we rate him higher than the market does. It's a disagreement, not a guarantee.",
     example: "+1.5pp means we give him a 1.5-point better chance to win than the market does.",
   },
   odds: {
     label: "Odds",
-    definition: "His odds to win: DataGolf's consensus across sportsbooks, in American format. +1200 means a $100 bet would return $1,200 profit.",
+    definition: "His odds to win: DataGolf's consensus across sportsbooks, in American format. +1200 means a $100 bet would return $1,200 profit. Once the event starts, this is the opening line (set before the first tee shot), so it compares like for like with our pre-event chance.",
     example: "+1200 means about a 7.7% chance to win (1 in 13), the market's fair price with the bookmakers' margin taken out.",
   },
   move: {
