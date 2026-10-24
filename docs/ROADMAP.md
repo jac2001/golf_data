@@ -208,8 +208,8 @@ golfer's best events left instead ("Conners: Bermuda $127K, Cognizant
 $132K, WM Phoenix $122K; you have 3 uses") and let the member decide.
 Presentation only: advice_values.py and contestedFutures stay as they are.
 - [x] The Model's saved reasons use it (Jack's lib/pickReason.ts, Oct 23; from Mexico on).
-- [ ] Jack: the pure "rank this golfer's events" helper (scaffold first).
-- [ ] Replace the Spend/Save tags in Let It Ride's field list with it.
+- [x] Jack: lib/bestEvents.ts (Oct 23).
+- [x] Let It Ride's field list shows Best / Top / Later from it (Oct 23; first live use: Mexico Open picks).
 
 ## Match Center scoring clarity (Jack requested, Oct 22)
 
@@ -259,7 +259,7 @@ and fix what watching them reveals.
        (PGA TOUR gives a place, DG writes "MDF"). For the retrain: many scripts count MDF as a missed
        cut (prediction_tracker made_cut labels, predict_tournament); fix before the model reads DG files.
        Power rankings dropped Oct 20.
-4. [ ] **Recruit one organizer and watch their group play** (Rick is
+4. [~] **Recruit one organizer and watch their group play** (Oct 21: Rick joined and picked Bermuda; Let It Ride only, missed Round/Fade/College, which led to the "Still to pick" checklist. Next: ask him what confused him) (Rick is
        the natural first), using the plan's invitation. Tournament 1
        of the pilot: watch first use without coaching.
 5. [ ] **Fix the largest obstacle that session reveals.**
