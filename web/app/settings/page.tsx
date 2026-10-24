@@ -14,6 +14,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useAuth, useClerk, useUser } from "@clerk/nextjs";
 import { PageHead } from "@/components/broadcast";
 import { subscribeThisDevice } from "@/lib/pushClient";
+import { memberName } from "@/lib/memberName";
 
 const card: React.CSSProperties = {
   background: "var(--bc-card)", border: "1px solid var(--bc-line)",
@@ -162,7 +163,9 @@ export default function SettingsPage() {
     else document.documentElement.setAttribute("data-theme", t);
   }
 
-  const displayName = user?.username || user?.firstName || user?.primaryEmailAddress?.emailAddress?.split("@")[0] || "…";
+  // The same rule the boards use (lib/memberName.ts): real name first.
+  const displayName = user ? memberName({ firstName: user.firstName, lastName: user.lastName, username: user.username,
+    email: user.primaryEmailAddress?.emailAddress }) : "…";
   const deviceHost = (e: string) => { try { return new URL(e).hostname; } catch { return "device"; } };
 
   return (
@@ -172,7 +175,7 @@ export default function SettingsPage() {
       <div style={card}>
         <div style={{ fontWeight: 800, marginBottom: 6 }}>Profile</div>
         <Row label={`Friends see you as “${displayName}”`}
-          sub="Username beats first name beats email prefix — set a username to control it.">
+          sub="Your first and last name, if you've added one; otherwise your username. Change it under Manage account.">
           <button onClick={() => clerk.openUserProfile()} style={{ ...btnQuiet, marginLeft: "auto" }}>
             Manage account
           </button>
