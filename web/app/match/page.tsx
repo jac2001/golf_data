@@ -425,13 +425,15 @@ function Standings({ s, title }: { s: Slate; title: string }) {
             borderBottom: "1px solid var(--bc-line)" }}>
             <span style={{ width: 22, fontWeight: 900, color: "var(--bc-muted)" }}>{l.rank}</span>
             <Avatar userId={l.user_id} name={l.user_name} url={av[l.user_id]} size={24} />
-            <span style={{ fontWeight: 800, color: isMe ? "var(--bc-green)" : "var(--bc-text)" }}>{isMe ? "You" : l.user_name}</span>
+            {/* The name gives way (ellipsis) before the total does. */}
+            <span style={{ fontWeight: 800, color: isMe ? "var(--bc-green)" : "var(--bc-text)", minWidth: 0, flexShrink: 1,
+              overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{isMe ? "You" : l.user_name}</span>
             {isModel && <span style={tag("var(--bc-line-hi)", "var(--bc-text)")}>Model</span>}
             {isRival && !isModel && <span style={tag("var(--bc-orange)", "#081f14")}>{rivalLabel}</span>}
             <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1, minWidth: 0 }}>
               {displaySurnames(l.golfers.map(g => g.name)).join(", ")}
             </span>
-            <span style={{ marginLeft: "auto", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>{money(l.total)}</span>
+            <span style={{ marginLeft: "auto", fontWeight: 800, fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>{money(l.total)}</span>
           </div>
         );
       })}
