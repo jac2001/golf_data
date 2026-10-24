@@ -40,6 +40,11 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
         <span>·</span>
         <span>{totalPlayers} players</span>
       </div>
+      {/* What the times and numbers mean (audit #10). */}
+      <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)", margin: "-8px 0 14px", lineHeight: 1.5 }}>
+        Times are the course&apos;s local time. <strong>#</strong> is our model&apos;s pre-tournament rank;
+        <strong> win</strong> and <strong>top 10</strong> are its pre-tournament chances.
+      </div>
 
       {/* Grid of tee time cards */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: 10 }}>
@@ -100,8 +105,8 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                         fontSize: "max(var(--fs-min-xs), 0.62em)", fontWeight: 800, color: rColor,
                         background: "var(--bc-panel)", padding: "2px 5px", borderRadius: 3,
                         minWidth: 28, textAlign: "center", flexShrink: 0,
-                        border: `1px solid ${rColor}33`,
-                      }}>
+                        border: `1px solid color-mix(in srgb, ${rColor} 20%, transparent)`,
+                      }} title="Our model's pre-tournament rank">
                         #{p.model_rank ?? "—"}
                       </span>
                       <div style={{ minWidth: 0 }}>
@@ -140,10 +145,11 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                       <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", alignItems: "baseline" }}>
                         <span style={{ color: "var(--bc-green)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.82em)" }}>
                           {p.win_prob != null ? `${p.win_prob.toFixed(1)}%` : "—"}
+                          <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.8em" }}> win</span>
                         </span>
                         {p.top10_prob != null && (
                           <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)" }}>
-                            {p.top10_prob.toFixed(0)}%
+                            {p.top10_prob.toFixed(0)}% top 10
                           </span>
                         )}
                       </div>
