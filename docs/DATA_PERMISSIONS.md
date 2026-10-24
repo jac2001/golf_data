@@ -39,6 +39,10 @@ verified Sep 25 and again Oct 20); prediction archives are limited.
   (consensus now vs the event's opening line, `odds_open_{tid}.csv`).
   Both are raw-ish DG odds on a public page, so they fall under open
   question 1 below and the interim step at the end of this section.
+  Added Oct 23 (Jack's call): the Fade Game's pool is the event's 20
+  betting favorites by DataGolf's consensus chance (`market_prob` in
+  /api/predictions). The pool lists names, not the odds themselves; the
+  odds are already public in This Week's Odds column.
 - *Derived:* our model blends DG's pre-tournament probabilities
   (weight 0.50) and DG odds into its published predictions; the
   integrity gate checks DG coverage.

@@ -2062,6 +2062,9 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
             entry["dk_odds_direction"] = dg["dk_odds_direction"]
         published = entry.get("win_prob_sim") if entry.get("win_prob_sim") is not None else entry.get("win_prob")
         entry["model_vs_vegas_edge"] = _edge_from_market(published, dg.get("market_prob") if dg else None)
+        # The market's chance (DataGolf consensus): the Fade Game's pool is the
+        # 20 betting favorites (Jack, Oct 23; web/lib/modelBrain.ts fadePool).
+        entry["market_prob"] = round(float(dg["market_prob"]), 6) if dg and dg.get("market_prob") else None
         records.append(entry)
 
     # Actual field size from DG /field-updates (reuse tee-times cache if
