@@ -344,9 +344,9 @@ someone plays, versus what we improve because we watched them play.
       Jack's `groupRecords.ts` + `recordChirps.ts` done; history adapter done
       (`lib/recordWeeks.ts` pure builder, `lib/recordHistory.ts` loader,
       members-only `GET /api/leagues/[id]/records`). Next: Record Book UI, then
-      server-validated record chirps. Blocked in practice: official money hasn't
-      been backfilled for most 2026 PGA events, so every pilot week is estimated
-      and records stay empty under the official-only rule.
+      server-validated record chirps. Official money fixed Oct 24: the settle's
+      live-board append was wiping it; `backfill_official_money.py` filled 14
+      events and now runs on every settle and Tuesday morning.
 - [x] **Group chirps** (Oct 20, v1 on the Match Center: Jack's `web/lib/chirpPresets.ts`;
       design `docs/CHIRPS_DESIGN.md`) (Jack, Oct 17): one thread per group per
       tournament (past weeks kept), "Send a chirp" ON the matchup and

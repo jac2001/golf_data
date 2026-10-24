@@ -448,6 +448,9 @@ def run_tuesday_morning(dry_run: bool = False):
     field_path = f"data/fields/field_{tournament_id}.csv"
 
     tasks = [
+        # Last week's official money if it posted after Monday's settle.
+        ("Official Money Backfill", ["python3", "scripts/scrapers/backfill_official_money.py",
+                                     "--year", tournament_id[1:5]]),
         ("League Picks", ["python3", "scripts/scrapers/fetch_league_picks.py"]),
         ("Fantasy Scorecard", ["python3", "scripts/scrapers/fetch_fantasy_scorecard.py"]),
         # DataGolf field: tries upcoming_pga first (earlier data), falls back to pga
@@ -1186,6 +1189,22 @@ def append_leaderboard_to_historical(tid: str, tournament_name: str, year: int) 
 
     if hist_path.exists():
         hist = pd.read_csv(hist_path)
+        # Keep the official money (and FedEx points) fetch_past_results just
+        # wrote: the live board has neither. Replacing the rows wholesale
+        # zeroed the money of every event settled this way (fixed Oct 24).
+        prior = hist[hist["tournament_id"] == tid]
+        if not prior.empty:
+            pid = lambda v: str(v).strip().removesuffix(".0")
+            keep = {pid(r["player_id"]): r for _, r in prior.iterrows()}
+            for row in rows:
+                old = keep.get(pid(row["player_id"]))
+                if old is None:
+                    continue
+                if pd.notna(old.get("earnings")) and str(old.get("earnings")).strip():
+                    row["earnings"] = old["earnings"]
+                if pd.isna(row["fedex_points"]) and pd.notna(old.get("fedex_points")):
+                    row["fedex_points"] = old["fedex_points"]
+            new_df = pd.DataFrame(rows)
         # Remove any existing rows for this tournament (idempotent re-run)
         hist = hist[hist["tournament_id"] != tid]
         combined = pd.concat([hist, new_df], ignore_index=True)
@@ -1355,6 +1374,14 @@ def run_post_tournament_refresh(dry_run: bool = False):
             n_db = sync_leaderboard_to_db(tid, year)
             log(f"  Synced {n_db} rows to DuckDB leaderboards table")
             sentinel.touch()
+
+    # Official money often posts after the first settle: fill any event this
+    # season still missing it (guarded, money column only; Oct 24).
+    if dry_run:
+        log("[DRY RUN] Would run: Official Money Backfill")
+    else:
+        run_command(["python3", "scripts/scrapers/backfill_official_money.py", "--year", str(year)],
+                    "Official Money Backfill", timeout=step_timeout("Official Money Backfill", 300))
 
     # DG historical sync — runs before form stats so that round_stats,
     # tournament_stats, and leaderboard rows are all updated from DG's

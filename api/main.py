@@ -5358,6 +5358,10 @@ def results_earnings(tournament_id: str, projected: int = 0) -> dict:
     tid = tournament_id.strip().upper()
     candidates = sorted((DATA_DIR / "historical").glob("leaderboards_2*.csv"), reverse=True) + \
                  sorted((DATA_DIR / "historical").glob("leaderboards_euro_2*.csv"), reverse=True)
+    # Every file holding this event; one with official money wins. The DG
+    # history file (leaderboards_dg_*) never has money and sorts first, so it
+    # used to shadow the season file's real numbers (fixed Oct 24).
+    found = []
     for lb_path in candidates:
         if lb_path.suffix != ".csv":
             continue
@@ -5366,12 +5370,14 @@ def results_earnings(tournament_id: str, projected: int = 0) -> dict:
         except Exception:
             continue
         sub = df[df["tournament_id"].astype(str).str.upper() == tid]
-        if sub.empty:
+        if sub.empty or "earnings" not in sub.columns:
             continue
+        raw_earn = sub["earnings"].map(lambda v: str(v).replace("$", "").replace(",", ""))
+        found.append((pd.to_numeric(raw_earn, errors="coerce").fillna(0).sum() > 0, sub))
+    if found:
+        have_money, sub = next((f for f in found if f[0]), found[0])
         # Official money often posts a day late — estimate from the purse so
         # games grade Monday morning; real numbers overwrite on refetch.
-        raw_earn = sub["earnings"].map(lambda v: str(v).replace("$", "").replace(",", ""))
-        have_money = pd.to_numeric(raw_earn, errors="coerce").fillna(0).sum() > 0
         est = None if have_money else _estimate_earnings_for_event(sub, tid)
         rows = []
         for _, r in sub.iterrows():
