@@ -21,3 +21,8 @@ test("doesn't reorder what it was given", () => {
   fadePool(field, 2);
   assert.deepEqual(field.map(p => p.player_name), ["A", "B"]);
 });
+test("everyone tied at the cut is in, whatever order they arrived in", () => {
+  const field = [g("A", 0.09, 0), g("B", 0.05, 0), g("C", 0.03, 0), g("D", 0.03, 0), g("E", 0.01, 0)];
+  assert.deepEqual(fadePool(field, 3).map(p => p.player_name), ["A", "B", "C", "D"]);
+  assert.deepEqual(fadePool([...field].reverse(), 3).map(p => p.player_name).sort(), ["A", "B", "C", "D"]);
+});

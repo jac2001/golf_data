@@ -17,7 +17,8 @@ import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { resolvePick, UNRESOLVED_POS } from "@/lib/resultLookup";
 import { visibleUserIds } from "@/lib/gameScope";
-import { openEventLocks } from "@/lib/eventLocks";
+import { openEventLocks } from "@/lib/eventLocks";import { fadeTotal, type FadeSlot } from "@/lib/fadeScore";
+
 
 type PickRow = { user_id: string; user_name: string; player_name: string; player_id: string | null };
 type EarningsResp = {
@@ -58,15 +59,18 @@ async function seasonStandings(ids: string[], me: string) {
 
   for (const t of tids) {
     const table = earningsByTid.get(t);
-    const entrants = new Map<string, { u: { user_id: string; user_name: string }; total: number }>();
+    const entrants = new Map<string, { u: { user_id: string; user_name: string }; slots: FadeSlot[]; total: number }>();
     let unresolved = false;
+    const scored = !!table && Object.keys(table.players ?? {}).length > 0;
     for (const p of picks.filter(p => p.tournament_id === t)) {
-      const e = entrants.get(p.user_id) ?? { u: p, total: 0 };
+      const e = entrants.get(p.user_id) ?? { u: p, slots: [], total: 0 };
       const r = resolvePick(table?.players, p, "fadeboard");
-      e.total += r.hit?.earnings ?? 0;
+      // Not on the event's board at all = withdrew before teeing off: void.
+      e.slots.push(scored && !r.hit && !r.unresolved ? "void" : (r.hit?.earnings ?? 0));
       unresolved ||= r.unresolved;
       entrants.set(p.user_id, e);
     }
+    for (const e of entrants.values()) e.total = fadeTotal(e.slots) ?? Infinity;
     for (const e of entrants.values()) row(e.u).entered += 1;
     // No win awarded off an event with an unmatched golfer: it may not be true.
     if (!table?.settled || unresolved) continue;
@@ -118,8 +122,8 @@ export async function GET(req: Request) {
   }
 
   type Row = { user_id: string; user_name: string; total: number | null;
-    fades: { player: string; earnings: number | null; position: string | null; unresolved?: boolean }[];
-    incomplete?: boolean };
+    fades: { player: string; earnings: number | null; position: string | null; unresolved?: boolean; voided?: boolean }[];
+    incomplete?: boolean; slots?: FadeSlot[] };
   const users = new Map<string, Row>();
 
   for (const p of picks) {
@@ -129,11 +133,15 @@ export async function GET(req: Request) {
     } else {
       const { hit, unresolved } = resolvePick(table?.players, p, "fadeboard");
       const counted = !!table?.settled || !!table?.projected;
-      const earnings = counted && !unresolved ? (hit?.earnings ?? 0) : null;
-      u.fades.push({ player: p.player_name, earnings, position: unresolved ? UNRESOLVED_POS : hit?.position ?? null,
-                     ...(unresolved ? { unresolved: true } : {}) });
+      // On a scored board but absent = withdrew before teeing off: void
+      // (lib/fadeScore.ts counts it as the average of this member's others).
+      const voided = counted && !hit && !unresolved && Object.keys(table?.players ?? {}).length > 0;
+      const earnings = counted && !unresolved && !voided ? (hit?.earnings ?? 0) : null;
+      u.fades.push({ player: p.player_name, earnings, position: voided ? "WD (void)" : unresolved ? UNRESOLVED_POS : hit?.position ?? null,
+                     ...(unresolved ? { unresolved: true } : {}), ...(voided ? { voided: true } : {}) });
       if (unresolved && table?.settled) u.incomplete = true;
-      if (earnings != null) u.total = (u.total ?? 0) + earnings;
+      u.slots = [...(u.slots ?? []), ...(voided ? ["void" as const] : earnings != null ? [earnings] : [])];
+      u.total = fadeTotal(u.slots);
     }
     users.set(p.user_id, u);
   }
@@ -147,6 +155,6 @@ export async function GET(req: Request) {
     settled: !!table?.settled,
     projected: !table?.settled && !!table?.projected,
     earnings_estimated: !!table?.earnings_estimated,
-    standings, me: userId,
+    standings: standings.map(({ slots: _slots, ...row }) => row), me: userId,
   });
 }

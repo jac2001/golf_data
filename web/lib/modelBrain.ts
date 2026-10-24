@@ -60,7 +60,8 @@ export function modelRoundPick(
 /** The Fade Game pool: the event's 20 betting favorites, by DataGolf's
  *  consensus chance (market_prob). Before most of the field has a price
  *  (early in the week), the model's published chance stands in, so the
- *  pool is never short. Jack's call, Oct 23 (was: the base model's top 20). */
+ *  pool is never short. Ties at 20th are all in (so 21+ is possible).
+ *  Jack's calls, Oct 23-24 (was: the base model's top 20). */
 export function fadePool(
   preds: (Probs & { player_name: string; market_prob?: number | null; win_prob_sim?: number | null })[],
   n = 20,
@@ -69,7 +70,12 @@ export function fadePool(
   const useMarket = priced >= Math.min(n, preds.length);
   const chance = (p: (typeof preds)[number]) =>
     (useMarket ? p.market_prob : (p.win_prob_sim ?? p.win_prob)) ?? -1;
-  return [...preds].sort((a, b) => chance(b) - chance(a)).slice(0, n);
+  const sorted = [...preds].sort((a, b) => chance(b) - chance(a));
+  if (sorted.length <= n) return sorted;
+  // Everyone tied with the nth golfer is in too (Jack, Oct 24): who makes a
+  // tied 20th shouldn't depend on the order the API happened to list them.
+  const cut = chance(sorted[n - 1]);
+  return cut < 0 ? sorted.slice(0, n) : sorted.filter((p, i) => i < n || chance(p) === cut);
 }
 
 

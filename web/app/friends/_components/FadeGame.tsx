@@ -21,7 +21,7 @@ import { useActiveGroup } from "./ActiveGroup";import Avatar, { useAvatars } fro
 export type FadePoolRow = { player_name: string; win_prob: number | null; expected_earnings: number | null };
 export type FadeEvent = EventInfo & { purse: number | null; hasModel: boolean };
 export type FadeBoardRow = { user_id: string; user_name: string; total: number | null;
-  fades: { player: string; earnings: number | null; position: string | null }[] };
+  fades: { player: string; earnings: number | null; position: string | null; voided?: boolean }[] };
 
 export function FadeTab() {
   const av = useAvatars();   // members' photos (components/Avatar.tsx)
@@ -195,6 +195,10 @@ export function FadeTab() {
                     {row.fades.map(f => (
                       <span key={f.player} style={{ marginRight: 10, whiteSpace: "nowrap" }}>
                         {lastName(f.player)}
+                        {f.voided && (
+                          <span title="Withdrew before teeing off: counts as the average of your other fades"
+                            style={{ fontWeight: 700, marginLeft: 4, color: "var(--bc-muted)" }}>WD · void</span>
+                        )}
                         {f.earnings != null && (
                           <span style={{ fontWeight: 700, marginLeft: 4,
                             color: f.earnings > 0 ? "var(--bc-red-text)" : "var(--bc-green)" }}>
@@ -223,13 +227,13 @@ export function FadeTab() {
           <div style={{ padding: "8px 12px", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>
             {board.settled
               ? (board.earnings_estimated ? "Final, estimated from the purse: official money wasn't posted." : "Final prize money.")
-              : board.projected ? "Estimated payouts if the tournament ended now. Least money wins."
+              : board.projected ? "Estimated payouts if the tournament ended now. Least money wins. A golfer who withdraws before teeing off is void: that fade counts as the average of your other two."
               : "Totals appear once play starts."}
           </div>
         </div>
       )}
 
-      {/* The pool: only these 20 are fair game. */}
+      {/* The pool: only these are fair game (20, more when tied at 20th). */}
       {!event.locked && pool.length > 0 && (
         <div style={{ ...card, padding: 0, overflow: "hidden" }}>
           <div style={{ padding: "14px 16px 6px", fontWeight: 800 }}>

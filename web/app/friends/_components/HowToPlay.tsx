@@ -43,7 +43,9 @@ export function HowToPlay({ game }: { game: GameMode }) {
           before lock (midnight ET the night before round 1 (UK time for DP World Tour events)), fade 3 of the 20 betting favorites —
           the favorites you think are overhyped. Your score is their combined
           prize money and the LOWEST total wins, so fading the eventual champion
-          is a disaster. The model plays too: it fades the three favorites it expects to earn the least.
+          is a disaster. A golfer who withdraws before teeing off is void: that fade counts as the
+          average of your other two, so it can't hand anyone a free $0. The model plays too: it fades
+          the three favorites it expects to earn the least.
         </p>
       </>)}
       {game === "college" && (<>
