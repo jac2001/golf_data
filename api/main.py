@@ -2318,16 +2318,20 @@ def get_live_vs_predictions() -> dict:
             rank_map[display.lower()] = entry
             rank_map[str(row["player_name"]).strip().lower()] = entry
 
+    _status = lb["position"].astype(str).str.strip().str.upper() if "position" in lb.columns else pd.Series(dtype=str)
+    made_cut_count = int((~_status.isin(["CUT", "MC", "MDF", "WD", "W/D", "DQ", "", "NAN"])).sum())
     players = []
     for _, row in lb.iterrows():
         name = str(row.get("player_name", "")).strip()
         pinfo = rank_map.get(name.lower(), {})
         pos_raw = row.get("position")
-        # Missed cut / withdrew count as last place (they were 999, so a WD
-        # read -987 against the model).
+        # WD/DQ: a status, never a rank change (audit #6). Missed cut: at best
+        # just behind everyone who made it, so that place, not 999 or last.
         s = str(pos_raw).strip().upper()
-        if s in ("CUT", "MC", "WD", "W/D", "DQ", "MDF"):
-            live_pos = len(lb)
+        if s in ("WD", "W/D", "DQ"):
+            live_pos = None
+        elif s in ("CUT", "MC", "MDF"):
+            live_pos = made_cut_count + 1
         else:
             try:
                 live_pos = int(s.replace("T", ""))

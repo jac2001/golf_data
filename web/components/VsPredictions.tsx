@@ -108,9 +108,10 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
               };
 
               const isCut = p.made_cut === false;
-              const diff  = p.rank_diff ?? 0;
-              const diffColor = diff > 5 ? "var(--bc-green)" : diff < -5 ? "var(--bc-red-text)" : diff !== 0 ? "var(--warning)" : "var(--bc-muted)";
-              const diffStr   = diff === 0 ? "=" : diff > 0 ? `+${diff}` : String(diff);
+              // No rank change for a WD/DQ (or an unranked golfer): a dash, never "=".
+              const diff  = p.rank_diff;
+              const diffColor = diff == null ? "var(--bc-muted)" : diff > 5 ? "var(--bc-green)" : diff < -5 ? "var(--bc-red-text)" : diff !== 0 ? "var(--warning)" : "var(--bc-muted)";
+              const diffStr   = diff == null ? "—" : diff === 0 ? "=" : diff > 0 ? `+${diff}` : String(diff);
 
               const totalColor = p.total_numeric == null ? "var(--bc-muted)"
                 : p.total_numeric < 0 ? "var(--bc-green)"
@@ -153,7 +154,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
       </div>
 
       <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.70em)", marginTop: 6 }}>
-        Δ Rank = Live position minus model rank · green = beating prediction · red = below prediction
+        Δ Rank = model rank minus live position (+10: ten places better than we ranked him) · green = beating prediction · red = below · a missed cut counts as the first place below the cut · WD/DQ show no change
       </p>
     </div>
   );
