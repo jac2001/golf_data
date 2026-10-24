@@ -32,7 +32,7 @@ export function PageHead({ kicker, title, right, zone = "public" }: {
                       textTransform: "uppercase", letterSpacing: "-0.01em",
                       lineHeight: 1, color: z.text }}>{title}</div>
       </div>
-      {right && <><div style={{ flexGrow: 1 }} />{right}</>}
+      {right && <div style={{ marginLeft: "auto" }}>{right}</div>}
     </div>
   );
 }

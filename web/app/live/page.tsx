@@ -596,7 +596,7 @@ function GlanceCard({ label, value, sub }: { label: string; value: string; sub?:
       <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
         {label}
       </div>
-      <div style={{ fontSize: "1em", fontWeight: 700, color: "var(--bc-text)", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+      <div style={{ fontSize: "1em", fontWeight: 700, color: "var(--bc-text)", marginTop: 2, overflowWrap: "anywhere" }}>
         {value}
       </div>
       {sub && <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", marginTop: 2 }}>{sub}</div>}
