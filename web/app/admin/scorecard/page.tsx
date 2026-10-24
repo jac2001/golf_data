@@ -44,7 +44,7 @@ export default function AdminScorecardPage() {
     <div style={{ maxWidth: 760, margin: "0 auto" }}>
       <PageHead kicker="Admin" title="Pilot scorecard" />
       <p style={{ color: "var(--bc-muted)", marginTop: -6 }}>
-        The main signal is groups that keep playing week after week. Admins and the model are left out of every count.
+        The main signal is groups that keep playing week after week. Admins, test logins and the model are left out of every count.
       </p>
       {err && <p style={{ color: "var(--bc-muted)" }}>{err}</p>}
       {!d && !err && <p style={{ color: "var(--bc-muted)" }}>Loading…</p>}

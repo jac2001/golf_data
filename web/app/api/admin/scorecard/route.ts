@@ -4,12 +4,12 @@
  * Feeds every app_events row and group membership to lib/scorecard.ts
  * (Jack's). Pilot events = tournaments with a pick_made, in date order:
  * ordered by each event's FIRST pick, since picks are made the week
- * before it plays (tournament ids are not calendar order). Admins are
- * excluded from every count. Admins only (403 otherwise).
+ * before it plays (tournament ids are not calendar order). Admins and
+ * test logins (lib/admin.ts) are excluded from every count. Admins only (403 otherwise).
  */
 import { auth } from "@clerk/nextjs/server";
 import { getSql } from "@/lib/db";
-import { ADMIN_USER_IDS, isAdmin } from "@/lib/admin";
+import { ADMIN_USER_IDS, TEST_USER_IDS, isAdmin } from "@/lib/admin";
 import { scorecard } from "@/lib/scorecard";
 import type { EventRow, Membership } from "@/lib/scorecard";
 
@@ -18,6 +18,8 @@ export async function GET() {
   if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
   if (!isAdmin(userId)) return Response.json({ error: "Admins only." }, { status: 403 });
 
+  // Admins and Jack's test logins are left out of every count.
+  const notPlayers = [...ADMIN_USER_IDS, ...TEST_USER_IDS];
   const sql = getSql();
   const rows = await sql`
     SELECT user_id, event, group_id, props, created_at::text
@@ -31,7 +33,7 @@ export async function GET() {
     const tid = r.event === "pick_made" ? String(r.props?.tournament_id ?? "") : "";
     if (!tid) continue;
     if (!firstPick.has(tid) || r.created_at < firstPick.get(tid)!) firstPick.set(tid, r.created_at);
-    if (r.user_id && r.user_id !== "model" && !ADMIN_USER_IDS.includes(r.user_id)) {
+    if (r.user_id && r.user_id !== "model" && !notPlayers.includes(r.user_id)) {
       pickers.set(tid, (pickers.get(tid) ?? new Set()).add(r.user_id));
     }
   }
@@ -39,7 +41,7 @@ export async function GET() {
   const perEvent = events.map(tid => ({ tid, players: pickers.get(tid)?.size ?? 0 }));
 
   try {
-    return Response.json({ scorecard: scorecard(rows, members, events, [...ADMIN_USER_IDS]), events, perEvent });
+    return Response.json({ scorecard: scorecard(rows, members, events, notPlayers), events, perEvent });
   } catch (e) {
     // Until lib/scorecard.ts is written, still show the raw per-event counts.
     return Response.json({ scorecard: null, error: (e as Error).message, events, perEvent });
