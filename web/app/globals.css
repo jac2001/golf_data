@@ -5,6 +5,9 @@
    Legacy navy tokens kept below until every page migrates (content map rule:
    old pages keep working at parity until replaced). */
 :root {
+  /* The nav's outer height, INCLUDING its 3px border (border-box): the nav
+     and every sticky bar pinned under it read this one value. */
+  --site-nav-height: 56px;
   /* Public zone */
   --bc-bg:        #0c2a1c;   /* page background */
   --bc-panel:     #081f14;   /* nav, deep panels */
@@ -84,8 +87,10 @@
   box-sizing: border-box;
 }
 
+/* The body grows with the page: a fixed height: 100% let the sticky nav
+   scroll away with the body's box (Jack, Oct 23; docs/THIS_WEEK_STICKY_EXERCISE.md). */
 html, body {
-  height: 100%;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
   background: var(--bc-bg);

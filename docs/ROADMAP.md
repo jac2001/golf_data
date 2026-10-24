@@ -546,3 +546,9 @@ someone plays, versus what we improve because we watched them play.
 - New idea mid-session → add it here under the right horizon, keep
   working. If it's genuinely urgent, it replaces a Now item visibly.
 - Ship = deployed + verified on prod + this file updated.
+
+## This Week sticky-header fix (Oct 23, Jack exercise)
+
+- [x] (Oct 23, Jack) Completed the three TODOs in globals.css, NavBar.tsx and predictions/summary.module.css; measured: nav at 0 (56px) and tabs at 56 from top to bottom, phone and desktop, light and dark.
+      Body height currently limits the sticky nav; tabs then float below a gap.
+      Scaffold + visual checks: `docs/THIS_WEEK_STICKY_EXERCISE.md`.

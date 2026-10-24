@@ -80,7 +80,9 @@ export default function NavBar() {
         padding: "0 20px",
         display: "flex",
         alignItems: "stretch",
-        height: 56,
+        // The shared height; a flex child of the body, so it must not shrink.
+        height: "var(--site-nav-height)",
+        flexShrink: 0,
         position: "sticky",
         top: 0,
         zIndex: 200,

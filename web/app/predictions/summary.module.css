@@ -114,10 +114,10 @@
   text-decoration: none;
 }
 
-/* Tabs stay reachable while scrolling: pinned under the 56px + 3px nav bar. */
+/* Pinned flush under the nav (its 56px already includes the border). */
 .stickyTabs {
   position: sticky;
-  top: 59px;
+  top: var(--site-nav-height);
   z-index: 100;
   background: var(--bc-bg);
   margin: 0 -4px 12px;
