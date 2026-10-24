@@ -334,7 +334,7 @@ someone plays, versus what we improve because we watched them play.
 - [x] **Recap check** (Oct 20: ties read as ties, model ties, honest rematch line): who won and by how much, the turning point the
       data supports, how the group did against the model, the next event
       with a way to play. Lineup earnings never read as cash.
-- [ ] **Weekly scorecard** from `app_events` (logging since Oct 15):
+- [x] **Weekly scorecard** (built Oct 20: Jack's lib/scorecard.ts, /admin/scorecard) from `app_events` (logging since Oct 15):
       invited players who submit first picks; first-week players who
       pick again; groups with several active players across all three
       events; Match Center checks during play; invites sent unprompted;
