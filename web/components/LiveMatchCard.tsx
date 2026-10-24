@@ -1,18 +1,18 @@
 "use client";
 
 /**
- * LiveMatchCard — the home page's lead while a tournament is in play.
- * Same data as /match (one group, its Let It Ride slates), cut down to
- * the glance: where you stand, the story, your three golfers, and one
- * way in to the full Match Center. Group choice follows /match's saved
- * pick. Renders `fallback` whenever there's nothing live to show (no
- * group, no season, no locked slate) so the home page never goes blank.
+ * LiveMatchCard — the home page's lead card, which follows the week.
+ * Same data as /match (one group, its Let It Ride slates), cut down to one
+ * glance and one action: picks open -> Make / Change picks; live -> where
+ * you stand and View matchup; finished -> the result and See results.
+ * Group choice follows /match's saved pick. Renders `fallback` when there's
+ * nothing to show (no group, no season, nothing open, live or just ended)
+ * so the home page never goes blank.
  */
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Group, Match, isMatch, matchHeadline, money, moneyNote, totalsLine } from "@/lib/matchTypes";
-import { displaySurnames } from "@/lib/names";
+import { Group, Match, isMatch, matchHeadline, moneyNote, totalsLine } from "@/lib/matchTypes";
 
 export default function LiveMatchCard({ fallback }: { fallback: React.ReactNode }) {
   const [data, setData] = useState<Match | null | "none">(null);
@@ -37,63 +37,82 @@ export default function LiveMatchCard({ fallback }: { fallback: React.ReactNode 
   }, []);
 
   if (data === null) return <div style={{ ...shell, minHeight: 120 }} aria-busy="true" />;
-  // Only live events you're actually in: a "You didn't play this one" block
-  // is noise on the home page (Jack, Oct 23).
-  const slates = data === "none" ? [] : data.slates.filter(s =>
-    s.status === "live" && s.lines.some(l => l.user_id === s.me_id));
-  if (data === "none" || slates.length === 0) return <>{fallback}</>;
+  if (data === "none") return <>{fallback}</>;
 
-  return (
-    <div style={shell}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-        <span style={liveDot} aria-hidden />
-        <span style={{ fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 800, letterSpacing: "0.08em",
-          textTransform: "uppercase", color: "var(--bc-green)" }}>
-          Your matchup · live
-        </span>
-        {data.group?.name && <span style={{ fontSize: "max(var(--fs-min), 0.85em)", color: "var(--bc-muted)" }}>{data.group.name}</span>}
-      </div>
+  // The card follows the week (one main action, never a guess):
+  //   live and you're in  -> where you stand, "View matchup"
+  //   picks open          -> "Make picks", or "Change picks" once yours are in
+  //   just finished       -> the result, "See results"
+  //   anything else       -> the plain banner
+  const mine = (s: Match["slates"][number]) => s.lines.some(l => l.user_id === s.me_id);
+  const liveIn = data.slates.filter(s => s.status === "live" && mine(s));
+  const open = data.slates.find(s => s.status === "open");
+  const done = data.slates.find(s => (s.status === "final" || s.status === "settling") && mine(s));
 
-      {slates.map(s => {
-        const me = s.lines.find(l => l.user_id === s.me_id);
-        return (
-          <div key={s.tournament_id} style={{ padding: "10px 0", borderTop: "1px solid var(--bc-line)" }}>
-            <div style={{ fontSize: "max(var(--fs-min), 0.85em)", color: "var(--bc-muted)", fontWeight: 700 }}>
-              {s.tour === "euro" ? "DP World Tour" : "PGA Tour"} · {s.name}
-            </div>
-            <div style={{ fontWeight: 900, fontSize: "1.4em", lineHeight: 1.2, margin: "4px 0" }}>
-              {matchHeadline(s)}
-            </div>
-            <div style={{ fontWeight: 700, fontSize: "0.95em", fontVariantNumeric: "tabular-nums" }}>{totalsLine(s)}</div>
-            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>{moneyNote(s)}</div>
-            {me && me.golfers.length > 0 && (
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 18px", marginTop: 8, fontSize: "0.92em" }}>
-                {me.golfers.map((g, i) => (
-                  <span key={g.name} style={{ whiteSpace: "nowrap" }}>
-                    <span style={{ color: "var(--bc-muted)", fontWeight: 700 }}>{g.position}</span>{" "}
-                    <span style={{ fontWeight: 700 }}>{displaySurnames(me.golfers.map(x => x.name))[i]}</span>{" "}
-                    <span style={{ fontVariantNumeric: "tabular-nums" }}>{money(g.earnings)}</span>
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        );
-      })}
-
-      <div style={{ display: "flex", gap: 16, alignItems: "center", marginTop: 12, flexWrap: "wrap" }}>
-        <Link href="/match" style={{
-          background: "var(--bc-yellow-fill)", color: "#081f14", fontWeight: 900,
-          textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.85em)", letterSpacing: "0.06em",
-          padding: "12px 20px", borderRadius: 4, whiteSpace: "nowrap" }}>
-          Open Match Center
-        </Link>
-        <Link href="/live" style={{ fontWeight: 700, fontSize: "0.9em", color: "var(--bc-text)" }}>
-          Full leaderboard →
-        </Link>
-      </div>
+  const button = (href: string, label: string) => (
+    <Link href={href} style={{
+      display: "inline-block", marginTop: 12,
+      background: "var(--bc-yellow-fill)", color: "#081f14", fontWeight: 900,
+      textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.85em)", letterSpacing: "0.06em",
+      padding: "12px 20px", borderRadius: 4, whiteSpace: "nowrap" }}>
+      {label}
+    </Link>
+  );
+  const kicker = (text: string, isLive = false) => (
+    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+      {isLive && <span style={liveDot} aria-hidden />}
+      <span style={{ fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 800, letterSpacing: "0.08em",
+        textTransform: "uppercase", color: isLive ? "var(--bc-green)" : "var(--bc-muted)" }}>{text}</span>
+      {data.group?.name && <span style={{ fontSize: "max(var(--fs-min), 0.85em)", color: "var(--bc-muted)" }}>{data.group.name}</span>}
     </div>
   );
+
+  if (liveIn.length > 0) {
+    // Compact: rank and gap, your total, one button. The golfers live in Match Center.
+    return (
+      <div style={shell}>
+        {kicker("Your matchup · live", true)}
+        {liveIn.map(s => (
+          <div key={s.tournament_id} style={{ padding: "6px 0" }}>
+            {liveIn.length > 1 && (
+              <div style={{ fontSize: "max(var(--fs-min), 0.8em)", color: "var(--bc-muted)", fontWeight: 700 }}>{s.name}</div>
+            )}
+            <div style={{ fontWeight: 900, fontSize: "1.2em", lineHeight: 1.25 }}>{matchHeadline(s)}</div>
+            <div style={{ fontSize: "max(var(--fs-min), 0.86em)", color: "var(--bc-muted)", fontVariantNumeric: "tabular-nums", marginTop: 2 }}>
+              {totalsLine(s)} · {moneyNote(s).replace(/\.$/, "").toLowerCase()}
+            </div>
+          </div>
+        ))}
+        {button("/match", "View matchup")}
+      </div>
+    );
+  }
+  if (open) {
+    const picked = mine(open);
+    return (
+      <div style={{ ...shell, borderColor: "var(--bc-line)" }}>
+        {kicker("Picks open")}
+        <div style={{ fontWeight: 900, fontSize: "1.2em", lineHeight: 1.25 }}>
+          {picked ? `Your ${open.name} picks are in.` : `${open.name}: make your picks.`}
+        </div>
+        <div style={{ fontSize: "max(var(--fs-min), 0.86em)", color: "var(--bc-muted)", marginTop: 2 }}>
+          {picked ? "Everyone's picks are revealed when the event locks." : "Pick your golfers before the first tee time."}
+        </div>
+        {button("/friends?game=ride", picked ? "Change picks" : "Make picks")}
+      </div>
+    );
+  }
+  if (done) {
+    return (
+      <div style={{ ...shell, borderColor: "var(--bc-line)" }}>
+        {kicker(done.status === "final" ? "Final" : "Settling")}
+        <div style={{ fontWeight: 900, fontSize: "1.2em", lineHeight: 1.25 }}>{matchHeadline(done)}</div>
+        <div style={{ fontSize: "max(var(--fs-min), 0.86em)", color: "var(--bc-muted)", marginTop: 2 }}>{done.name} · {moneyNote(done)}</div>
+        {button("/match", "See results")}
+      </div>
+    );
+  }
+  return <>{fallback}</>;
 }
 
 const shell: React.CSSProperties = {

@@ -13,7 +13,7 @@ import Link from "next/link";
 import { getHome, getInPlay, HomeData, InPlayResponse } from "@/lib/api";
 import { finishNumber } from "@/lib/format";
 import { Show } from "@clerk/nextjs";
-import { Panel, SectionTag, StatStrip, pct, textLink } from "@/components/broadcast";
+import { Panel, SectionTag, pct, textLink } from "@/components/broadcast";
 import LiveMatchCard from "@/components/LiveMatchCard";
 import Term from "@/components/Term";
 import { useLiveEvents } from "@/lib/useLiveEvents";
@@ -147,7 +147,8 @@ export default function Home() {
            live matchup leads; off-weeks (or with no live slate) it's the
            plain banner. ─────────────────────────────────────────────── */}
       <Show when="signed-in">
-        {live.length > 0 ? <LiveMatchCard fallback={matchupBanner} /> : matchupBanner}
+        {/* The card follows the week: make picks, then your live matchup, then results. */}
+        <LiveMatchCard fallback={matchupBanner} />
       </Show>
 
       {/* ── Tour switch: PGA is home, the DPWT one tap away ─────────────── */}
@@ -168,6 +169,8 @@ export default function Home() {
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <div style={{ display: "flex", gap: "28px 48px", padding: "24px 0 30px", flexWrap: "wrap" }}>
+        {/* During play the title lives inside the leaders section below. */}
+        {leaders.length === 0 && (
         <div style={{ flex: "1 1 320px", minWidth: 0, display: "flex", flexDirection: "column", gap: 14 }}>
           <div style={{ fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, letterSpacing: "0.16em",
                         textTransform: "uppercase", color: h?.is_live ? "var(--bc-green)" : "var(--bc-muted)" }}>
@@ -202,10 +205,17 @@ export default function Home() {
           </div>
         </div>
 
+        )}
+
         {/* Live leaders during play; otherwise the model board. */}
         {leaders.length > 0 ? (
-        <Panel style={{ flex: "1 1 340px", maxWidth: 520, minWidth: 0 }}>
-          <SectionTag>Leaders · live</SectionTag>
+        <Panel style={{ flex: "1 1 100%", minWidth: 0 }}>
+          <div style={{ fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 800, letterSpacing: "0.1em",
+                        textTransform: "uppercase", color: "var(--bc-green)" }}>
+            Live now{h && ` · ${fmtDates(h.start_date, h.end_date)}`}
+          </div>
+          <div style={{ fontWeight: 900, fontSize: "1.25em", lineHeight: 1.15, margin: "4px 0 2px" }}>{h?.name}</div>
+          {leadLine && <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.9em)", marginBottom: 14 }}>{leadLine}</div>}
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {leaders.map(p => (
               <div key={p.player_name} style={{ display: "flex", alignItems: "center", gap: 14 }}>
@@ -231,7 +241,8 @@ export default function Home() {
           <div style={{ borderTop: "1px solid var(--bc-card)", marginTop: 16, paddingTop: 12,
                         fontSize: "max(var(--fs-min), 0.76em)", color: "var(--bc-muted)" }}>
             Live chances from DataGolf ·{" "}
-            <Link href="/live" style={{ color: "var(--bc-green)" }}>live board →</Link>
+            <Link href="/live" style={{ color: "var(--bc-green)" }}>live board →</Link>{" "}·{" "}
+            <Link href="/predictions" style={{ color: "var(--bc-green)" }}>pre-tournament picks &amp; analysis →</Link>
           </div>
         </Panel>
         ) : (
@@ -299,20 +310,10 @@ export default function Home() {
         </div>
       )}
 
-      {/* ── Trust strip ──────────────────────────────────────────────────── */}
-      <div style={{ paddingBottom: 44 }}>
-        <StatStrip
-          title="Track record"
-          // Statements that stay true, not counts with a date (the last ones
-          // read "through the 3M Open, Jul 26" three months later).
-          stats={[
-            { value: "Pre-event", label: "every forecast is saved before the first tee shot and graded as it stood" },
-            { value: "10,000", label: "simulated tournaments behind each week's chances" },
-            { value: "Weekly", label: "graded against real results after every event" },
-          ]}
-          right={<Link href="/methodology" style={textLink}>
-            How it works →</Link>}
-        />
+      {/* ── How the predictions work: a link, not a section ─────────────── */}
+      <div style={{ padding: "4px 0 44px", fontSize: "max(var(--fs-min), 0.86em)", color: "var(--bc-muted)" }}>
+        Every forecast is saved before the first tee shot and graded against real results.{" "}
+        <Link href="/methodology" style={{ ...textLink, fontSize: "1em" }}>How our predictions work →</Link>
       </div>
     </div>
   );
