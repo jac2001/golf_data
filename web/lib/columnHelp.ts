@@ -52,7 +52,7 @@ export const COLUMN_HELP = {
   odds: {
     label: "Odds",
     definition: "His odds to win: DataGolf's consensus across sportsbooks, in American format. +1200 means a $100 bet would return $1,200 profit.",
-    example: "+1200 implies roughly a 7.7% chance before the bookmaker's margin.",
+    example: "+1200 means about a 7.7% chance to win (1 in 13), the market's fair price with the bookmakers' margin taken out.",
   },
   move: {
     label: "Move",

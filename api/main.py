@@ -2156,6 +2156,11 @@ def _dg_odds_for(tid: str) -> dict[str, dict]:
             market = float(r["implied_prob"])
         except (TypeError, ValueError):
             market = None
+        # Show the CONSENSUS price, the same market as Our edge: odds_american
+        # is one bookmaker's best line (+2659 at betcris for Conners while the
+        # consensus said 3.47%, about +2780), so the two columns disagreed.
+        if market and 0 < market < 1:
+            american = round((1 / market - 1) * 100) if market < 0.5 else -round(market / (1 - market) * 100)
         out[k] = {"odds_to_win": american, "dk_odds_direction": move, "market_prob": market}
     return out
 
