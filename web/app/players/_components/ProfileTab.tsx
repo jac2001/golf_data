@@ -5,10 +5,10 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { PlayerApproachSkill, PlayerCareer, PlayerDecompositions, PlayerProfile, PlayerSkillRatings, PlayerSynopsis, RoundStat, getOpenEvents, getPlayerCareer, getPlayerProfile, getPlayerSynopsis, getTournamentLeaderboard } from "@/lib/api";
+import { PlayerApproachSkill, PlayerCareer, PlayerDecompositions, PlayerProfile, PlayerSkillRatings, PlayerSynopsis, RoundStat, getInPlay, getOpenEvents, getPlayerCareer, getPlayerProfile, getPlayerSynopsis, getTournamentLeaderboard } from "@/lib/api";
 import { hasAny, presentFields, type FieldSpec } from "@/lib/presentFields";
 import { profileSections, type Section } from "@/lib/profileSections";
-import { AdjBar, BG, GOLD, BORDER, Chip, GREEN, MUTED, RED, TEXT, card, fmt, fmtMoney, fmtOdds, fmtPct, fmtSg, isMajor, normName, parseCourseHistory, parseRecentResults, posColor, sectionLabel, sgColor, toParColor, tint, Notice } from "./shared";
+import { AdjBar, BG, GOLD, BORDER, Chip, GREEN, MUTED, RED, TEXT, card, fmt, fmtMoney, fmtOdds, fmtPct, fmtSg, isMajor, normName, posColor, sectionLabel, sgColor, toParColor, tint, Notice } from "./shared";
 import { FieldBrowser, PlayerSelect } from "./PlayerPicker";
 import styles from "./players.module.css";
 
@@ -699,6 +699,67 @@ function CareerCard({ playerName }: { playerName: string }) {
 }
 
 
+// ── Recent form card ──────────────────────────────────────────────────────────
+//
+// What a member wants first: how he is playing this week, and his last five
+// starts. Loads on its own (the Career card below waits for a click).
+
+function RecentFormCard({ playerName, tournamentId }: { playerName: string; tournamentId: string | null }) {
+  const [starts, setStarts] = useState<PlayerCareer["recent"] | null>(null);
+  const [failed, setFailed] = useState(false);
+  const [live, setLive] = useState<{ pos: string; total: string; label: string | null } | null>(null);
+
+  useEffect(() => {
+    setStarts(null); setFailed(false);
+    getPlayerCareer(playerName).then(d => setStarts(d.recent.slice(0, 5))).catch(() => setFailed(true));
+  }, [playerName]);
+
+  useEffect(() => {
+    setLive(null);
+    if (!tournamentId) return;
+    getInPlay().then(d => {
+      // Only this event's board, never another week's leftovers.
+      if (d.tournament_id.toUpperCase() !== tournamentId.toUpperCase()) return;
+      const me = d.players.find(p => normName(p.player_name) === normName(playerName));
+      if (me?.position && me.total) setLive({ pos: me.position, total: me.total, label: d.round_label ?? null });
+    }).catch(() => {});
+  }, [playerName, tournamentId]);
+
+  if (failed && !live) return null;
+  return (
+    <div style={card}>
+      <p style={sectionLabel}>Recent form</p>
+      {live && (
+        <p style={{ margin: "0 0 12px", fontSize: "max(var(--fs-min), 0.88em)", color: TEXT }}>
+          <span style={{ color: MUTED }}>This week so far </span>
+          <span style={{ fontWeight: 800, color: posColor(live.pos) }}>{live.pos}</span>
+          <span style={{ fontWeight: 700, color: toParColor(live.total) }}> {live.total}</span>
+          {live.label && <span style={{ color: MUTED }}> · {live.label}</span>}
+        </p>
+      )}
+      {starts == null && !failed && <p style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.83em)", margin: 0 }}>Loading recent starts…</p>}
+      {starts != null && starts.length === 0 && <p style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.83em)", margin: 0 }}>No starts in our results yet.</p>}
+      {starts != null && starts.length > 0 && (
+        <>
+          <p style={{ margin: "0 0 6px", fontSize: "max(var(--fs-min-xs), 0.7em)", color: MUTED, textTransform: "uppercase", letterSpacing: "0.05em" }}>Last {starts.length} starts, newest first</p>
+          <div style={{ display: "grid", gap: 4 }}>
+            {starts.map(r => (
+              <div key={`${r.tournament_id}-${r.year}`} style={{ display: "flex", alignItems: "baseline", gap: 10, fontSize: "max(var(--fs-min), 0.85em)" }}>
+                <span style={{ minWidth: 44, fontWeight: 800, color: posColor(r.position), fontVariantNumeric: "tabular-nums" }}>{r.position}</span>
+                <span style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: TEXT }}>{r.tournament_name}</span>
+                {r.to_par && <span style={{ color: toParColor(r.to_par), fontVariantNumeric: "tabular-nums" }}>{r.to_par}</span>}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+const ADVANCED = new Set<Section>(["dgPrediction", "courseFit", "skills", "approach", "season"]);
+
+
 // ── Profile view ──────────────────────────────────────────────────────────────
 
 function ProfileView({ profile }: { profile: PlayerProfile }) {
@@ -719,8 +780,7 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
       <div style={card}>
         <p style={sectionLabel}>Our Model</p>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
-          <Chip label="Win%" value={fmtPct(m.win_prob)} />
-          <Chip label="Top 10%" value={fmtPct(m.top10_prob)} />
+          {/* Win and top-10 chances are the header's headline; not repeated here (audit #8). */}
           <Chip label="Cut%" value={fmtPct(m.cut_prob)} />
           <Chip label="Season SG" value={fmt(m.season_sg_total, 2)} color={sgColor(m.season_sg_total)} />
           {m.odds_to_win != null && (
@@ -852,7 +912,18 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
         </div>
       </div>
 
-      {plan.show.map(sec => <React.Fragment key={sec}>{cards[sec]}</React.Fragment>)}
+      {/* Identity and recent form first; the deeper model and DataGolf detail
+          folds away (audit #8). Jack's profileSections still decides what exists. */}
+      {plan.show.filter(sec => !ADVANCED.has(sec)).flatMap(sec => sec === "career"
+        ? [<RecentFormCard key="form" playerName={profile.player_name} tournamentId={plan.inField ? profile.tournament_id ?? null : null} />,
+           <React.Fragment key={sec}>{cards[sec]}</React.Fragment>]
+        : [<React.Fragment key={sec}>{cards[sec]}</React.Fragment>])}
+      {plan.show.some(sec => ADVANCED.has(sec)) && (
+        <details className={styles.advanced}>
+          <summary>Advanced detail: DataGolf prediction, course fit, skills, season stats</summary>
+          {plan.show.filter(sec => ADVANCED.has(sec)).map(sec => <React.Fragment key={sec}>{cards[sec]}</React.Fragment>)}
+        </details>
+      )}
     </>
   );
 }
@@ -1035,8 +1106,9 @@ const BP_STATS: FieldSpec<import("@/lib/api").PlayerBettingProfile>[] = [
 
 
 function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfile }) {
-  const courseHistory  = parseCourseHistory(bp.course_history_raw);
-  const recentResults  = parseRecentResults(bp.recent_results_raw);
+  // PGA TOUR's recent-results and course-history blocks were dropped (audit #8):
+  // they go stale and name other weeks' courses. Recent form comes from our
+  // own date-sorted results (RecentFormCard).
   const keyBullets     = (bp.bullets ?? []).filter(b =>
     !b.startsWith("Responsible") && !b.match(/^[A-Z][a-z]+ (won|finished) this tournament/)
   ).slice(0, 6);
@@ -1045,8 +1117,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
   // header — hide the card entirely unless something is worth showing.
   const summary = presentFields(bp, [{ key: "summary", label: "Summary" }])[0]?.text ?? null;   // "  " is not a summary
   const statRow = presentFields(bp, BP_STATS);
-  const hasContent = !!summary || keyBullets.length > 0 || courseHistory.length > 0
-    || recentResults.length > 0 || bp.events_played != null || bp.wins != null;
+  const hasContent = !!summary || keyBullets.length > 0 || bp.events_played != null || bp.wins != null;
   if (!hasContent) return null;
 
   return (
@@ -1134,70 +1205,6 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
         </>
       )}
 
-      {/* Recent results table */}
-      {recentResults.length > 0 && (
-        <>
-          <p style={{ ...sectionLabel, marginTop: 4 }}>Recent Results</p>
-          <div style={{ overflowX: "auto", borderRadius: 8, border: `1px solid ${BORDER}`, marginBottom: 16 }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)", fontSize: "max(var(--fs-min), 0.82em)" }}>
-              <thead>
-                <tr>
-                  {["Finish", "Tournament", "Score", "Year"].map(h => (
-                    <th key={h} style={{
-                      padding: "6px 10px", textAlign: h === "Finish" ? "center" : "left",
-                      fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 700, color: MUTED,
-                      textTransform: "uppercase", letterSpacing: "0.05em",
-                      borderBottom: `1px solid ${BORDER}`, background: "var(--bc-panel)",
-                    }}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {recentResults.slice(0, 8).map((r, i) => (
-                  <tr key={i} style={{ background: i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)" }}>
-                    <td style={{ padding: "5px 10px", textAlign: "center", fontWeight: 700, color: posColor(r.finish) }}>
-                      {r.finish}
-                    </td>
-                    <td style={{ padding: "5px 10px", color: TEXT, whiteSpace: "nowrap", overflow: "hidden", maxWidth: 220, textOverflow: "ellipsis" }}>
-                      {r.tournament}
-                    </td>
-                    <td style={{ padding: "5px 10px", color: r.to_par.startsWith("-") ? GREEN : r.to_par === "E" ? MUTED : RED, fontWeight: 600 }}>
-                      {r.to_par}
-                    </td>
-                    <td style={{ padding: "5px 10px", color: MUTED }}>{r.year}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
-      )}
-
-      {/* Course history */}
-      {courseHistory.length > 0 && (
-        <>
-          <p style={{ ...sectionLabel, marginTop: 4 }}>Course History</p>
-          {courseHistory.map(course => (
-            <div key={course.course_name} style={{ marginBottom: 10 }}>
-              <div style={{ fontSize: "max(var(--fs-min), 0.75em)", color: GOLD, marginBottom: 4 }}>{course.course_name}</div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {course.tournaments.slice(0, 8).map((t, i) => (
-                  <div key={i} style={{
-                    fontSize: "max(var(--fs-min), 0.72em)", background: "var(--bc-panel)", border: `1px solid ${BORDER}`,
-                    borderRadius: 5, padding: "3px 8px", display: "flex", gap: 6, alignItems: "center",
-                  }}>
-                    <span style={{ color: MUTED }}>{t.year}</span>
-                    <span style={{ color: posColor(t.position), fontWeight: 700 }}>{t.position}</span>
-                    {t.to_par && t.to_par !== "-" && (
-                      <span style={{ color: MUTED }}>{t.to_par}</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </>
-      )}
     </div>
   );
 }

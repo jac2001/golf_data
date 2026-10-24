@@ -58,9 +58,14 @@ accuracy and data permissions continue regardless.)
 - [x] Workbook #12 (1556bf8): Home's matchup card has a skeleton and an error state.
 - [x] Fade (da61ca1, Jack's calls): pre-tee-off WDs are void (the slot counts as the
       member's average); everyone tied at 20th is in the pool.
-- [ ] Remaining workbook rows: #3 results by date, #4 weather to event dates, #7 Round
-      pick first on phones, #8 simpler profiles, #9 Live header on phones, #11 How to Play
-      vs real scoring. Recheck each before editing.
+- [x] Workbook #3 (cff047c): player results sort by event date, not tournament id.
+- [x] Workbook #4 (cdacf54): weather is the event's own dates only (Open-Meteo at the course).
+- [x] Workbook #7 (db069fa): your Round picks come before who's-in on phones.
+- [x] Workbook #8: profiles lead with the chances, then recent form (this week so far + last
+      5 starts); stale PGA TOUR results/course history removed; advanced detail folds away.
+- [x] Workbook #9 (bdf749b): Live on phones has a two-part header and honest tied leaders.
+- [x] Workbook #11 (b3448fe): How to Play matches settlement and Round scoring.
+- [ ] Open (Jack's call): should a Round Game round with no pick cost +5? Today it isn't scored.
 
 ## Audit first (Oct 20): the roadmap is paused until Phase A is done
 

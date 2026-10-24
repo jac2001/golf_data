@@ -24,3 +24,15 @@
   .h2hPickers, .h2hCards { grid-template-columns: 1fr !important; gap: 10px !important; }
   .h2hVs { display: none !important; }
 }
+
+/* Profile: advanced detail folds below recent form (audit #8). */
+.advanced { margin-top: 4px; }
+.advanced > summary {
+  cursor: pointer; list-style: none; padding: 12px 14px; margin-bottom: 12px;
+  border: 1px solid var(--bc-line); border-radius: 10px; background: var(--bc-panel);
+  color: var(--bc-text); font-weight: 700; font-size: max(var(--fs-min), 0.85em);
+}
+.advanced > summary::-webkit-details-marker { display: none; }
+.advanced > summary::before { content: "▸ "; color: var(--bc-muted); }
+.advanced[open] > summary::before { content: "▾ "; }
+.advanced > summary:focus-visible { outline: 2px solid var(--bc-yellow); outline-offset: 2px; }
