@@ -2243,10 +2243,21 @@ def get_live_vs_predictions() -> dict:
     """Leaderboard merged with our model predictions — compare live position vs model rank."""
     tid = _get_tournament_id()
     lb_path, _ = _live_board_files(tid)
-    if lb_path is None:
-        raise HTTPException(status_code=404, detail=f"No live leaderboard for {tid} yet")
-
-    lb = pd.read_csv(lb_path)
+    if lb_path is not None:
+        lb = pd.read_csv(lb_path)
+    else:
+        # No file during play (nothing writes one mid-event): this tab 404'd
+        # through every PGA round (Oct 23). The live boards Match Center uses:
+        lb = _dg_live_board(tid)
+        if lb is not None:
+            lb = lb.copy()
+            lb["total_numeric"] = pd.to_numeric(lb.get("current_score"), errors="coerce")
+            lb["total"] = lb["total_numeric"].map(
+                lambda v: "" if pd.isna(v) else ("E" if v == 0 else (f"+{int(v)}" if v > 0 else str(int(v)))))
+        else:
+            lb = _pgatour_live_board(tid)
+        if lb is None:
+            raise HTTPException(status_code=404, detail=f"No live leaderboard for {tid} yet")
     for col in ["total_numeric", "position_change"]:
         if col in lb.columns:
             lb[col] = pd.to_numeric(lb[col], errors="coerce")
@@ -2254,7 +2265,7 @@ def get_live_vs_predictions() -> dict:
     pred_path = OUTPUTS_DIR / "latest_predictions.csv"
     rank_map: dict[str, dict] = {}
     if pred_path.exists():
-        preds = pd.read_csv(pred_path)
+        preds = _published_chances(pd.read_csv(pred_path))   # as This Week shows
         preds["win_prob"]   = pd.to_numeric(preds.get("win_prob",   pd.Series()), errors="coerce")
         preds["top10_prob"] = pd.to_numeric(preds.get("top10_prob", pd.Series()), errors="coerce")
         preds = preds.sort_values("win_prob", ascending=False).reset_index(drop=True)
@@ -2275,14 +2286,23 @@ def get_live_vs_predictions() -> dict:
         name = str(row.get("player_name", "")).strip()
         pinfo = rank_map.get(name.lower(), {})
         pos_raw = row.get("position")
-        try:
-            live_pos = int(str(pos_raw).replace("T", "").replace("CUT", "999").replace("WD", "999").replace("-", "999"))
-        except Exception:
-            live_pos = None
+        # Missed cut / withdrew count as last place (they were 999, so a WD
+        # read -987 against the model).
+        s = str(pos_raw).strip().upper()
+        if s in ("CUT", "MC", "WD", "W/D", "DQ", "MDF"):
+            live_pos = len(lb)
+        else:
+            try:
+                live_pos = int(s.replace("T", ""))
+            except Exception:
+                live_pos = None
         model_rank = pinfo.get("model_rank")
-        rank_diff  = (live_pos - model_rank) if (live_pos and model_rank) else None
+        # Positive = beating the model: a golfer 1st whom we ranked 71st is +70.
+        # It was live_pos - model_rank, so the page's "overperformers" were
+        # the biggest underperformers (Oct 23).
+        rank_diff  = (model_rank - live_pos) if (live_pos and model_rank) else None
         players.append({
-            "player":      name,
+            "player":      _flip_to_first_last(name),
             "position":    _safe(pos_raw),
             "total":       _safe(row.get("total")),
             "total_numeric": _safe(row.get("total_numeric")),
