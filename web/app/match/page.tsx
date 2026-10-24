@@ -24,6 +24,9 @@ import { College, CollegeGolfer, Group, Match, Slate, collegeHeadline, collegeTo
 import { getTeeTimes } from "@/lib/api";
 import type { TeeTimeGroup } from "@/lib/api";
 import { roundContext } from "@/lib/roundContext";import Avatar, { useAvatars } from "@/components/Avatar";
+import MatchupFocus from "@/components/MatchupFocus";
+import { matchupDiff } from "@/lib/matchupDiff";
+
 
 
 const last = (n: string) => n.includes(",") ? n.split(",")[0].trim() : (n.trim().split(/\s+/).pop() ?? n);
@@ -287,9 +290,12 @@ function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: nu
     );
   }
 
+  
   const score = buildScoreBreakdown({ game: "ride", status: s.status, estimated: s.estimated, lineup: me ?? null });
   const solo = isSoloVsModel(s);
   const live = s.status === "live";
+  // Who decides your matchup (picks are revealed by here; null without a rival).
+  const diff = matchupDiff(s.lines, s.me_id, s.rival?.user_id);
   const others = s.lines.filter(l => l.user_id !== s.me_id);
   const label: React.CSSProperties = { fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color: "var(--bc-muted)",
     textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 };
@@ -303,6 +309,7 @@ function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: nu
 
       {/* Layer 1 — am I winning? */}
       <div style={{ fontWeight: 900, fontSize: "1.35em", margin: "6px 0 4px", lineHeight: 1.2 }}>{matchHeadline(s)}</div>
+      {diff && <MatchupFocus diff={diff} />}
       {me && <div style={{ fontWeight: 700, fontSize: "max(var(--fs-min), 0.95em)", fontVariantNumeric: "tabular-nums" }}>{totalsLine(s)}</div>}
       <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", marginTop: 2 }}>{moneyNote(s)}</div>
 

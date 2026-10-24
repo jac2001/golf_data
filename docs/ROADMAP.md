@@ -340,6 +340,18 @@ someone plays, versus what we improve because we watched them play.
       "Nudge the group" share; Jack's `web/lib/whosIn.ts`): who has joined and who still needs to
       pick, without revealing hidden picks; share the result and start
       the next week. Test: an organizer runs a second tournament alone.
+- [x] **Who decides your matchup** (Oct 24, Jack's next-steps #2): Match Center names the
+      golfers you and your rival share (they cancel) and shows only the deciding ones side
+      by side (`lib/matchupDiff.ts`, `MatchupFocus`). Facts only. Next: their tee times.
+- [ ] **Rivalry series** (#5): "Alex leads your series 4-3", last beat, biggest win. Pure
+      function over the records adapter's weeks; only weeks both played; modes separate.
+- [ ] **The model as an opponent** (#3): mascot presents its three with short reasons;
+      honest season record including losses (records adapter). Same deadlines as members.
+- [ ] **Pick-screen answers** (#4): why consider him / the concern / vs your other choice,
+      assembled from pickReason, whyLine, matchupVerdict. Never "best pick" certainty.
+- [ ] **Why you picked him** (#1): optional reason at pick time (course fit / form / gut /
+      model is wrong), saved with the model's view before lock; recap brings it back. Needs a
+      league_picks column + migration. One good pick is not proof of skill.
 - [ ] **Group records + contextual record chirps** (Oct 24, `docs/RECORDS_CHIRPS_WORKBOOK.md`):
       Jack's `groupRecords.ts` + `recordChirps.ts` done; history adapter done
       (`lib/recordWeeks.ts` pure builder, `lib/recordHistory.ts` loader,
